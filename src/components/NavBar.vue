@@ -29,22 +29,31 @@
       <header class="navbar navbar-light bg-white border-bottom shadow-sm">
         <div class="container-fluid">
           <div class="d-flex">
-            <input
+            <!-- <input
               class="form-control me-2"
               type="search"
               placeholder="Search or go to..."
               aria-label="Search"
-            />
+            /> -->
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-light position-relative me-2">
+            <button
+              class="btn btn-light position-relative me-2"
+              @click="notificationsOpened = !notificationsOpened"
+            >
               <i class="bi bi-bell"></i>
               <span
                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
               >
-                1
+                {{ notificationCount }}
               </span>
             </button>
+            <div
+              v-if="notificationsOpened"
+              class="position-absolute top-100 start-0 translate-middle bg-light border shadow-sm"
+            >
+              <div class="p-3">You have 5 new notifications</div>
+            </div>
             <button class="btn btn-light me-2">
               <i class="bi bi-envelope"></i>
             </button>
@@ -92,6 +101,9 @@ const menuItems = ref([
   { label: 'Merge requests', icon: 'bi bi-arrow-down-up' },
   { label: 'To-Do List', icon: 'bi bi-list-check' },
 ])
+
+const notificationCount = ref(5)
+const notificationsOpened = ref(false)
 
 function toggleSidebar() {
   isCollapsed.value = !isCollapsed.value
