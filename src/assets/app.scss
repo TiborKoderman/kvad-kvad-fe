@@ -1,0 +1,23 @@
+// Step 1: Import Bootstrap's variables
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/variables';
+
+// Step 2: Override theme colors
+$theme-colors: (
+    "light":      #d7f4e1,
+    "dark":       #0b0d32,
+    "primary":    #b00b69,
+    "secondary":  #008986,
+    "info":       #56b0a7,
+    "accent1":    #044d4f,
+    "accent2":    #048978,
+    "accent3":    #9abdb6,
+    "success":    #00aa76,
+    "warning":    #d6d200,
+    "danger":     #e44000,
+);
+
+// Step 3: Import rest of Bootstrap
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
+// Step 4: Add any custom styles (optional)
