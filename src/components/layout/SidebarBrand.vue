@@ -1,0 +1,79 @@
+<!-- SidebarBrand.vue -->
+<template>
+    <div
+      :class="[
+        'sidebar-brand d-flex align-items-center p-3',
+        isCollapsed ? 'justify-content-center' : 'justify-content-between',
+        brandClass,
+      ]"
+    >
+      <div class="d-flex align-items-center">
+        <button
+          @click="toggleCollapse"
+          class="btn btn-link text-decoration-none"
+          :aria-label="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        >
+          <i class="bi" :class="isCollapsed ? 'bi-list' : 'bi-x'"></i>
+        </button>
+        <img
+          v-if="!isCollapsed"
+          :src="logo"
+          alt="Logo"
+          :class="['logo', { 'collapsed-logo': isCollapsed }]"
+          class="ms-2"
+        />
+      </div>
+      <button
+        v-if="!isCollapsed"
+        @click="logout"
+        class="btn btn-danger btn-sm"
+      >
+        Logout
+      </button>
+    </div>
+  </template>
+  
+  <script setup>
+  import { defineProps, defineEmits } from 'vue';
+  
+  const props = defineProps({
+    logo: {
+      type: String,
+    //   default: require('@/assets/logo.png'),
+    },
+    brandClass: {
+      type: String,
+      default: 'bg-primary',
+    },
+    isCollapsed: {
+      type: Boolean,
+      default: false,
+    },
+  });
+  
+  const emit = defineEmits(['toggle-collapse']);
+  
+  const logout = () => {
+    // Implement your logout logic here
+    console.log('Logged out');
+  };
+  
+  const toggleCollapse = () => {
+    emit('toggle-collapse');
+  };
+  </script>
+  
+  <style scoped>
+  .sidebar-brand {
+    height: 80px;
+  }
+  
+  .logo {
+    max-height: 50px;
+  }
+  
+  .collapsed-logo {
+    max-height: 30px;
+  }
+  </style>
+  
