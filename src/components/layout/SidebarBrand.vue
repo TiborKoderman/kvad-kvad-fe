@@ -33,17 +33,14 @@
     </div>
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   import { defineProps, defineEmits } from 'vue';
+  import logo from '@/assets/logo.svg';
   
   const props = defineProps({
-    logo: {
-      type: String,
-    //   default: require('@/assets/logo.png'),
-    },
     brandClass: {
       type: String,
-      default: 'bg-primary',
+      default: 'bg-secondary',
     },
     isCollapsed: {
       type: Boolean,
