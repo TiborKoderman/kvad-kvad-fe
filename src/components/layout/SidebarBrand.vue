@@ -13,7 +13,7 @@
           class="btn btn-link text-decoration-none"
           :aria-label="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
         >
-          <i class="bi" :class="isCollapsed ? 'bi-list' : 'bi-x'"></i>
+          <i class="bi" :class="isCollapsed ? 'bi-list' : 'bi-sidebar'"></i>
         </button>
         <img
           v-if="!isCollapsed"
@@ -26,9 +26,16 @@
       <button
         v-if="!isCollapsed"
         @click="logout"
-        class="btn btn-danger btn-sm"
+        class="btn btn-light btn-sm"
       >
-        Logout
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+      <button
+        v-if="!isCollapsed"
+        @click="goToAccount"
+        class="btn btn-light btn-sm"
+      >
+        <i class="bi bi-person-circle"></i>
       </button>
     </div>
   </template>
