@@ -1,6 +1,6 @@
 <!-- Sidebar.vue -->
 <template>
-    <div
+    <nav
       :class="[
         'sidebar d-flex flex-column',
         { collapsed: isCollapsed },
@@ -13,16 +13,16 @@
       <!-- Sidebar navigation items -->
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item" v-for="(page, index) in pages" :key="index">
-          <a
-            :class="['nav-link', { active: isActiveRoute(page.link) }]"
-            :href="page.link"
+          <RouterLink
+            :class="['nav-link', { active: isActiveRoute(page.link), 'bg-color': isActiveRoute(page.link) }]"
+            :to="page.link"
           >
             <i :class="page.icon"></i>
             <span v-if="!isCollapsed" class="ms-2">{{ page.name }}</span>
-          </a>
+          </RouterLink>
         </li>
       </ul>
-    </div>
+    </nav>
   </template>
   
   <script setup lang="ts">
@@ -59,7 +59,7 @@
     emit('toggle-collapse');
   };
   
-  const isActiveRoute = (link) => {
+  const isActiveRoute = (link: unknown) => {
     return route.path === link;
   };
   </script>

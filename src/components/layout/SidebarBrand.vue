@@ -8,18 +8,11 @@
       ]"
     >
       <div class="d-flex align-items-center">
-        <button
-          @click="toggleCollapse"
-          class="btn btn-link text-decoration-none"
-          :aria-label="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-        >
-          <i class="bi" :class="isCollapsed ? 'bi-list' : 'bi-sidebar'"></i>
-        </button>
+
         <img
-          v-if="!isCollapsed"
           :src="logo"
           alt="Logo"
-          :class="['logo', { 'collapsed-logo': isCollapsed }]"
+          :class="['logo']"
           class="ms-2"
         />
       </div>
@@ -37,6 +30,14 @@
       >
         <i class="bi bi-person-circle"></i>
       </button>
+      <button 
+          @click="toggleCollapse"
+          class="btn btn-link text-decoration-none btn-light"
+          :aria-label="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+           v-if="!isCollapsed"
+        >
+          <i class="bi bi-layout-sidebar"></i>
+        </button>
     </div>
   </template>
   
@@ -47,7 +48,7 @@
   const props = defineProps({
     brandClass: {
       type: String,
-      default: 'bg-secondary',
+      default: 'bg-dark',
     },
     isCollapsed: {
       type: Boolean,

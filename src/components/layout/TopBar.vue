@@ -1,21 +1,21 @@
 <!-- TopBar.vue -->
 <template>
-    <nav
-      class="navbar navbar-expand-lg"
+    <div
+      class="navbar navbar-expand-lg border-bottom"
       :class="topbarClass"
     >
       <div class="container-fluid">
         <button
           v-if="isCollapsed"
           @click="toggleCollapse"
-          class="btn btn-link text-decoration-none me-2"
+          class="btn btn-link text-decoration-none  me-2"
           aria-label="Expand sidebar"
         >
-          <i class="bi bi-list"></i>
+          <i class="bi bi-layout-sidebar"></i>
         </button>
         <!-- Additional TopBar content -->
       </div>
-    </nav>
+    </div>
   </template>
   
   <script setup lang="ts">
@@ -24,7 +24,7 @@
   const props = defineProps({
     topbarClass: {
       type: String,
-      default: 'bg-light',
+      default: 'bg-white',
     },
     isCollapsed: {
       type: Boolean,
