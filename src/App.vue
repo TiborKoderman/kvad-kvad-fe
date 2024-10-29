@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import TopBar from '@/components/layout/TopBar.vue';
 import Sidebar from '@/components/layout/SideBar.vue';

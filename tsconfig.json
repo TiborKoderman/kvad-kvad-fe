@@ -11,5 +11,10 @@
       "path": "./tsconfig.vitest.json"
     }
   ],
-  "include": ["src/**/*.d.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "compilerOptions": {
+    // other options
+
+    "types": ["node"]
+  }
 }

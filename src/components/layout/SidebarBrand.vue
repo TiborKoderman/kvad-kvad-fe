@@ -42,7 +42,6 @@
   </template>
   
   <script setup lang="ts">
-  import { defineProps, defineEmits } from 'vue';
   import logo from '@/assets/logo.svg';
   
   const props = defineProps({
