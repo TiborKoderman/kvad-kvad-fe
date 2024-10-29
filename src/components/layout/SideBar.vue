@@ -56,6 +56,21 @@ const pages = [
     name: 'Docker',
     link: '/docker',
     icon: 'bi bi-box-seam',
+  },
+  {
+    name: 'Users',
+    link: '/users',
+    icon: 'bi bi-people',
+  },
+  {
+    name: 'Nodes',
+    link: '/nodes',
+    icon: 'bi bi-server',
+  },
+  {
+    name: 'Settings',
+    link: '/settings',
+    icon: 'bi bi-gear',
   }
   // Add more pages as needed
 ]

@@ -62,8 +62,7 @@ const columns = ref([
 const data = ref([])
 
 const options = ref({
-  responsive: true,
-  autoHeight: false
+  pageLength: 10,
 })
 
 async function stopContainer(id: string) {

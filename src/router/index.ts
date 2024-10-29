@@ -21,6 +21,11 @@ const router = createRouter({
       path: '/docker',
       name: 'docker',
       component: () => import('../views/DockerView.vue')
+    },
+    {
+      path: '/nodes',
+      name: 'nodes',
+      component: () => import('../views/NodesView.vue')
     }
   ]
 })
