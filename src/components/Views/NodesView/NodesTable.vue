@@ -4,6 +4,7 @@
         :data="data"
         :columns="columns"
         :options="options"
+        :layout="layout"
         class="table table-bordered table-hover"
         >
 
@@ -41,6 +42,22 @@ const options = ref({
     autoWidth: false,
     lengthChange: false,
     pageLength: 5,
+})
+
+const layout = ref({
+    top: '<"d-flex justify-content-between"lf>rt<"d-flex justify-content-between"ip>',
+    bottom: '<"d-flex justify-content-between"lf>rt<"d-flex justify-content-between"ip>',
+    topStart: {
+        buttons: [
+            {
+                text: 'Create Node',
+                action: () => {
+                    console.log('Create Node')
+                }
+                
+            }
+        ]
+    }
 })
 
 
