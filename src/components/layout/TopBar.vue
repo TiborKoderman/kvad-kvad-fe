@@ -8,7 +8,7 @@
         class="btn btn-link text-decoration-none me-2"
         aria-label="Expand sidebar"
       >
-        <i class="bi bi-layout-sidebar"></i>
+        <i class="bi bi-layout-sidebar text-black"></i>
       </button>
       <!-- Additional TopBar content -->
     </div>

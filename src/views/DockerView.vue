@@ -36,10 +36,10 @@ import { onMounted, ref } from 'vue'
 
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net-bs5'
+DataTable.use(DataTablesCore)
 
 import api from '@/api'
 
-DataTable.use(DataTablesCore)
 
 const columns = ref([
   { title: 'Name', data: 'Name' },

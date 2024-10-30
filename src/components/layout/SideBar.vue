@@ -58,11 +58,6 @@ const pages = [
     icon: 'bi bi-box-seam',
   },
   {
-    name: 'Users',
-    link: '/users',
-    icon: 'bi bi-people',
-  },
-  {
     name: 'Nodes',
     link: '/nodes',
     icon: 'bi bi-server',
@@ -71,7 +66,18 @@ const pages = [
     name: 'Settings',
     link: '/settings',
     icon: 'bi bi-gear',
-  }
+    children: [
+      {
+        name: 'General Settings',
+        link: '/settings/general',
+        icon: 'bi bi-gear',
+      },
+      {
+        name: 'User Settings',
+        link: '/settings/users',
+      },
+    ],
+  },
   // Add more pages as needed
 ]
 

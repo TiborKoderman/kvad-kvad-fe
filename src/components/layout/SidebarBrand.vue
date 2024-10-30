@@ -28,7 +28,8 @@
         @click="goToAccount"
         class="btn btn-light btn-sm"
       >
-        <i class="bi bi-person-circle"></i>
+        <!-- <i class="bi bi-person-circle"></i> -->
+        <UserIcon />
       </button>
       <button 
           @click="toggleCollapse"
@@ -36,13 +37,14 @@
           :aria-label="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
            v-if="!isCollapsed"
         >
-          <i class="bi bi-layout-sidebar"></i>
+          <i class="bi bi-layout-sidebar text-white"></i>
         </button>
     </div>
   </template>
   
   <script setup lang="ts">
   import logo from '@/assets/logo.svg';
+  import UserIcon from '@/components/UserIcon.vue';
   
   const props = defineProps({
     brandClass: {
