@@ -1,19 +1,16 @@
 <!-- App.vue -->
 <template>
   <div id="app">
-    <div class="d-flex">
-      <Sidebar
-        :is-collapsed="isCollapsed"
-        @toggle-collapse="toggleCollapse"
-      />
+    <div v-if="route.meta.layout === 'auth'">
+      <router-view></router-view>
+    </div>
+    <div class="d-flex" v-else>
+      <Sidebar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
       <div
         class="main-content d-flex flex-column"
         :class="{ 'collapsed-sidebar': isCollapsed }"
       >
-        <TopBar
-          :is-collapsed="isCollapsed"
-          @toggle-collapse="toggleCollapse"
-        />
+        <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
         <div class="content p-4">
           <!-- Main content -->
           <router-view></router-view>
@@ -24,15 +21,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import TopBar from '@/components/layout/TopBar.vue';
-import Sidebar from '@/components/layout/SideBar.vue';
+import { ref } from 'vue'
+import TopBar from '@/components/layout/TopBar.vue'
+import Sidebar from '@/components/layout/SideBar.vue'
+import { useRoute } from 'vue-router'
 
-const isCollapsed = ref(false);
+const isCollapsed = ref(false)
+
+const route = useRoute()
 
 const toggleCollapse = () => {
-  isCollapsed.value = !isCollapsed.value;
-};
+  isCollapsed.value = !isCollapsed.value
+}
 </script>
 
 <style>

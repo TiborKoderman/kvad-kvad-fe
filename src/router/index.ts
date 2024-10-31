@@ -10,6 +10,15 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue'),
+      meta: {
+        layout: 'auth',
+        dontRequireAuth: true,
+      },
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -33,6 +42,28 @@ const router = createRouter({
       component: () => import('../views/Settings/UserSettingsView.vue'),
     },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  let loggedIn = !!localStorage.getItem('token')
+
+  // Check if the token has expired
+  const token = localStorage.getItem('token')
+  if (token) {
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    const exp = payload.exp
+    const now = Date.now() / 1000
+    if (now > exp) {
+      localStorage.removeItem('token')
+      loggedIn = false
+    }
+  }
+
+  if (!loggedIn && to.path !== '/login') {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router
