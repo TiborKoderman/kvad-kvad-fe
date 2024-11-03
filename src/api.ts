@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const api = axios.create({
-  baseURL: 'http://localhost:5249',
+  baseURL: 'http://localhost:5249/api',
 })
 
 api.interceptors.request.use(config => {
@@ -17,13 +17,12 @@ api.interceptors.request.use(config => {
 })
 
 api.interceptors.response.use(
-  response => response,
+  response => {
+    return response
+  },
   error => {
     if (error.response && error.response.status === 401) {
-      console.log('401 error')
-
       localStorage.removeItem('token')
-      // Redirect to /login
       router.push('/login')
     }
     return Promise.reject(error)
