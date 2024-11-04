@@ -28,8 +28,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 40px;
-        height: 40px;
+        width: 1.5rem;
+        height: 1.5rem;
         border-radius: 50%;
         overflow: hidden;
     }

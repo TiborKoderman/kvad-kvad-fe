@@ -17,16 +17,18 @@ api.interceptors.request.use(config => {
 })
 
 api.interceptors.response.use(
-  response => {
-    return response
-  },
-  error => {
+  (response) => response,
+  (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token')
-      router.push('/login')
+      console.log('401 error');
+
+      localStorage.removeItem('token');
+      // Redirect to /login
+      router.push('/login');
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
+);
+
 
 export default api
