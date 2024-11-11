@@ -7,24 +7,71 @@
     />
     <!-- Sidebar navigation items -->
     <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item" v-for="(page, index) in pages" :key="index">
+      <li class="nav-item p-1" v-for="(page, index) in pages" :key="index">
         <RouterLink
           :class="[
             'nav-link',
             {
               active: isActiveRoute(page.link),
-              'bg-color': isActiveRoute(page.link),
+              'bg-primary': isActiveRoute(page.link),
             },
           ]"
           :to="page.link"
+          @click="expandItem(page)"
         >
           <i :class="page.icon"></i>
-          <span v-if="!isCollapsed" class="ms-2">{{ page.name }}</span>
+          <span class="ms-2">{{ page.name }}</span>
+            <transition name="rotate">
+            <i
+              v-if="page.children"
+              class="bi ms-auto"
+              :class="page.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"
+              aria-hidden="true"
+            ></i>
+            </transition>
+
         </RouterLink>
+        <transition name="expand">
+          <ul
+            v-if="page.children && page.isExpanded"
+            class="nav flex-column ms-3"
+          >
+            <li
+              class="nav-item p-1"
+              v-for="(child, childIndex) in page.children"
+              :key="childIndex"
+            >
+              <RouterLink
+                :class="[
+                  'nav-link',
+                  {
+                    active: isActiveRoute(child.link),
+                    'bg-primary': isActiveRoute(child.link),
+                  },
+                ]"
+                :to="child.link"
+              >
+                <i :class="child.icon"></i>
+                <span class="ms-2">{{ child.name }}</span>
+              </RouterLink>
+            </li>
+          </ul>
+        </transition>
       </li>
     </ul>
   </nav>
 </template>
+
+<style scoped>
+.expand-enter-active, .expand-leave-active {
+  transition: all 0.3s ease;
+}
+.expand-enter, .expand-leave-to {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+</style>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
@@ -37,11 +84,19 @@ defineProps({
   },
 })
 
+interface Page {
+  name: string
+  link: string
+  icon?: string
+  children?: Page[]
+  isExpanded?: boolean
+}
+
 const emit = defineEmits(['toggle-collapse'])
 
 const route = useRoute()
 
-const pages = [
+const pages: Array<Page> = [
   {
     name: 'Dashboard',
     link: '/dashboard',
@@ -85,6 +140,12 @@ const toggleCollapse = () => {
   emit('toggle-collapse')
 }
 
+function expandItem(page: Page) {
+  if(page.children) {
+    page.isExpanded = !page.isExpanded
+  }
+}
+
 const isActiveRoute = (link: unknown) => {
   return route.path === link
 }
@@ -111,9 +172,12 @@ const isActiveRoute = (link: unknown) => {
   color: #495057;
 }
 
+
+
 .nav-link.active {
-  background-color: #6c757d; /* Secondary color */
+  background-color: --bs-secondary; /* Secondary color */
   color: white;
+  padding: 0.5rem 1rem;
 }
 
 .nav-link:hover {

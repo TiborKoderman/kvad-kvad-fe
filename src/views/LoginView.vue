@@ -70,7 +70,7 @@ function login() {
   // Handle login logic here
   //   console.log(`Email: ${username.value}, Password: ${password.value}`)
   api
-    .post('/auth/login', {
+    .post('/Auth/login', {
       username: username.value,
       password: password.value,
     })
