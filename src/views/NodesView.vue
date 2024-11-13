@@ -17,14 +17,14 @@
 
 <script setup lang="ts">
 import NodesTable from '@/components/Views/NodesView/NodesTable.vue'
-import DynamicModal from '@/components/DynamicModal.vue'
+import DynamicModal from '@/components/Modals/DynamicModal.vue'
 
 import { ref } from 'vue'
 
 const addItemModal = ref(null)
 
 function OpenModal() {
-  addItemModal.value.open()
+  // addItemModal.value.open()
 }
 </script>
 

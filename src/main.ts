@@ -16,6 +16,22 @@ DataTable.use(DataTablesCore)
 
 const app = createApp(App)
 
+const vClickOutside = {
+    mounted(el, binding) {
+      el.clickOutsideEvent = (event) => {
+        if (!(el === event.target || el.contains(event.target))) {
+          binding.value(event); // Call the method provided to v-click-outside
+        }
+      };
+      document.addEventListener('click', el.clickOutsideEvent);
+    },
+    unmounted(el) {
+      document.removeEventListener('click', el.clickOutsideEvent);
+    },
+  };
+
+app.directive('click-outside', vClickOutside);
+
 app.use(createPinia())
 app.use(router)
 app.use(DataTable)

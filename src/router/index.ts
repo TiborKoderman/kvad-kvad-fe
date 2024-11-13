@@ -37,10 +37,25 @@ const router = createRouter({
       component: () => import('../views/NodesView.vue'),
     },
     {
+      path: '/chat',
+      name: 'chat',
+      component: () => import('../views/ChatView.vue'),
+    },
+    {
+      path: '/system',
+      name: 'system',
+      component: () => import('../views/SystemInfoView.vue'),
+    },
+    {
       path: '/settings/users',
       name: 'user_settings',
       component: () => import('../views/Settings/UserSettingsView.vue'),
     },
+    {
+      path: '/settings/profileSettings',
+      name: 'profile_settings',
+      component: () => import('../views/Settings/ProfileSettingsView.vue'),
+    }
   ],
 })
 

@@ -13,14 +13,7 @@
     <button v-if="!isCollapsed" @click="logout" class="btn btn-light btn-sm">
       <i class="bi bi-box-arrow-right"></i>
     </button>
-    <button
-      v-if="!isCollapsed"
-      @click="goToAccount"
-      class="btn btn-light btn-sm"
-    >
-      <!-- <i class="bi bi-person-circle"></i> -->
-      <UserIcon />
-    </button>
+      <UserIcon v-if="!isCollapsed" />
     <button
       @click="toggleCollapse"
       class="btn btn-link text-decoration-none btn-light"

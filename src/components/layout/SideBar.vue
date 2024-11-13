@@ -16,11 +16,11 @@
               'bg-primary': isActiveRoute(page.link),
             },
           ]"
-          :to="page.link"
-          @click="expandItem(page)"
-        >
-          <i :class="page.icon"></i>
-          <span class="ms-2">{{ page.name }}</span>
+            :to="page.link"
+            @click="expandItem(page)"
+          >
+            <i :class="page.icon"></i>
+            <span class="ms-2" v-if="!isCollapsed">{{ page.name }}</span>
             <transition name="rotate">
             <i
               v-if="page.children"
@@ -116,6 +116,16 @@ const pages: Array<Page> = [
     name: 'Nodes',
     link: '/nodes',
     icon: 'bi bi-server',
+  },
+  {
+    name: 'System',
+    link: '/system',
+    icon: 'bi bi-cpu',
+  },
+  {
+    name: 'Chat',
+    link: '/chat',
+    icon: 'bi bi-chat-left',
   },
   {
     name: 'Settings',

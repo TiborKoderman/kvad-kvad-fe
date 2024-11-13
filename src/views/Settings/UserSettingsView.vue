@@ -5,6 +5,7 @@
         <h3 class="card-title">Users</h3>
       </div>
       <div class="card-body">
+        <button class="btn btn-primary mb-3" @click="openModal">New User</button>
         <DataTable
           :columns="columns"
           :data="data"
