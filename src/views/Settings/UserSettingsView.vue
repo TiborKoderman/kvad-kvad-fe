@@ -5,7 +5,7 @@
         <h3 class="card-title">Users</h3>
       </div>
       <div class="card-body">
-        <button class="btn btn-primary mb-3" @click="openModal">New User</button>
+        <button class="btn btn-primary mb-3" @click="newUser">New User</button>
         <DataTable
           :columns="columns"
           :data="data"
@@ -21,16 +21,24 @@
         </DataTable>
       </div>
     </div>
+    <AddUserModal ref="addusermodal" />
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import AddUserModal from '@/components/Modals/AddUserModal.vue';
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net-bs5'
 DataTable.use(DataTablesCore)
 
 import api from '@/api'
+
+// const addusermodal = ref(AddUserModal)
+import type { Ref } from 'vue'
+import type AddUserModalType from '@/components/Modals/AddUserModal.vue'
+
+const addusermodal: Ref<InstanceType<typeof AddUserModalType> | null> = ref(null)
 
 const columns = ref([
   { title: 'Username', data: 'username' },
@@ -44,8 +52,10 @@ const options = ref({
 
 const data = ref([])
 
-function editUser(id: string) {
-  console.log(id)
+function newUser() {
+  if (addusermodal.value !== null) {
+    addusermodal.value.open()
+  }
 }
 
 function getUsers() {
