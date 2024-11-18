@@ -59,7 +59,7 @@ function newUser() {
 }
 
 function getUsers() {
-  api.get('/User').then(res => {
+  api.get('/User/table').then(res => {
     data.value = res.data
   })
 }
