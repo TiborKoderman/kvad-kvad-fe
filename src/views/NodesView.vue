@@ -12,20 +12,22 @@
       </div>
     </div>
   </main>
-  <DynamicModal ref="addItemModal" fullscreen > test </DynamicModal>
+  <Modal ref="addItemModal" fullscreen > test </Modal>
 </template>
 
 <script setup lang="ts">
 import NodesTable from '@/components/Views/NodesView/NodesTable.vue'
-import DynamicModal from '@/components/Modals/DynamicModal.vue'
+import Modal from '@/components/Modal.vue'
 
 import { ref } from 'vue'
 
 const addItemModal = ref(null)
 
 function OpenModal() {
-  // addItemModal.value.open()
+  addItemModal.value.open()
 }
+
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
