@@ -21,7 +21,7 @@
         </DataTable>
       </div>
     </div>
-    <AddUserModal ref="addusermodal" />
+    <AddUserModal ref="addusermodal" @close="getUsers"/>
   </main>
 </template>
 

@@ -13,13 +13,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ title }}</h5>
-            <button type="button" class="btn-close" @click="cancel"></button>
+            <button type="button" class="btn-close" @click="close"></button>
           </div>
           <div class="modal-body">
             <slot></slot>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="cancel">
+            <button type="button" class="btn btn-secondary" @click="close">
               Cancel
             </button>
             <template v-if="!$slots.footer">
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const emit = defineEmits(['cancel', 'confirm'])
+const emit = defineEmits(['close', 'confirm'])
 
 const isOpen = ref(false)
 
@@ -48,21 +48,22 @@ function open() {
 }
 
 function confirm() {
+  props.callback()
   isOpen.value = false
   emit('confirm')
 }
 
-function cancel() {
+function close() {
   isOpen.value = false
-  emit('cancel')
+  emit('close')
 }
 
 defineExpose({
   open,
-  cancel,
+  close,
 })
 
-defineProps({
+const props = defineProps({
   callback: {
     type: Function,
     default: () => {},
