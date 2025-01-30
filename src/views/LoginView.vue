@@ -13,6 +13,9 @@
             <div v-if="passwordInvalid" class="alert alert-danger" role="alert">
               Invalid username or password
             </div>
+            <div v-if="serverInvalid" class="alert alert-danger" role="alert">
+              Server error, please contact the system administrator
+            </div>
             <form @submit.prevent="login">
               <!-- Email Field -->
               <div class="mb-3">
@@ -63,6 +66,7 @@ const username = ref('')
 const password = ref('')
 
 const passwordInvalid = ref(false)
+const serverInvalid = ref(false)
 
 const router = useRouter()
 
@@ -81,7 +85,11 @@ function login() {
     })
     .catch(error => {
       console.error(error)
+      if ((error.response && error.response.status >= 500) || !error.response) {
+      serverInvalid.value = true
+      } else {
       passwordInvalid.value = true
+      }
     })
 }
 </script>

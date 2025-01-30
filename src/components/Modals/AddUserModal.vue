@@ -6,13 +6,14 @@
     >
         <form @submit.prevent="validateAndAddUser">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="new_username">Username</label>
                 <input 
                     type="text" 
                     class="form-control" 
-                    id="username" 
+                    id="new_username" 
                     v-model="user.username" 
                     required 
+                    autocomplete="off"
                 />
             </div>
 
@@ -24,6 +25,7 @@
                     id="password" 
                     v-model="user.password" 
                     required 
+                    autocomplete="new-password"
                 />
                 <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
             </div>
@@ -36,6 +38,7 @@
                     id="confirmPassword" 
                     v-model="confirmPassword" 
                     required 
+                    autocomplete="new-password"
                 />
                 <small v-if="confirmPasswordError" class="text-danger">{{ confirmPasswordError }}</small>
             </div>

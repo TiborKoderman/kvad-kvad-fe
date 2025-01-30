@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
+import router from '@/router'
 
 const api = axios.create({
   baseURL: 'http://localhost:5249/api',
@@ -19,12 +17,19 @@ api.interceptors.request.use(config => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      console.log('401 error');
-
+    if (
+      error.response && 
+      (error.response.status === 401 || 
+      error.code === 'ECONNABORTED' || 
+      !error.response || 
+      error.message.includes('Network Error'))
+    ) {
       localStorage.removeItem('token');
       // Redirect to /login
       router.push('/login');
+    }
+    else if (!error.response) {
+      router.push('/login')
     }
     return Promise.reject(error);
   },
