@@ -42,6 +42,11 @@ const router = createRouter({
       component: () => import('../views/ChatView.vue'),
     },
     {
+      path: '/mqtt',
+      name: 'mqtt',
+      component: () => import('../views/MqttView.vue'),
+    },
+    {
       path: '/system',
       name: 'system',
       component: () => import('../views/SystemInfoView.vue'),

@@ -128,6 +128,11 @@ const pages: Array<Page> = [
     icon: 'bi bi-chat-left',
   },
   {
+    name: 'Mqtt',
+    link: '/mqtt',
+    icon: 'bi bi-cloud',
+  },
+  {
     name: 'Settings',
     link: '/settings',
     icon: 'bi bi-gear',
