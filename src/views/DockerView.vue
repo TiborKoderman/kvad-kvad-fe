@@ -9,18 +9,18 @@
           :columns="columns"
           :data="data"
           :options="options"
-          class="table table-bordered table-hover"
+          class="table table-bordered"
         >
           <template #action="props">
             <button
               @click="startContainer(props.rowData.Id)"
               class="btn btn-success"
             >
-              <i class="bi bi-play"></i>
+              <i class="bi bi-play color-text-white"></i>
             </button>
             <button
               @click="stopContainer(props.rowData.Id)"
-              class="btn btn-danger"
+              class="btn btn-danger color-text-white" 
             >
               <i class="bi bi-stop"></i>
             </button>
@@ -33,11 +33,6 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-
-import DataTable from 'datatables.net-vue3'
-import DataTablesCore from 'datatables.net-bs5'
-DataTable.use(DataTablesCore)
-
 import api from '@/api'
 
 

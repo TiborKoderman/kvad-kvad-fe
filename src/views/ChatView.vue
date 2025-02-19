@@ -77,6 +77,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import api from '@/api'
+import { WebSocketClient } from '@/ws'
 
 const chatrooms = ref([])
 
@@ -90,10 +91,24 @@ const hoveredChatRoom = ref(null)
 
 const hoveredMessage = ref(null)
 
+// const ws = new WebSocketClient('messages')
+
+// ws.on('message', message => {
+//     if (message.chatRoomId === selectedChatRoom.value.id) {
+//         messages.value.push(message)
+//     }
+
+// })
+
+
+
+
+
 const messages = ref([
 //   { id: 1, user: 'Alice', text: 'Hello!' },
 //   { id: 2, user: 'Bob', text: 'Hi there!' },
 ])
+
 
 onMounted(() => {
   fetchChatRooms()
@@ -141,7 +156,7 @@ function sendMessage() {
         content: newMessage.value,
       })
       .then(() => {
-        fetchMessages()
+        // fetchMessages()
         newMessage.value = ''
       })
   }
