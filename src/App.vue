@@ -11,7 +11,7 @@
         :class="{ 'collapsed-sidebar': isCollapsed }"
       >
         <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-        <div class="content p-4">
+        <div class="content">
           <!-- Main content -->
           <router-view></router-view>
         </div>
