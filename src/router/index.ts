@@ -47,6 +47,11 @@ const router = createRouter({
       component: () => import('../views/MqttView.vue'),
     },
     {
+      path: '/websockets',
+      name: 'websockets',
+      component: () => import('../views/WebSocketsView.vue'),
+    },
+    {
       path: '/system',
       name: 'system',
       component: () => import('../views/SystemInfoView.vue'),

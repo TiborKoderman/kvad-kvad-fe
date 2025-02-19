@@ -3,7 +3,7 @@ import axios from 'axios'
 import router from '@/router'
 
 const api = axios.create({
-  baseURL: 'http://localhost:5249/api',
+  baseURL: (import.meta.env.VITE_BASE_URL),
 })
 
 api.interceptors.request.use(config => {

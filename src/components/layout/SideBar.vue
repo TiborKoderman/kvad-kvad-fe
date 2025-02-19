@@ -133,6 +133,11 @@ const pages: Array<Page> = [
     icon: 'bi bi-cloud',
   },
   {
+    name: 'WebSockets',
+    link: '/websockets',
+    icon: 'bi bi-cloud',
+  },
+  {
     name: 'Settings',
     link: '/settings',
     icon: 'bi bi-gear',
