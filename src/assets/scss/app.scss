@@ -1,7 +1,7 @@
 // 1. Import Bootstrap functions and variables
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
 
 // 2. Define Custom Colors
 $white: #ffffff;
@@ -30,7 +30,7 @@ $link-color: map-get($theme-colors, "primary");
 $link-hover-color: darken($link-color, 10%);
 
 // 4. Import Bootstrap Core SCSS
-@import "node_modules/bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 
 // 5. Custom Styles
 body {
