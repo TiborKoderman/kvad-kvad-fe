@@ -6,9 +6,9 @@
   <div v-else class="container-fluid">
     <div class="row">
       <Sidebar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-      <div class="col p-0">
+      <div class="col p-0 d-flex flex-column">
         <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-        <main class="content">
+        <main class="content p-2 flex-grow-1">
           <router-view></router-view>
         </main>
       </div>
@@ -36,29 +36,5 @@ const toggleCollapse = () => {
 #app {
   height: 100vh;
   overflow: hidden;
-}
-
-.d-flex {
-  height: 100vh;
-}
-
-.main-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  transition: margin-left 0.3s;
-}
-
-.collapsed-sidebar {
-  margin-left: 80px; /* Width of collapsed sidebar */
-}
-
-.main-content:not(.collapsed-sidebar) {
-  margin-left: 250px; /* Width of expanded sidebar */
-}
-
-.content {
-  flex-grow: 1;
-  overflow-y: auto;
 }
 </style>

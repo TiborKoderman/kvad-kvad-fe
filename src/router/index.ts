@@ -42,6 +42,11 @@ const router = createRouter({
       component: () => import('../views/ChatView.vue'),
     },
     {
+      path: '/chat/:room',
+      name: 'chat_room',
+      component: () => import('../views/ChatView.vue'),
+    },
+    {
       path: '/mqtt',
       name: 'mqtt',
       component: () => import('../views/MqttView.vue'),

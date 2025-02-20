@@ -1,47 +1,55 @@
 <template>
-  <div class="row">
-    <aside class="col-md-3 bg-light p-3">
-      <h2>Available Chatrooms</h2>
-      <ul class="list-group">
-        <li
-          v-for="chatroom in chatrooms"
-          :key="chatroom.id"
-          class="list-group-item"
-          @click="selectedChatRoom = chatroom"
-          :class="{ active: chatroom === selectedChatRoom }"
-          @mouseover="hoveredChatRoom = chatroom"
-          @mouseleave="hoveredChatRoom = null"
-        >
-          {{ chatroom.name }}
-          <span class="float-end" v-if="chatroom === hoveredChatRoom">
-            <i class="bi bi-trash deleteIcon"></i>
-          </span>
-        </li>
-        <li class="list-group-item" v-if="addingChatRoom">
-          <div class="input-group">
-            <input
+  <div class="row d-flex h-100">
+      <div class=" col-md-3 bg-light d-flex flex-column border-end">
+        <h2>Available Chatrooms</h2>
+        <ul class="list-group flex-grow-1">
+          <li
+            v-for="chatroom in chatrooms"
+            :key="chatroom.id"
+            class="list-group-item"
+            @click="selectedChatRoom = chatroom"
+            :class="{ active: chatroom === selectedChatRoom }"
+            @mouseover="hoveredChatRoom = chatroom"
+            @mouseleave="hoveredChatRoom = null"
+          >
+            {{ chatroom.name }}
+            <span class="float-end" v-if="chatroom === hoveredChatRoom">
+              <i class="bi bi-trash bs-white deleteIcon"></i>
+            </span>
+          </li>
+            <li class="list-group-item" v-if="addingChatRoom">
+            <div class="input-group">
+              <input
               type="text"
               v-model="newChatRoomName"
               class="form-control"
               placeholder="Enter chatroom name"
-            />
-            <button class="btn btn-success" @click="createChatRoom">
+              ref="newChatRoomInput"
+              @keyup.enter="createChatRoom"
+              />
+              <button class="btn btn-success" @click.prevent="createChatRoom">
               <i class="bi bi-check"></i>
-            </button>
-            <button class="btn btn-danger" @click="addingChatRoom = false">
+              </button>
+              <button class="btn btn-danger" @click="addingChatRoom = false">
               <i class="bi bi-x"></i>
-            </button>
-          </div>
-        </li>
-        <li
-          class="list-group-item cursor-pointer text-center"
-          @click="addingChatRoom = true"
+              </button>
+            </div>
+            </li>
+        </ul>
+
+        <div
+          class="btn btn-light border-primary-subtle text-center"
+          @click="addingChatRoom = true;"
+          style="margin-top: auto"
+          mt-auto
         >
           New Chatroom
-        </li>
-      </ul>
-    </aside>
+        </div>
+    </div>
     <div class="col-md-9 d-flex flex-column" v-if="selectedChatRoom">
+      <div class="p-3 border-bottom bg-dark text-white">
+        <h2>{{ selectedChatRoom.name }}</h2>
+      </div>
       <div class="chat-history flex-grow-1 overflow-auto mb-3">
         <div v-if="messages.length == 0">Start of new chat</div>
         <div
@@ -60,7 +68,7 @@
           >
         </div>
       </div>
-      <div class="chat-input input-group">
+      <div class="chat-input input-group mt-auto">
         <input
           v-model="newMessage"
           @keyup.enter.exact="sendMessage"
@@ -75,7 +83,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
 import { WebSocketClient } from '@/ws'
 
@@ -93,6 +102,10 @@ const hoveredMessage = ref(null)
 
 const messageInput = ref(null)
 
+
+const route = useRoute()
+const router = useRouter()
+
 // const ws = new WebSocketClient('messages')
 
 // ws.on('message', message => {
@@ -108,15 +121,37 @@ const messages = ref([
 ])
 
 onMounted(() => {
-  fetchChatRooms()
+  checkSelectedChatRoom()
 })
 
+function checkSelectedChatRoom(){
+  if(route.name=="chat"){
+    fetchChatRooms().then(() => {
+      if (chatrooms.value.length > 0) {
+        selectedChatRoom.value = chatrooms.value[0]
+      }
+    })
+  }
+  else if(route.name=="chat_room"){
+    fetchChatRooms().then(() => {
+      if (chatrooms.value.length > 0) {
+        selectedChatRoom.value = chatrooms.value.find(room => room.id == route.params.room)
+        if(!selectedChatRoom.value){
+          selectedChatRoom.value = chatrooms.value[0]
+        }
+      }
+      else{
+        router.push({ name: 'chat'})
+      }
+    })
+  }
+}
+
 function fetchChatRooms() {
-  api
+  return api
     .get('/Chat/chatRooms')
     .then(response => {
       chatrooms.value = response.data
-      selectedChatRoom.value = chatrooms.value[0]
     })
     .then(() => {
       if (selectedChatRoom.value) {
@@ -134,10 +169,20 @@ function createChatRoom() {
         chatrooms.value.push(response.data)
         newChatRoomName.value = ''
         addingChatRoom.value = false
-        fetchChatRooms()
+        selectedChatRoom.value = response.data       
+        // router.push({ name: 'chat_room', params: { room: response.data } }) 
       })
   }
 }
+
+watch(selectedChatRoom, (newChatRoom) => {
+  if (newChatRoom) {
+
+    router.push({ name: 'chat_room', params: { room: selectedChatRoom.value.id } })
+
+    fetchMessages()
+  }
+})
 
 function fetchMessages() {
   api.get(`/Chat/chatMessages/${selectedChatRoom.value.id}`).then(response => {
@@ -156,7 +201,7 @@ function sendMessage() {
         content: newMessage.value,
       })
       .then(() => {
-        // fetchMessages()
+        fetchMessages()
         newMessage.value = ''
       })
   }
@@ -174,15 +219,23 @@ function sendMessage() {
 
 .deleteIcon {
   cursor: pointer;
+  color: var(--bs-white); /* Danger color */
 }
 
 .deleteIcon:hover {
   color: var(--bs-danger); /* Danger color */
 }
 
+.list-group {
+  overflow: scroll;
+}
 .list-group-item.active {
   background-color: var(--bs-primary); /* Primary color */
   color: white;
+}
+
+.list-group-item.active:hover {
+  background-color: darken(var(--bs-primary), 10%); /* Primary color but darker */
 }
 
 .list-group-item:hover {
