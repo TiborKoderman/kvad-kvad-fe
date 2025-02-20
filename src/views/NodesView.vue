@@ -1,5 +1,4 @@
 <template>
-  <main>
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Nodes</h3>
@@ -11,7 +10,6 @@
         <NodesTable />
       </div>
     </div>
-  </main>
   <Modal ref="addItemModal" fullscreen > test </Modal>
 </template>
 

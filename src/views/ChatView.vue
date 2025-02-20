@@ -1,77 +1,77 @@
 <template>
-  <main>
-    <div class="container-fluid">
-      <div class="row">
-        <aside class="col-md-3 bg-light p-3">
-          <h2>Available Chatrooms</h2>
-          <ul class="list-group">
-            <li
-              v-for="chatroom in chatrooms"
-              :key="chatroom.id"
-              class="list-group-item"
-              @click="selectedChatRoom = chatroom"
-              :class="{ active: chatroom === selectedChatRoom }"
-              @mouseover="hoveredChatRoom = chatroom"
-              @mouseleave="hoveredChatRoom = null"
-            >
-
-              {{ chatroom.name }}
-              <span class="float-end" v-if="chatroom === hoveredChatRoom">
-                <i class="bi bi-trash deleteIcon"></i>
-              </span>
-            </li>
-            <li class="list-group-item" v-if="addingChatRoom">
-              <div class="input-group">
-                <input
-                  type="text"
-                  v-model="newChatRoomName"
-                  class="form-control"
-                  placeholder="Enter chatroom name"
-                />
-                <button class="btn btn-success" @click="createChatRoom">
-                  <i class="bi bi-check"></i>
-                </button>
-                <button class="btn btn-danger" @click="addingChatRoom = false">
-                  <i class="bi bi-x"></i>
-                </button>
-              </div>
-            </li>
-            <li
-              class="list-group-item cursor-pointer text-center"
-              @click="addingChatRoom = true"
-            >
-              New Chatroom
-            </li>
-          </ul>
-        </aside>
-        <main class="col-md-9 d-flex flex-column">
-          <div class="chat-history flex-grow-1 overflow-auto mb-3">
-            <div v-if="messages.length == 0">Start of new chat</div>
-            <div 
-              v-else 
-              v-for="message in messages" 
-              :key="message.id" 
-              class="message"
-              @mouseover="hoveredMessage = message"
-              @mouseleave="hoveredMessage = null"
-            >
-              <strong>{{ message.username }}:</strong> {{ message.content }}
-              <span v-if="hoveredMessage === message" class="text-muted float-end">{{ message.timestamp }}</span>
-            </div>
-          </div>
-          <div class="chat-input input-group">
+  <div class="row">
+    <aside class="col-md-3 bg-light p-3">
+      <h2>Available Chatrooms</h2>
+      <ul class="list-group">
+        <li
+          v-for="chatroom in chatrooms"
+          :key="chatroom.id"
+          class="list-group-item"
+          @click="selectedChatRoom = chatroom"
+          :class="{ active: chatroom === selectedChatRoom }"
+          @mouseover="hoveredChatRoom = chatroom"
+          @mouseleave="hoveredChatRoom = null"
+        >
+          {{ chatroom.name }}
+          <span class="float-end" v-if="chatroom === hoveredChatRoom">
+            <i class="bi bi-trash deleteIcon"></i>
+          </span>
+        </li>
+        <li class="list-group-item" v-if="addingChatRoom">
+          <div class="input-group">
             <input
-              v-model="newMessage"
-              @keyup.enter="sendMessage"
+              type="text"
+              v-model="newChatRoomName"
               class="form-control"
-              placeholder="Type a message..."
+              placeholder="Enter chatroom name"
             />
-            <button @click="sendMessage" class="btn btn-primary">Send</button>
+            <button class="btn btn-success" @click="createChatRoom">
+              <i class="bi bi-check"></i>
+            </button>
+            <button class="btn btn-danger" @click="addingChatRoom = false">
+              <i class="bi bi-x"></i>
+            </button>
           </div>
-        </main>
+        </li>
+        <li
+          class="list-group-item cursor-pointer text-center"
+          @click="addingChatRoom = true"
+        >
+          New Chatroom
+        </li>
+      </ul>
+    </aside>
+    <div class="col-md-9 d-flex flex-column" v-if="selectedChatRoom">
+      <div class="chat-history flex-grow-1 overflow-auto mb-3">
+        <div v-if="messages.length == 0">Start of new chat</div>
+        <div
+          v-else
+          v-for="message in messages"
+          :key="message.id"
+          class="message"
+          @mouseover="hoveredMessage = message"
+          @mouseleave="hoveredMessage = null"
+        >
+          <strong>{{ message.username }}:</strong> {{ message.content }}
+          <span
+            v-if="hoveredMessage === message"
+            class="text-muted float-end"
+            >{{ message.timestamp }}</span
+          >
+        </div>
+      </div>
+      <div class="chat-input input-group">
+        <input
+          v-model="newMessage"
+          @keyup.enter.exact="sendMessage"
+          class="form-control"
+          placeholder="Type a message..."
+          ref="messageInput"
+        />
+        <button @click="sendMessage" class="btn btn-primary">Send</button>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -91,6 +91,8 @@ const hoveredChatRoom = ref(null)
 
 const hoveredMessage = ref(null)
 
+const messageInput = ref(null)
+
 // const ws = new WebSocketClient('messages')
 
 // ws.on('message', message => {
@@ -100,31 +102,28 @@ const hoveredMessage = ref(null)
 
 // })
 
-
-
-
-
 const messages = ref([
-//   { id: 1, user: 'Alice', text: 'Hello!' },
-//   { id: 2, user: 'Bob', text: 'Hi there!' },
+  //   { id: 1, user: 'Alice', text: 'Hello!' },
+  //   { id: 2, user: 'Bob', text: 'Hi there!' },
 ])
-
 
 onMounted(() => {
   fetchChatRooms()
 })
 
 function fetchChatRooms() {
-  api.get('/Chat/chatRooms').then(response => {
-    chatrooms.value = response.data
-    selectedChatRoom.value = chatrooms.value[0]
-  }).
-  then(() => {
-    if (selectedChatRoom.value){
+  api
+    .get('/Chat/chatRooms')
+    .then(response => {
+      chatrooms.value = response.data
+      selectedChatRoom.value = chatrooms.value[0]
+    })
+    .then(() => {
+      if (selectedChatRoom.value) {
         fetchMessages()
-    }
-        // fetchMessages()
-  })
+      }
+      // fetchMessages()
+    })
 }
 
 function createChatRoom() {
@@ -143,6 +142,7 @@ function createChatRoom() {
 function fetchMessages() {
   api.get(`/Chat/chatMessages/${selectedChatRoom.value.id}`).then(response => {
     messages.value = response.data
+    messageInput.value.focus()
   })
 }
 
@@ -185,9 +185,8 @@ function sendMessage() {
   color: white;
 }
 
-.list-group-item:hover  {
+.list-group-item:hover {
   cursor: pointer;
   background-color: var(--bs-light); /* Light color */
 }
-
 </style>

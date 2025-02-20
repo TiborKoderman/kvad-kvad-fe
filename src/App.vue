@@ -1,23 +1,20 @@
 <!-- App.vue -->
 <template>
-  <div id="app">
-    <div v-if="route.meta.layout === 'auth'">
-      <router-view></router-view>
-    </div>
-    <div class="d-flex" v-else>
+  <div v-if="route.meta.layout === 'auth'">
+    <router-view></router-view>
+  </div>
+  <div v-else class="container-fluid">
+    <div class="row">
       <Sidebar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-      <div
-        class="main-content d-flex flex-column"
-        :class="{ 'collapsed-sidebar': isCollapsed }"
-      >
+      <div class="col p-0">
         <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-        <div class="content">
-          <!-- Main content -->
+        <main class="content">
           <router-view></router-view>
-        </div>
+        </main>
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,4 @@
 <template>
-  <main>
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">CPU</h3>
@@ -36,7 +35,6 @@
       </div>
     </div>
     <MemoryInfo />
-  </main>
 </template>
 
 <script setup lang="ts">

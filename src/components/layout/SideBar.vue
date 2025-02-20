@@ -1,77 +1,64 @@
 <!-- Sidebar.vue -->
 <template>
-  <nav :class="['sidebar d-flex flex-column', { collapsed: isCollapsed }]">
-    <SidebarBrand
-      :is-collapsed="isCollapsed"
-      @toggle-collapse="toggleCollapse"
-    />
-    <!-- Sidebar navigation items -->
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item p-1" v-for="(page, index) in pages" :key="index">
-        <RouterLink
-          :class="[
-            'nav-link',
-            {
-              active: isActiveRoute(page.link),
-              'bg-primary': isActiveRoute(page.link),
-            },
-          ]"
-            :to="page.link"
-            @click="expandItem(page)"
-          >
-            <i :class="page.icon"></i>
-            <span class="ms-2" v-if="!isCollapsed">{{ page.name }}</span>
-            <transition name="rotate">
-            <i
-              v-if="page.children"
-              class="bi ms-auto"
-              :class="page.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"
-              aria-hidden="true"
-            ></i>
-            </transition>
-
-        </RouterLink>
-        <transition name="expand">
-          <ul
-            v-if="page.children && page.isExpanded"
-            class="nav flex-column ms-3"
-          >
-            <li
-              class="nav-item p-1"
-              v-for="(child, childIndex) in page.children"
-              :key="childIndex"
+    <nav class="col-md-3 col-lg-2 sidebar p-0 m-0" :class="{ 'collapsed': isCollapsed }">
+      <SidebarBrand
+      />
+      <!-- Sidebar navigation items -->
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item p-1" v-for="(page, index) in pages" :key="index">
+          <RouterLink
+            :class="[
+              'nav-link',
+              {
+                active: isActiveRoute(page.link),
+                'bg-primary': isActiveRoute(page.link),
+              },
+            ]"
+              :to="page.link"
+              @click="expandItem(page)"
             >
-              <RouterLink
-                :class="[
-                  'nav-link',
-                  {
-                    active: isActiveRoute(child.link),
-                    'bg-primary': isActiveRoute(child.link),
-                  },
-                ]"
-                :to="child.link"
-              >
-                <i :class="child.icon"></i>
-                <span class="ms-2">{{ child.name }}</span>
-              </RouterLink>
-            </li>
-          </ul>
-        </transition>
-      </li>
-    </ul>
-  </nav>
-</template>
+              <i :class="page.icon"></i>
+              <span class="ms-2" >{{ page.name }}</span>
+              <transition name="rotate">
+              <i
+                v-if="page.children"
+                class="bi ms-auto"
+                :class="page.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"
+                aria-hidden="true"
+              ></i>
+              </transition>
 
-<style scoped>
-.expand-enter-active, .expand-leave-active {
-  transition: all 0.3s ease;
-}
-.expand-enter, .expand-leave-to {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-</style>
+          </RouterLink>
+          <transition name="expand">
+            <ul
+              v-if="page.children && page.isExpanded"
+              class="nav flex-column ms-3"
+            >
+              <li
+                class="nav-item p-1"
+                v-for="(child, childIndex) in page.children"
+                :key="childIndex"
+              >
+                <RouterLink
+                  :class="[
+                    'nav-link',
+                    {
+                      active: isActiveRoute(child.link),
+                      'bg-primary': isActiveRoute(child.link),
+                    },
+                  ]"
+                  :to="child.link"
+                >
+                  <i :class="child.icon"></i>
+                  <span class="ms-2">{{ child.name }}</span>
+                </RouterLink>
+              </li>
+            </ul>
+          </transition>
+        </li>
+      </ul>
+    </nav>
+</template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
@@ -173,17 +160,15 @@ const isActiveRoute = (link: unknown) => {
 
 <style scoped>
 .sidebar {
-  width: 250px;
-  height: 100vh; /* Full viewport height */
-  position: fixed;
-  top: 0;
-  left: 0;
-  transition: width 0.3s;
+  min-height: 100vh;
   background-color: #f8f9fa;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
 }
 
 .sidebar.collapsed {
-  width: 80px;
+  width: 0;
+
 }
 
 .nav-link {
@@ -191,8 +176,6 @@ const isActiveRoute = (link: unknown) => {
   align-items: center;
   color: #495057;
 }
-
-
 
 .nav-link.active {
   background-color: --bs-secondary; /* Secondary color */
@@ -204,7 +187,6 @@ const isActiveRoute = (link: unknown) => {
   background-color: #e9ecef;
 }
 
-.collapsed + .main-content {
-  margin-left: 80px;
-}
+
+
 </style>

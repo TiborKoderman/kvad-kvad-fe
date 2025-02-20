@@ -1,9 +1,7 @@
 <!-- TopBar.vue -->
 <template>
-  <div class="navbar navbar-expand-lg border-bottom" :class="topbarClass">
-    <div class="container-fluid">
+  <div class="topbar navbar-expand-lg border-bottom" :class="topbarClass">
       <button
-        v-if="isCollapsed"
         @click="toggleCollapse"
         class="btn btn-link text-decoration-none me-2"
         aria-label="Expand sidebar"
@@ -11,7 +9,7 @@
         <i class="bi bi-layout-sidebar text-black"></i>
       </button>
       <!-- Additional TopBar content -->
-    </div>
+       test
   </div>
 </template>
 
@@ -35,7 +33,11 @@ const toggleCollapse = () => {
 </script>
 
 <style scoped>
-.navbar {
-  width: 100%;
+.topbar {
+  height: 80px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-  <main class="vh-100 d-flex flex-column">
     <div class="card flex-grow-1">
       <div class="card-header">
         <h4 class="card-title">Docker Containers</h4>
@@ -28,7 +27,6 @@
         </DataTable>
       </div>
     </div>
-  </main>
 </template>
 
 <script setup lang="ts">
