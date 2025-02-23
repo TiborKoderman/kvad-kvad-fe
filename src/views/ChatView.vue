@@ -86,7 +86,6 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
-import { WebSocketClient } from '@/ws'
 
 const chatrooms = ref([])
 
@@ -106,14 +105,6 @@ const messageInput = ref(null)
 const route = useRoute()
 const router = useRouter()
 
-// const ws = new WebSocketClient('messages')
-
-// ws.on('message', message => {
-//     if (message.chatRoomId === selectedChatRoom.value.id) {
-//         messages.value.push(message)
-//     }
-
-// })
 
 const messages = ref([
   //   { id: 1, user: 'Alice', text: 'Hello!' },
@@ -162,6 +153,8 @@ function fetchChatRooms() {
 }
 
 function createChatRoom() {
+  console.log(newChatRoomName.value);
+  
   if (newChatRoomName.value.trim()) {
     api
       .post('/Chat/newChatRoom', { name: newChatRoomName.value })
@@ -206,6 +199,7 @@ function sendMessage() {
       })
   }
 }
+
 </script>
 
 <style scoped>
