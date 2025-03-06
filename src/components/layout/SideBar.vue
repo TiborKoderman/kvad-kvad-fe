@@ -64,6 +64,8 @@
 import { useRoute } from 'vue-router'
 import SidebarBrand from './SidebarBrand.vue'
 
+import SidebarMenuConfig from '@/assets/config/sidebar_menu.json'
+
 defineProps({
   isCollapsed: {
     type: Boolean,
@@ -83,65 +85,7 @@ const emit = defineEmits(['toggle-collapse'])
 
 const route = useRoute()
 
-const pages: Array<Page> = [
-  {
-    name: 'Dashboard',
-    link: '/dashboard',
-    icon: 'bi bi-speedometer2',
-  },
-  {
-    name: 'Orders',
-    link: '/orders',
-    icon: 'bi bi-cart',
-  },
-  {
-    name: 'Docker',
-    link: '/docker',
-    icon: 'bi bi-box-seam',
-  },
-  {
-    name: 'Nodes',
-    link: '/nodes',
-    icon: 'bi bi-server',
-  },
-  {
-    name: 'System',
-    link: '/system',
-    icon: 'bi bi-cpu',
-  },
-  {
-    name: 'Chat',
-    link: '/chat',
-    icon: 'bi bi-chat-left',
-  },
-  {
-    name: 'Mqtt',
-    link: '/mqtt',
-    icon: 'bi bi-cloud',
-  },
-  {
-    name: 'WebSockets',
-    link: '/websockets',
-    icon: 'bi bi-cloud',
-  },
-  {
-    name: 'Settings',
-    link: '/settings',
-    icon: 'bi bi-gear',
-    children: [
-      {
-        name: 'General Settings',
-        link: '/settings/general',
-        icon: 'bi bi-gear',
-      },
-      {
-        name: 'User Settings',
-        link: '/settings/users',
-      },
-    ],
-  },
-  // Add more pages as needed
-]
+const pages: Array<Page> = SidebarMenuConfig;
 
 const toggleCollapse = () => {
   emit('toggle-collapse')

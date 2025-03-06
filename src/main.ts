@@ -13,7 +13,6 @@ import './assets/scss/app.scss'
 import 'datatables.net' 
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net-bs5'
-import Main from './components/Main.vue'
 
 DataTable.use(DataTablesCore)
 
@@ -25,6 +24,5 @@ app.use(createPinia())
 app.use(router)
 app.component('DataTable', DataTable)
 // eslint-disable-next-line vue/no-reserved-component-names
-app.component('Main', Main)
 
 app.mount('#app')

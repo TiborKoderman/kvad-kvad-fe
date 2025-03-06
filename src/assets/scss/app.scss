@@ -26,8 +26,16 @@ $font-size-base: 1rem;
 $line-height-base: 1.5;
 $border-radius: 0.5rem;  // Adjust global border radius
 
+
+
 $link-color: map-get($theme-colors, "primary");
 $link-hover-color: darken($link-color, 10%);
+
+// Pagination
+$pagination-color: var(--bs-primary);
+$pagination-hover-color: var(--bs-light);
+$pagination-active-bg: var(--bs-primary);
+$pagination-active-border-color: var(--bs-primary);
 
 // 4. Import Bootstrap Core SCSS
 @import "bootstrap/scss/bootstrap";
@@ -57,3 +65,10 @@ body {
     }
   }
 }
+
+
+
+// Import Bootstrap
+
+
+@import 'datatables/dataTables.bootstrap5.scss';
