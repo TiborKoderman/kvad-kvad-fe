@@ -1,6 +1,6 @@
 <template>
-  <main>
-    <div class="card">
+  <div class="h-100">
+    <div class="card h-100">
       <div class="card-header">
         <h3 class="card-title">Users</h3>
       </div>
@@ -10,7 +10,7 @@
           :columns="columns"
           :data="data"
           :options="options"
-          class="table table-bordered table-hover"
+          class="table table-bordered table-hover h-100"
         >
           <template #action="props">
             <i
@@ -22,15 +22,12 @@
       </div>
     </div>
     <AddUserModal ref="addusermodal" @close="getUsers"/>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import AddUserModal from '@/components/Modals/AddUserModal.vue';
-import DataTable from 'datatables.net-vue3'
-import DataTablesCore from 'datatables.net-bs5'
-DataTable.use(DataTablesCore)
 
 import api from '@/api'
 
@@ -47,7 +44,12 @@ const columns = ref([
 ])
 
 const options = ref({
-  pageLength: 10
+  // pageLength: 10,
+  autoresize: false,
+  responsive: true,
+  lengthChange: false,
+  scrollY: '100%',
+  scrollCollapse: true,
 })
 
 const data = ref([])

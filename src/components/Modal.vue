@@ -6,11 +6,13 @@
       v-show="isVisible"
         class="modal show"
         tabindex="-1"
+        aria-hidden="false"
+        @click.self="close"
+
       >
         <div
           class="modal-dialog modal-dialog-centered"
           :class="{ 'modal-fullscreen-sm-down': fullscreen }"
-          @click.self="close"
         >
           <div class="modal-content">
             <div class="modal-header">
@@ -22,9 +24,9 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-dark" @click="close">
-                Cancel
+                {{ noOk ? 'Close' : 'Cancel' }}
               </button>
-              <template v-if="!$slots.footer">
+              <template v-if="!$slots.footer && !noOk">
                 <button type="button" class="btn btn-primary" @click="confirm">
                   Confirm
                 </button>
@@ -61,15 +63,17 @@ const props = defineProps({
     default: true,
     required: false,
   },
-  fullscreen: {
+  noOk: {
     type: Boolean,
     default: false,
+    required: false,
   },
+
 })
 
 
 function open() {
-  console.log('Modal opened')
+  // console.log('Modal opened')
   emit('update:isOpen', true)
 }
 
