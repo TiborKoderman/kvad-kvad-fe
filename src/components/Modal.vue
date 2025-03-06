@@ -1,43 +1,46 @@
 <template>
   <Teleport to="body">
-    <div
-      v-if="isOpen"
-      class="modal fade"
-      tabindex="-1"
-      :class="{ show: isOpen }"
-    >
+    <transition name="fade">
       <div
-        class="modal-dialog"
-        :class="{ 'modal-fullscreen-sm-down': fullscreen }"
+      v-if="isOpen"
+      v-show="isVisible"
+        class="modal show"
+        tabindex="-1"
       >
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ title }}</h5>
-            <button type="button" class="btn-close" @click="close"></button>
-          </div>
-          <div class="modal-body">
-            <slot></slot>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="close">
-              Cancel
-            </button>
-            <template v-if="!$slots.footer">
-              <button type="button" class="btn btn-primary" @click="confirm">
-                Confirm
+        <div
+          class="modal-dialog modal-dialog-centered"
+          :class="{ 'modal-fullscreen-sm-down': fullscreen }"
+          @click.self="close"
+        >
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{ title }}</h5>
+              <button type="button" class="btn-close" @click="close"></button>
+            </div>
+            <div class="modal-body">
+              <slot></slot>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" @click="close">
+                Cancel
               </button>
-            </template>
-            <slot name="footer"></slot>
+              <template v-if="!$slots.footer">
+                <button type="button" class="btn btn-primary" @click="confirm">
+                  Confirm
+                </button>
+              </template>
+              <slot name="footer"></slot>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
   </Teleport>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const emit = defineEmits(['close', 'confirm', 'update:isOpen'])
+const emit = defineEmits(['close', 'confirm', 'update:isOpen', 'update:isVisible'])
 
 const props = defineProps({
   callback: {
@@ -51,6 +54,11 @@ const props = defineProps({
   isOpen: {
     type: Boolean,
     default: false,
+    required: false,
+  },
+  isVisible: {
+    type: Boolean,
+    default: true,
     required: false,
   },
   fullscreen: {
@@ -80,9 +88,20 @@ function close() {
   emit('update:isOpen', false)
 }
 
+function hide() {
+  emit('update:isVisible', false)
+}
+
+function show() {
+  emit('update:isVisible', true)
+}
+
 defineExpose({
   open,
   close,
+  confirm,
+  hide,
+  show
 })
 
 
@@ -94,5 +113,12 @@ defineExpose({
   overflow: hidden;
   outline: 0;
   background: rgba(0, 0, 0, 0.5);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>
