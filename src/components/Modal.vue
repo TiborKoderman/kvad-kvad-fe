@@ -37,31 +37,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const emit = defineEmits(['close', 'confirm'])
-
-const isOpen = ref(false)
-
-
-function open() {
-  console.log('Modal opened')
-  isOpen.value = true
-}
-
-function confirm() {
-  props.callback()
-  isOpen.value = false
-  emit('confirm')
-}
-
-function close() {
-  isOpen.value = false
-  emit('close')
-}
-
-defineExpose({
-  open,
-  close,
-})
+const emit = defineEmits(['close', 'confirm', 'update:isOpen'])
 
 const props = defineProps({
   callback: {
@@ -72,11 +48,44 @@ const props = defineProps({
     type: String,
     default: 'Are you sure?',
   },
+  isOpen: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
   fullscreen: {
     type: Boolean,
     default: false,
   },
 })
+
+
+function open() {
+  console.log('Modal opened')
+  emit('update:isOpen', true)
+}
+
+function confirm() {
+  props.callback().then(() => {
+    emit('confirm')
+    emit('update:isOpen', false)
+  }).catch(() => {
+    close()
+  })
+
+}
+
+function close() {
+  emit('close')
+  emit('update:isOpen', false)
+}
+
+defineExpose({
+  open,
+  close,
+})
+
+
 </script>
 
 <style scoped>

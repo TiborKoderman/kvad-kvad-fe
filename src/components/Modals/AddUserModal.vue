@@ -1,5 +1,5 @@
 <template>
-  <Modal :title="`Add User`" :callback="addUser" ref="modal">
+  <Modal :title="`Add User`" :callback="addUser" v-model:is-open="modal_open"  ref="modal">
     <form @submit.prevent="validateAndAddUser">
       <div class="form-group">
         <label for="new_username">Username</label>
@@ -68,6 +68,8 @@ import { ref, Ref } from 'vue'
 import api from '@/api'
 
 const emit = defineEmits(['close'])
+
+const modal_open = ref(false)
 
 interface Role {
   id: number
