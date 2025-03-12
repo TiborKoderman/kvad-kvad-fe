@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 const emit = defineEmits(['close', 'confirm', 'update:isOpen', 'update:isVisible'])
 
 const props = defineProps({
@@ -64,6 +63,11 @@ const props = defineProps({
     required: false,
   },
   noOk: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
+  fullscreen: {
     type: Boolean,
     default: false,
     required: false,
