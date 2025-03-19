@@ -23,6 +23,7 @@ import 'datatables.net-staterestore-bs5';
 DataTablesCore.use(bootstrap);
 DataTable.use(DataTablesCore);
 
+import api from '@/api'
 
 
 import './assets/scss/app.scss'
@@ -35,5 +36,5 @@ app.use(createPinia())
 app.use(router)
 app.component('DataTable', DataTable)
 app.component('DateTime', DateTime)
-
+app.component('api', api)
 app.mount('#app')

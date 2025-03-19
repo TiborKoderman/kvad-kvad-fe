@@ -66,4 +66,8 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
 }
+
+.dropdown-menu {
+  z-index: 1000;
+}
 </style>

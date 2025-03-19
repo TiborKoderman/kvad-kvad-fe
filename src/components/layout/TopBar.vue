@@ -9,11 +9,12 @@
         <i class="bi bi-layout-sidebar text-black"></i>
       </button>
       <!-- Additional TopBar content -->
-       test
+      <UserIcon />
   </div>
 </template>
 
 <script setup lang="ts">
+import UserIcon from '@/components/UserIcon.vue'
 defineProps({
   topbarClass: {
     type: String,

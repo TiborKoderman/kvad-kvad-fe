@@ -1,82 +1,84 @@
 <template>
   <div class="row d-flex h-100">
-      <div class=" col-md-3 bg-light d-flex flex-column border-end">
-        <h2>Available Chatrooms</h2>
-        <ul class="list-group flex-grow-1">
-          <li
-            v-for="chatroom in chatrooms"
-            :key="chatroom.id"
-            class="list-group-item"
-            @click="selectedChatRoom = chatroom"
-            :class="{ active: chatroom === selectedChatRoom }"
-            @mouseover="hoveredChatRoom = chatroom"
-            @mouseleave="hoveredChatRoom = null"
-          >
-            {{ chatroom.name }}
-            <span class="float-end" v-if="chatroom === hoveredChatRoom">
-              <i class="bi bi-trash bs-white deleteIcon"></i>
-            </span>
-          </li>
-            <li class="list-group-item" v-if="addingChatRoom">
-            <div class="input-group">
-              <input
+    <div class="col-md-3 bg-light d-flex flex-column border-end">
+      <h2>Available Chatrooms</h2>
+      <ul class="list-group flex-grow-1">
+        <li
+          v-for="chatroom in chatrooms"
+          :key="chatroom.id"
+          class="list-group-item"
+          @click="selectedChatRoom = chatroom"
+          :class="{ active: chatroom === selectedChatRoom }"
+          @mouseover="hoveredChatRoom = chatroom"
+          @mouseleave="hoveredChatRoom = null"
+        >
+          {{ chatroom.name }}
+          <span class="float-end" v-if="chatroom === hoveredChatRoom">
+            <i class="bi bi-trash bs-white deleteIcon"></i>
+          </span>
+        </li>
+        <li class="list-group-item" v-if="addingChatRoom">
+          <div class="input-group">
+            <input
               type="text"
               v-model="newChatRoomName"
               class="form-control"
               placeholder="Enter chatroom name"
               ref="newChatRoomInput"
               @keyup.enter="createChatRoom"
-              />
-              <button class="btn btn-success" @click.prevent="createChatRoom">
+            />
+            <button class="btn btn-success" @click.prevent="createChatRoom">
               <i class="bi bi-check"></i>
-              </button>
-              <button class="btn btn-danger" @click="addingChatRoom = false">
+            </button>
+            <button class="btn btn-danger" @click="addingChatRoom = false">
               <i class="bi bi-x"></i>
-              </button>
-            </div>
-            </li>
-        </ul>
+            </button>
+          </div>
+        </li>
+      </ul>
 
-        <div
-          class="btn btn-light border-primary-subtle text-center"
-          @click="addingChatRoom = true;"
-          style="margin-top: auto"
-          mt-auto
-        >
-          New Chatroom
-        </div>
+      <div
+        class="btn btn-light border-primary-subtle text-center"
+        @click="addingChatRoom = true"
+        style="margin-top: auto"
+        mt-auto
+      >
+        New Chatroom
+      </div>
     </div>
     <div class="col-md-9 d-flex flex-column" v-if="selectedChatRoom">
       <div class="p-3 border-bottom bg-dark text-white">
         <h2>{{ selectedChatRoom.name }}</h2>
       </div>
-      <div class="chat-history flex-grow-1 overflow-auto mb-3">
-        <div v-if="messages.length == 0">Start of new chat</div>
-        <div
-          v-else
-          v-for="message in messages"
-          :key="message.id"
-          class="message"
-          @mouseover="hoveredMessage = message"
-          @mouseleave="hoveredMessage = null"
-        >
-          <strong>{{ message.username }}:</strong> {{ message.content }}
-          <span
-            v-if="hoveredMessage === message"
-            class="text-muted float-end"
-            >{{ message.timestamp }}</span
+      <div class="chat-history flex-grow-1 mb-3">
+        <div class="overflow-auto">
+          <div v-if="messages.length == 0">Start of new chat</div>
+          <div
+            v-else
+            v-for="message in messages"
+            :key="message.id"
+            class="message"
+            @mouseover="hoveredMessage = message"
+            @mouseleave="hoveredMessage = null"
           >
+            <strong>{{ message.username }}:</strong> {{ message.content }}
+            <span
+              v-if="hoveredMessage === message"
+              class="text-muted float-end"
+              >{{ message.timestamp }}</span
+            >
+          </div>
         </div>
-      </div>
-      <div class="chat-input input-group mt-auto">
-        <input
-          v-model="newMessage"
-          @keyup.enter.exact="sendMessage"
-          class="form-control"
-          placeholder="Type a message..."
-          ref="messageInput"
-        />
-        <button @click="sendMessage" class="btn btn-primary">Send</button>
+        <div class="chat-input input-group">
+          <input
+            v-model="newMessage"
+            @keyup.enter.exact="sendMessage"
+            class="form-control"
+            placeholder="Type a message..."
+            ref="messageInput"
+          />
+          <button @click="sendMessage" class="btn btn-primary">Send</button>
+        </div>
       </div>
     </div>
   </div>
@@ -101,10 +103,8 @@ const hoveredMessage = ref(null)
 
 const messageInput = ref(null)
 
-
 const route = useRoute()
 const router = useRouter()
-
 
 const messages = ref([
   //   { id: 1, user: 'Alice', text: 'Hello!' },
@@ -115,24 +115,24 @@ onMounted(() => {
   checkSelectedChatRoom()
 })
 
-function checkSelectedChatRoom(){
-  if(route.name=="chat"){
+function checkSelectedChatRoom() {
+  if (route.name == 'chat') {
     fetchChatRooms().then(() => {
       if (chatrooms.value.length > 0) {
         selectedChatRoom.value = chatrooms.value[0]
       }
     })
-  }
-  else if(route.name=="chat_room"){
+  } else if (route.name == 'chat_room') {
     fetchChatRooms().then(() => {
       if (chatrooms.value.length > 0) {
-        selectedChatRoom.value = chatrooms.value.find(room => room.id == route.params.room)
-        if(!selectedChatRoom.value){
+        selectedChatRoom.value = chatrooms.value.find(
+          room => room.id == route.params.room,
+        )
+        if (!selectedChatRoom.value) {
           selectedChatRoom.value = chatrooms.value[0]
         }
-      }
-      else{
-        router.push({ name: 'chat'})
+      } else {
+        router.push({ name: 'chat' })
       }
     })
   }
@@ -153,8 +153,8 @@ function fetchChatRooms() {
 }
 
 function createChatRoom() {
-  console.log(newChatRoomName.value);
-  
+  console.log(newChatRoomName.value)
+
   if (newChatRoomName.value.trim()) {
     api
       .post('/Chat/newChatRoom', { name: newChatRoomName.value })
@@ -162,16 +162,18 @@ function createChatRoom() {
         chatrooms.value.push(response.data)
         newChatRoomName.value = ''
         addingChatRoom.value = false
-        selectedChatRoom.value = response.data       
-        // router.push({ name: 'chat_room', params: { room: response.data } }) 
+        selectedChatRoom.value = response.data
+        // router.push({ name: 'chat_room', params: { room: response.data } })
       })
   }
 }
 
-watch(selectedChatRoom, (newChatRoom) => {
+watch(selectedChatRoom, newChatRoom => {
   if (newChatRoom) {
-
-    router.push({ name: 'chat_room', params: { room: selectedChatRoom.value.id } })
+    router.push({
+      name: 'chat_room',
+      params: { room: selectedChatRoom.value.id },
+    })
 
     fetchMessages()
   }
@@ -199,7 +201,6 @@ function sendMessage() {
       })
   }
 }
-
 </script>
 
 <style scoped>
@@ -229,7 +230,10 @@ function sendMessage() {
 }
 
 .list-group-item.active:hover {
-  background-color: darken(var(--bs-primary), 10%); /* Primary color but darker */
+  background-color: darken(
+    var(--bs-primary),
+    10%
+  ); /* Primary color but darker */
 }
 
 .list-group-item:hover {

@@ -10,7 +10,6 @@
     <button @click="logout" class="btn btn-light btn-sm">
       <i class="bi bi-box-arrow-right"></i>
     </button>
-    <UserIcon />
   </div>
 </template>
 
