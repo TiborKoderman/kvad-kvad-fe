@@ -50,7 +50,7 @@
       <div class="p-3 border-bottom bg-dark text-white">
         <h2>{{ selectedChatRoom.name }}</h2>
       </div>
-      <div class="chat-history flex-grow-1 mb-3">
+      <div class="chat-history flex-grow-1 ">
         <div class="overflow-auto">
           <div v-if="messages.length == 0">Start of new chat</div>
           <div
