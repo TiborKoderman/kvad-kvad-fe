@@ -10,7 +10,7 @@
           :columns="columns"
           :data="data"
           :options="options"
-          class="table table-bordered table-hover h-100"
+          class="table table-bordered table-hover"
         >
           <template #action="props">
             <i

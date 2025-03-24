@@ -15,10 +15,7 @@
 
 <script setup lang="ts">
 import logo from '@/assets/logo.svg'
-import UserIcon from '@/components/UserIcon.vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 
 const props = defineProps({
   brandClass: {
@@ -27,11 +24,7 @@ const props = defineProps({
   },
 })
 
-const logout = () => {
-  // Implement your logout logic here
-  localStorage.removeItem('token')
-  router.push({ name: 'login' })
-}
+
 </script>
 
 <style scoped>

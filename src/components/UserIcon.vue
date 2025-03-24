@@ -1,12 +1,23 @@
 <template>
-  <div class="dropdown" v-click-outside="closeDropdown">
+  <div class="dropdown-left" v-click-outside="closeDropdown" style="position: relative;">
     <div class="user-icon" @click="toggleDropdown">
       <img :src="userIcon" alt="User Icon" />
     </div>
-    <div class="dropdown-menu" :class="{ show: isOpen }" @click="closeDropdown">
-      <RouterLink class="dropdown-item" to="#">Profile</RouterLink>
-      <RouterLink class="dropdown-item" to="/settings/profileSettings">Settings</RouterLink>
-    </div>
+    <ul
+      class="dropdown-menu dropdown-menu-end"
+      :class="{ show: isOpen }"
+      @click="closeDropdown"
+      style="position: absolute; right: 0; transform: translateX(0);"
+    >
+      <li><RouterLink class="dropdown-item" to="#">Profile</RouterLink></li>
+      <li><RouterLink class="dropdown-item" to="/settings/profileSettings"
+        >Settings</RouterLink
+      ></li>
+      <li><a class="dropdown-item" href="#" @click="logout">
+        Logout
+        <i class="bi bi-box-arrow-right"></i>
+      </a></li>
+    </ul>
   </div>
 </template>
 
@@ -14,8 +25,11 @@
 import api from '@/api'
 import default_user_icon from '@/assets/img/default_user_icon.png'
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const isOpen = ref(false)
+
+const router = useRouter()
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value
@@ -37,6 +51,13 @@ onMounted(() => {
       userIcon.value = default_user_icon
     })
 })
+
+
+const logout = () => {
+  // Implement your logout logic here
+  localStorage.removeItem('token')
+  router.push({ name: 'login' })
+}
 </script>
 
 <style scoped>

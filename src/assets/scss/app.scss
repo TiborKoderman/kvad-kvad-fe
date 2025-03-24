@@ -3,6 +3,8 @@
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
 
+
+
 // 2. Define Custom Colors
 $white: #ffffff;
 
@@ -37,8 +39,14 @@ $pagination-hover-color: var(--bs-light);
 $pagination-active-bg: var(--bs-primary);
 $pagination-active-border-color: var(--bs-primary);
 
+$component-active-color: var(--bs-light);
+$component-active-bg: var(--bs-primary);
+$dropdown-link-active-bg: var(--bs-primary);
+
 // 4. Import Bootstrap Core SCSS
 @import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/maps";
+
 
 // 5. Custom Styles
 body {
