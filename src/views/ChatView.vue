@@ -1,5 +1,5 @@
 <template>
-  <div class="row d-flex h-100">
+  <div class="d-flex h-100">
     <div class="col-md-3 bg-light d-flex flex-column border-end">
       <h2>Available Chatrooms</h2>
       <ul class="list-group flex-grow-1">
