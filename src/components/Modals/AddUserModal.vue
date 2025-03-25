@@ -42,20 +42,6 @@
           confirmPasswordError
         }}</small>
       </div>
-
-      <!-- <div class="form-group">
-                <label for="roles">Roles</label>
-                <select 
-                    class="form-select" 
-                    id="roles" 
-                    v-model="selectedRoles" 
-                    multiple
-                >
-                    <option v-for="role in roles" :key="role.id" :value="role.id">
-                        {{ role.name }}
-                    </option>
-                </select>
-            </div> -->
       <MultiPicker :options="roles" v-model="selectedRoles" />
     </form>
   </Modal>

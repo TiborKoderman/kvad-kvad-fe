@@ -7,9 +7,7 @@
     <div class="d-flex align-items-center">
       <img :src="logo" alt="Logo" :class="['logo']" class="ms-2" />
     </div>
-    <button @click="logout" class="btn btn-light btn-sm">
-      <i class="bi bi-box-arrow-right"></i>
-    </button>
+
   </div>
 </template>
 

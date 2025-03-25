@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { WebSocketClient } from '@/ws'
 
 const time = ref()
@@ -17,6 +17,12 @@ ws.onmessage = event => {
   console.log('Received:', event.data)
 }
 ws.onclose = () => console.log('WebSocket Closed')
+
+onBeforeUnmount(() => {
+  ws.disconnect()
+})
+
+
 </script>
 
 <style scoped></style>

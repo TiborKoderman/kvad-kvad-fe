@@ -3,12 +3,13 @@
   <div class="topbar navbar-expand-lg border-bottom" :class="topbarClass">
       <button
         @click="toggleCollapse"
-        class="btn btn-link text-decoration-none me-2"
+        class="btn btn-white text-decoration-none me-2"
         aria-label="Expand sidebar"
       >
         <i class="bi bi-layout-sidebar text-black"></i>
       </button>
       <!-- Additional TopBar content -->
+       
       <UserIcon />
   </div>
 </template>
