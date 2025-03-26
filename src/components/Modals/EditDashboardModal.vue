@@ -94,10 +94,10 @@ const dashboard = ref<DashboardDTO>({
   color: null,
 })
 
-function submit() {
+async function submit() {
   console.log('saveDashboard');
   
-  api.post('/Dashboard', dashboard.value).then(() => {
+  return api.post('/Dashboard', dashboard.value).then(() => {
   })
 }
 

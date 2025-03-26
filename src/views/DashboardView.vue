@@ -4,7 +4,7 @@
         <div class="mb-3">
             <strong> No dashboards found </strong>
         </div>
-        <button class="btn btn-primary" @click="modals.open('edit-dashboard')">Create Dashboard</button>
+        <button class="btn btn-primary" @click="modals.open('edit-dashboard').then(getDashboardItems)">Create Dashboard</button>
     </div>
 </div>
   <div v-else v-for="dashboard in dashboards" :key="dashboard.id">
