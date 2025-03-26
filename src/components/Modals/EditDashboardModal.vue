@@ -64,7 +64,7 @@ import api from '@/api'
 
 
 const props = defineProps({
-  dashboardId: {
+  id: {
     type: String,
     required: false,
   },
@@ -86,7 +86,7 @@ interface DashboardDTO {
 
 
 const dashboard = ref<DashboardDTO>({
-  id: props.dashboardId,
+  id: props.id,
   name: '',
   description: '',
   scrollable: false,
@@ -105,6 +105,16 @@ async function submit() {
     // Handle success
   });
 }
+
+(async function getDashboard() {
+  if (!props.id) {
+    return;
+  }
+
+  return api.get(`/Dashboard/${props.id}`).then((response) => {
+    dashboard.value = response.data;
+  });
+})();
 
 
 defineExpose({ submit })

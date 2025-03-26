@@ -8,12 +8,17 @@
     </div>
 </div>
   <div v-else v-for="dashboard in dashboards" :key="dashboard.id">
-    {{ dashboard.name }}
+    <div class="card">
+        <div class="card-header">
+        <h5>{{ dashboard.name }}</h5>
+        <button class="btn btn-primary" @click="modals.open('edit-dashboard', { id: dashboard.id }).then(getDashboardItems)">Edit</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref} from 'vue'
 import api from '@/api'
 import { useRoute } from 'vue-router'
 import {useModalStore} from '@/stores/modals'
