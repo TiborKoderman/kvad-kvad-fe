@@ -22,8 +22,8 @@
               {{ noOk ? 'Close' : 'Cancel' }}
             </button>
             <template v-if="!$slots.footer && !props.noOk">
-              <button type="button" class="btn" :class="props.delete ? 'btn-danger' : 'btn-success'" @click="submit">
-                {{ props.delete ? 'Delete' : 'Oubmit' }}
+              <button type="button" class="btn" :class="props.delete ? 'btn-danger' : 'btn-primary'" @click="submit">
+                {{ props.delete ? 'Delete' : 'Submit' }}
               </button>
             </template>
             <slot name="footer"></slot>

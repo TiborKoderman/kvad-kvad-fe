@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import { createApp, h, ref } from 'vue'
 import BaseModal from '@/components/BaseModal.vue'
+import { log } from 'console'
 
 export const useModalStore = defineStore('modalStore', () => {
   const componentMap = ref(new Map())
@@ -15,13 +16,13 @@ export const useModalStore = defineStore('modalStore', () => {
     console.log('registering', path)
     if (name) {
       modalModules[path]().then(module => {
-        register(name, () => import(path), module?.['baseProps'] ?? {})
+        register(name, () => import(path))
       })
     }
   }
 
-  function register(name: string, component: ()=>Promise<any>, baseProps = {}) {
-    componentMap.value.set(name, { component, baseProps })
+  function register(name: string, component: () => Promise<any>) {
+    componentMap.value.set(name,  component)
   }
 
   //for each component in the folder, register it
@@ -29,7 +30,7 @@ export const useModalStore = defineStore('modalStore', () => {
   async function open(name: string, props = {}): Promise<void> {
     console.log('open', name)
     const entry = componentMap.value.get(name)
-    const modalLoader = entry?.component
+    const modalLoader = entry
     if (!modalLoader) {
       console.error(`Modal ${name} not found`)
       return
@@ -38,6 +39,10 @@ export const useModalStore = defineStore('modalStore', () => {
     return new Promise<void>(async resolve => {
       try {
         const modalComponent = (await modalLoader()).default
+
+        console.log('modalComponent', modalComponent);
+        console.log('modalComponent.baseProps', modalComponent.baseProps);
+        
 
         const modalRef = ref(null)
         const mountTarget = document.createElement('div')
@@ -66,7 +71,7 @@ export const useModalStore = defineStore('modalStore', () => {
             return () =>
               h(
                 BaseModal,
-                { onClose: close, onSubmit: submit, ...entry.baseProps },
+                { onClose: close, onSubmit: submit, ...modalComponent.baseProps },
                 {
                   default: () => h(modalComponent, { ref: modalRef, ...props }),
                 },
