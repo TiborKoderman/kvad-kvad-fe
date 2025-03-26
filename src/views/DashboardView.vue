@@ -9,7 +9,7 @@
       </div>
       <button
         class="btn btn-primary"
-        @click="modals.open('edit-dashboard').then(getDashboardItems)"
+        @click="modals.open('EditDashboardModal').then(getDashboardItems)"
       >
         Create Dashboard
       </button>
@@ -31,7 +31,7 @@
             class="float-end"
             @click="
               modals
-                .open('edit-dashboard', { id: dashboard.id })
+                .open('EditDashboardModal', { id: dashboard.id })
                 .then(getDashboardItems)
             "
           />
@@ -42,7 +42,7 @@
             class="float-end"
             @click="
               modals
-                .open('edit-dashboard', { id: dashboard.id })
+                .open('EditDashboardModal', { id: dashboard.id })
                 .then(getDashboardItems)
             "
           />
@@ -60,17 +60,12 @@
 import { ref } from 'vue'
 import api from '@/api'
 import { useRoute } from 'vue-router'
-import { useModalStore } from '@/stores/modals'
 import { useMenuStore } from '@/stores/menu'
 import IconButton from '@/components/IconButton.vue'
-const modals = useModalStore()
 const menu = useMenuStore()
 
-modals.register(
-  'edit-dashboard',
-  () => import('@/components/Modals/EditDashboardModal.vue'),
-  {},
-)
+import { useModalStore } from '@/stores/modals'
+const modals = useModalStore()
 
 const route = useRoute()
 const dashboards = ref([])

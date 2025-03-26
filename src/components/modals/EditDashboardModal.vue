@@ -61,6 +61,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import api from '@/api'
+console.log("registering edit-dashboard modal");
+
+const baseProps = {
+  noOk: true,
+}
+
 
 
 const props = defineProps({
@@ -117,7 +123,7 @@ async function submit() {
 })();
 
 
-defineExpose({ submit })
+defineExpose({ submit, baseProps })
 </script>
 
 <style scoped>

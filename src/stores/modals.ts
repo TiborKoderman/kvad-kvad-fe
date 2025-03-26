@@ -1,14 +1,31 @@
 // stores/modalStore.ts
 import { defineStore } from 'pinia'
-import { createApp, h, ref } from 'vue'
+import { Component, createApp, h, ref } from 'vue'
 import BaseModal from '@/components/BaseModal.vue'
+import { log } from 'console'
 
 export const useModalStore = defineStore('modalStore', () => {
   const componentMap = ref(new Map())
 
-  function register(name: string, component: () => Promise<any>, baseProps = {}) {
+  const modalModules = import.meta.glob('@/components/modals/*.vue')
+  console.log('modalModules', modalModules)
+
+  // Register all components in the modals folder
+  for (const path in modalModules) {
+    const name = path.match(/([^/]+)\.vue$/)?.[1]
+    console.log('registering', path)
+    if (name) {
+      modalModules[path]().then(module => {
+        register(name, () => import(path), module?.['baseProps'] ?? {})
+      })
+    }
+  }
+
+  function register(name: string, component: ()=>Promise<any>, baseProps = {}) {
     componentMap.value.set(name, { component, baseProps })
   }
+
+  //for each component in the folder, register it
 
   async function open(name: string, props = {}): Promise<void> {
     console.log('open', name)
@@ -18,15 +35,15 @@ export const useModalStore = defineStore('modalStore', () => {
       console.error(`Modal ${name} not found`)
       return
     }
-  
-    return new Promise<void>(async (resolve) => {
+
+    return new Promise<void>(async resolve => {
       try {
         const modalComponent = (await modalLoader()).default
-  
+
         const modalRef = ref(null)
         const mountTarget = document.createElement('div')
         document.body.appendChild(mountTarget)
-  
+
         const app = createApp({
           setup() {
             const close = () => {
@@ -34,7 +51,7 @@ export const useModalStore = defineStore('modalStore', () => {
               mountTarget.remove()
               resolve() // <-- Fulfill the promise when the modal closes
             }
-  
+
             const submit = () => {
               console.log('submit clicked')
               modalRef.value
@@ -46,7 +63,7 @@ export const useModalStore = defineStore('modalStore', () => {
                   console.log('submit failed')
                 })
             }
-  
+
             return () =>
               h(
                 BaseModal,
@@ -57,14 +74,13 @@ export const useModalStore = defineStore('modalStore', () => {
               )
           },
         })
-  
+
         app.mount(mountTarget)
       } catch (error) {
         console.error(`Failed to load modal ${name}:`, error)
       }
     })
   }
-  
 
   return { open, register, componentMap }
 })

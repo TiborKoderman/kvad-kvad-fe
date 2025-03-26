@@ -22,8 +22,8 @@
               {{ noOk ? 'Close' : 'Cancel' }}
             </button>
             <template v-if="!$slots.footer && !props.noOk">
-              <button type="button" class="btn btn-primary" @click="submit">
-                submit
+              <button type="button" class="btn" :class="props.delete ? 'btn-danger' : 'btn-success'" @click="submit">
+                {{ props.delete ? 'Delete' : 'Oubmit' }}
               </button>
             </template>
             <slot name="footer"></slot>
@@ -46,6 +46,11 @@ const props = defineProps({
     default: 'Are you sure?',
   },
   noOk: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
+  delete:{
     type: Boolean,
     default: false,
     required: false,
