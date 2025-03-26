@@ -64,6 +64,7 @@
     </div>
     <div v-if="menu.editMode" class="flex-grow">+</div>
   </div>
+  <VectorDiagram />
 </template>
 
 <script setup lang="ts">
@@ -72,6 +73,7 @@ import api from '@/api'
 import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
 import IconButton from '@/components/IconButton.vue'
+import VectorDiagram from '@/components/Dashboard/VectorDiagram.vue'
 const menu = useMenuStore()
 
 import { useModalStore } from '@/stores/modals'

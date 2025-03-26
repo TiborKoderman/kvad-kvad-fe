@@ -1,5 +1,5 @@
-export default class alert{
-    function fire(){
+// export default class alert{
+//     function fire(){
         
-    }
-}
+//     }
+// }
