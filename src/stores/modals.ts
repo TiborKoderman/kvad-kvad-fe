@@ -20,11 +20,7 @@ export const useModalStore = defineStore('modalStore', () => {
     }
   }
 
-  function register(
-    name: string,
-    component: () => Promise<any>,
-    baseProps = {},
-  ) {
+  function register(name: string, component: ()=>Promise<any>, baseProps = {}) {
     componentMap.value.set(name, { component, baseProps })
   }
 
