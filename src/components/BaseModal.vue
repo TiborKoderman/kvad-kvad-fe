@@ -22,8 +22,8 @@
               {{ noOk ? 'Close' : 'Cancel' }}
             </button>
             <template v-if="!$slots.footer && !props.noOk">
-              <button type="button" class="btn btn-primary" @click="confirm">
-                Confirm
+              <button type="button" class="btn btn-primary" @click="submit">
+                submit
               </button>
             </template>
             <slot name="footer"></slot>
@@ -34,15 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import {inject, ref} from 'vue'
-
-const eventBus = inject('eventBus', ref(new Map()))
 
 const emit = defineEmits([
   'close',
-  'confirm',
-  'update:isOpen',
-  'update:isVisible',
+  'submit',
 ])
 
 const props = defineProps({
@@ -63,35 +58,20 @@ const props = defineProps({
 })
 
 function open() {
-  // console.log('Modal opened')
-  emit('update:isOpen', true)
 }
 
-function confirm() {
-  eventBus.value.set('confirm', true)
-  emit('confirm')
-  emit('update:isOpen', false)
+function submit() {
+  emit('submit')
 }
 
 function close() {
   emit('close')
-  emit('update:isOpen', false)
-}
-
-function hide() {
-  emit('update:isVisible', false)
-}
-
-function show() {
-  emit('update:isVisible', true)
 }
 
 defineExpose({
   open,
   close,
-  confirm,
-  hide,
-  show,
+  submit,
 })
 </script>
 

@@ -6,13 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { ref } from 'vue'
 import api from '@/api'
 
-
-const emit = defineEmits(['close'])
-
-const eventBus = inject('eventBus', ref(new Map()))
 
 const props = defineProps({
   dashboardId: {
@@ -25,9 +21,6 @@ const props = defineProps({
   },
 })
 
-if(eventBus.value.get('submit')) {
-  saveDashboard()
-}
 
 interface DashboardDTO {
   id: string | null
@@ -48,14 +41,15 @@ const dashboard = ref<DashboardDTO>({
   color: null,
 })
 
-function saveDashboard() {
+function submit() {
+  console.log('saveDashboard');
+  
   api.post('/Dashboard', dashboard.value).then(() => {
-    emit('close')
   })
 }
 
 
-defineExpose({ open })
+defineExpose({ submit })
 </script>
 
 <style scoped>
