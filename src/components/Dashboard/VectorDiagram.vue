@@ -1,7 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card"  style="width: 25%">
     <div class="card-header">Vector Diagram</div>
-    <div class="card-body" style="width: 25%">
+    <div class="card-body">
       <div style="aspect-ratio: 1/1">
         <v-chart :option="chartOption" autoresize />
       </div>

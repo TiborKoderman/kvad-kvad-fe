@@ -15,56 +15,53 @@
       </button>
     </div>
   </div>
-  <div
-    v-else
-    v-for="dashboard in dashboards"
-    :key="dashboard.id"
-    class="d-flex"
-  >
-    <div class="card">
-      <div class="card-header">
-        <h5>
-          {{ dashboard.name }}
-          <IconButton
-            icon="pencil"
-            v-if="menu.editMode"
-            class="float-end"
-            @click="
-              modals
-                .open('EditDashboardModal', { id: dashboard.id })
-                .then(getDashboardItems)
-            "
-          />
-          <IconButton
-            icon="trash"
-            hcolor="var(--bs-danger)"
-            v-if="menu.editMode"
-            class="float-end"
-            @click="
-              Swal.fire({
-                title: 'Are you sure?',
-                text: 'You will not be able to recover this dashboard!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-              }).then(result => {
-                if (result.isConfirmed) {
-                  api
-                    .delete(`/dashboard/${dashboard.id}`)
-                    .then(getDashboardItems)
-                }
-              })
-            "
-          />
-        </h5>
+  <div v-else class="d-flex gap-2 flex-wrap">
+    <div v-for="dashboard in dashboards" :key="dashboard.id" class="d-flex">
+      <div class="card">
+        <div class="card-header">
+          <h5>
+            {{ dashboard.name }}
+            <IconButton
+              icon="pencil"
+              v-if="menu.editMode"
+              class="float-end"
+              @click="
+                modals
+                  .open('EditDashboardModal', { id: dashboard.id })
+                  .then(getDashboardItems)
+              "
+            />
+            <IconButton
+              icon="trash"
+              hcolor="var(--bs-danger)"
+              v-if="menu.editMode"
+              class="float-end"
+              @click="
+                Swal.fire({
+                  title: 'Are you sure?',
+                  text: 'You will not be able to recover this dashboard!',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: 'Yes, delete it!',
+                }).then(result => {
+                  if (result.isConfirmed) {
+                    api
+                      .delete(`/dashboard/${dashboard.id}`)
+                      .then(getDashboardItems)
+                  }
+                })
+              "
+            />
+          </h5>
+        </div>
+        <div class="card-body">
+          {{ dashboard.description }}
+        </div>
       </div>
-      <div class="card-body">
-        {{ dashboard.description }}
-      </div>
+      <div v-if="menu.editMode">+</div>
     </div>
-    <div v-if="menu.editMode" class="flex-grow">+</div>
+    <VectorDiagram />
   </div>
-  <VectorDiagram />
 </template>
 
 <script setup lang="ts">
@@ -82,7 +79,6 @@ const modals = useModalStore()
 
 const route = useRoute()
 const dashboards = ref([])
-
 
 if (!route.params.id) {
   getDashboardItems()
