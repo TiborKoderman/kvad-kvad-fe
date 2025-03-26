@@ -41,9 +41,19 @@
             v-if="menu.editMode"
             class="float-end"
             @click="
-              modals
-                .open('EditDashboardModal', { id: dashboard.id })
-                .then(getDashboardItems)
+              Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this dashboard!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+              }).then(result => {
+                if (result.isConfirmed) {
+                  api
+                    .delete(`/dashboard/${dashboard.id}`)
+                    .then(getDashboardItems)
+                }
+              })
             "
           />
         </h5>
@@ -65,6 +75,7 @@ import IconButton from '@/components/IconButton.vue'
 const menu = useMenuStore()
 
 import { useModalStore } from '@/stores/modals'
+import Swal from 'sweetalert2'
 const modals = useModalStore()
 
 const route = useRoute()

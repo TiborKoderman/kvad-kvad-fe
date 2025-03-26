@@ -19,15 +19,18 @@ import 'datatables.net-searchbuilder-bs5';
 import 'datatables.net-searchpanes-bs5';
 import 'datatables.net-select-bs5';
 import 'datatables.net-staterestore-bs5';
- 
+
+
 DataTablesCore.use(bootstrap);
 DataTable.use(DataTablesCore);
 
 import api from '@/api'
 
 
+import 'sweetalert2/src/sweetalert2.scss'
 import './assets/scss/app.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import Swal from 'sweetalert2'
 
 
 const app = createApp(App)
@@ -36,5 +39,7 @@ app.use(createPinia())
 app.use(router)
 app.component('DataTable', DataTable)
 app.component('DateTime', DateTime)
-app.component('api', api)
+app.component('Swal', Swal);
+
+// app.component('api', api)
 app.mount('#app')

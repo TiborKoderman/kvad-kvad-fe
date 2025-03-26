@@ -2,7 +2,6 @@
 import { defineStore } from 'pinia'
 import { createApp, h, ref } from 'vue'
 import BaseModal from '@/components/BaseModal.vue'
-import { log } from 'console'
 
 export const useModalStore = defineStore('modalStore', () => {
   const componentMap = ref(new Map())

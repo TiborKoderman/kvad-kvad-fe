@@ -94,4 +94,32 @@ body {
 @import url('datatables.net-select-bs5');
 @import url('datatables.net-staterestore-bs5');
 
-// @import 'datatables/dataTables.bootstrap5.scss';
+// Then override SweetAlert2 variables
+$swal2-background: $body-bg !default;
+$swal2-color: $body-color !default;
+
+$swal2-confirm-button-background: $primary !default;
+$swal2-confirm-button-color: color-contrast($primary) !default;
+
+$swal2-cancel-button-background: $secondary !default;
+$swal2-cancel-button-color: color-contrast($secondary) !default;
+
+$swal2-deny-button-background: $danger !default;
+$swal2-deny-button-color: color-contrast($danger) !default;
+
+$swal2-title-font-size: $font-size-lg !default;
+$swal2-content-font-size: $font-size-base !default;
+
+$swal2-border-radius: $border-radius-lg !default;
+$swal2-padding: 1.5rem !default;
+
+$swal2-icon-color: $warning !default; // Customize each icon type separately if needed
+
+// You can also adjust input styles
+$swal2-input-border: 1px solid $input-border-color !default;
+$swal2-input-background: $input-bg !default;
+$swal2-input-color: $input-color !default;
+$swal2-input-border-radius: $input-border-radius !default;
+$swal2-input-padding: $input-padding-y $input-padding-x !default;
+
+@import url("sweetalert2/src/sweetalert2.scss");

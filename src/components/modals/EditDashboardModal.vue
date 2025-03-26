@@ -128,7 +128,6 @@ defineExpose({ submit })
 //This allowes us to pass parameters to the baseModalComponent
 export default {
   baseProps: {
-    noOk: true,
     title: 'Edit Dashboard',
   },
 }
