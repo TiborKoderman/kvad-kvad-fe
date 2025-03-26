@@ -1,5 +1,4 @@
 <template>
-  <transition name="fade">
     <div
       class="modal show"
       tabindex="-1"
@@ -32,11 +31,14 @@
         </div>
       </div>
     </div>
-  </transition>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['close', 'submit'])
+
+const emit = defineEmits([
+  'close',
+  'submit',
+])
 
 const props = defineProps({
   title: {
@@ -55,7 +57,8 @@ const props = defineProps({
   },
 })
 
-function open() {}
+function open() {
+}
 
 function submit() {
   emit('submit')

@@ -95,10 +95,15 @@ const dashboard = ref<DashboardDTO>({
 })
 
 async function submit() {
+  if (!dashboard.value.name || !dashboard.value.description) {
+    return Promise.reject(new Error('Validation failed: Name and Description are required.'));
+  }
+
   console.log('saveDashboard');
   
   return api.post('/Dashboard', dashboard.value).then(() => {
-  })
+    // Handle success
+  });
 }
 
 
