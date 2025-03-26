@@ -1,8 +1,61 @@
 <template>
   <!-- <form @submit.prevent="saveDashboard">test</form> -->
-   <div>
-    test
-   </div>
+  <form @submit.prevent="submit">
+    <div class="form-group">
+        <label for="new_username">Dashboard name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="new_username"
+          v-model="dashboard.name"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group">
+        <label for="new_username">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          id="new_username"
+          v-model="dashboard.description"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group">
+        <label for="new_username">Icon</label>
+        <input
+          type="text"
+          class="form-control"
+          id="new_username"
+          v-model="dashboard.icon"
+          required
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="colorPicker">Color</label>
+        <input
+          type="color"
+          class="form-control"
+          id="colorPicker"
+          v-model="dashboard.color"
+        />
+      </div>
+      <div class="form-group">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="scrollableCheckbox"
+            v-model="dashboard.scrollable"
+          />
+          <label class="form-check-label" for="scrollableCheckbox">Scrollable</label>
+        </div>
+      </div>
+  </form>
 </template>
 
 <script setup lang="ts">
