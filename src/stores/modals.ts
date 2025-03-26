@@ -5,10 +5,10 @@ import BaseModal from '@/components/BaseModal.vue'
 
 export const useModalStore = defineStore('modalStore', () => {
   const componentMap = ref(new Map())
-  componentMap.value.set('edit-dashboard', {
-    component: () => import('@/components/Modals/EditDashboardModal.vue'),
-    baseProps: {},
-  })
+
+  function register(name: string, component: () => Promise<any>, baseProps = {}) {
+    componentMap.value.set(name, { component, baseProps })
+  }
 
   async function open(name: string, props = {}): Promise<void> {
     console.log('open', name)
@@ -66,5 +66,5 @@ export const useModalStore = defineStore('modalStore', () => {
   }
   
 
-  return { open, componentMap }
+  return { open, register, componentMap }
 })

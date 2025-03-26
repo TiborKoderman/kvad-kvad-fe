@@ -17,8 +17,10 @@ import { ref, onMounted } from 'vue'
 import api from '@/api'
 import { useRoute } from 'vue-router'
 import {useModalStore} from '@/stores/modals'
-
 const modals = useModalStore()
+
+modals.register('edit-dashboard', () => import('@/components/Modals/EditDashboardModal.vue'), {})
+
 
 const route = useRoute()
 const dashboards = ref([])
