@@ -93,6 +93,20 @@ const dashboard = ref<DashboardDTO>({
   color: null,
 })
 
+
+
+;(async function getDashboard() {
+  if (!props.id) {
+    return
+  }
+
+  return api.get(`/Dashboard/${props.id}`).then(response => {
+    dashboard.value = response.data
+  })
+})()
+
+//submit, define expose and export default baseProps are required for the modal system to work
+
 async function submit() {
   if (!dashboard.value.name || !dashboard.value.description) {
     return Promise.reject(
@@ -107,16 +121,6 @@ async function submit() {
   })
 }
 
-;(async function getDashboard() {
-  if (!props.id) {
-    return
-  }
-
-  return api.get(`/Dashboard/${props.id}`).then(response => {
-    dashboard.value = response.data
-  })
-})()
-
 defineExpose({ submit })
 </script>
 
@@ -125,6 +129,7 @@ defineExpose({ submit })
 export default {
   baseProps: {
     noOk: true,
+    title: 'Edit Dashboard',
   },
 }
 </script>
