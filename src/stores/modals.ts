@@ -1,8 +1,7 @@
 // stores/modalStore.ts
 import { defineStore } from 'pinia'
-import { Component, createApp, h, ref } from 'vue'
+import { createApp, h, ref } from 'vue'
 import BaseModal from '@/components/BaseModal.vue'
-import { log } from 'console'
 
 export const useModalStore = defineStore('modalStore', () => {
   const componentMap = ref(new Map())
@@ -21,7 +20,11 @@ export const useModalStore = defineStore('modalStore', () => {
     }
   }
 
-  function register(name: string, component: ()=>Promise<any>, baseProps = {}) {
+  function register(
+    name: string,
+    component: () => Promise<any>,
+    baseProps = {},
+  ) {
     componentMap.value.set(name, { component, baseProps })
   }
 
