@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import AddUserModal from '@/components/Modals/AddUserModal.vue';
+import AddUserModal from '@/components/modals/AddUserModal.vue';
 
 import api from '@/api'
 

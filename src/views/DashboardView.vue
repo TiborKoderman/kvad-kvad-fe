@@ -61,6 +61,7 @@
       <div v-if="menu.editMode">+</div>
     </div>
     <VectorDiagram />
+    <PowerCalculation />
   </div>
 </template>
 
@@ -71,6 +72,7 @@ import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
 import IconButton from '@/components/IconButton.vue'
 import VectorDiagram from '@/components/Dashboard/VectorDiagram.vue'
+import PowerCalculation from '@/components/Dashboard/PowerCalculation.vue'
 const menu = useMenuStore()
 
 import { useModalStore } from '@/stores/modals'
