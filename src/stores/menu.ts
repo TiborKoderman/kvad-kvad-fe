@@ -4,8 +4,7 @@ import { ref, watch } from 'vue'
 const useMenuStore = defineStore('menuStore', () => {
     const editMode = ref(false)
     const collapsed = ref(JSON.parse(localStorage.getItem('menuStore.collapsed') || 'false'))
-
-    const sidebarWidth = ref('250px')
+    const sidebarWidth = ref(localStorage.getItem('menuStore.sidebarWidth') || '250px')
 
     const toggleCollapsed = async() => {
         collapsed.value = !collapsed.value
@@ -16,8 +15,8 @@ const useMenuStore = defineStore('menuStore', () => {
         editMode.value = !editMode.value
     }
 
-    const setSidebarWidth = (width: string) => {
-        sidebarWidth.value = width
+    const saveSidebarWidth = () => {
+        localStorage.setItem('menuStore.sidebarWidth', sidebarWidth.value)
     }
     
     return {
@@ -26,7 +25,7 @@ const useMenuStore = defineStore('menuStore', () => {
         collapsed,
         toggleCollapsed,
         sidebarWidth,
-        setSidebarWidth,
+        saveSidebarWidth,
     }
 })
 
