@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import VChart from 'vue-echarts'
-import { computed, PropType, ref } from 'vue'
+import { computed, PropType, ref, shallowRef } from 'vue'
 import * as echarts from 'echarts/core'
 import { LineChart, CustomChart, ScatterChart } from 'echarts/charts'
 import {
@@ -98,7 +98,7 @@ class Power {
   }
 }
 
-const chartOption = ref({
+const chartOption = shallowRef({
   polar: [
     { id: 'L1', center: ['50%', '50%'] },
     { id: 'L2', center: ['50%', '50%'] },
