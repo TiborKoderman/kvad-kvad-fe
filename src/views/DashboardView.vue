@@ -69,7 +69,7 @@
 import { ref } from 'vue'
 import api from '@/api'
 import { useRoute } from 'vue-router'
-import { useMenuStore } from '@/stores/menu'
+import useMenuStore from '@/stores/menu'
 import IconButton from '@/components/IconButton.vue'
 import VectorDiagram from '@/components/Dashboard/VectorDiagram.vue'
 import PowerCalculation from '@/components/Dashboard/PowerCalculation.vue'

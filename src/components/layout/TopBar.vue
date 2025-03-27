@@ -2,7 +2,7 @@
 <template>
   <div class="topbar navbar-expand-lg border-bottom" :class="topbarClass">
       <button
-        @click="toggleCollapse"
+        @click="menu.toggleCollapsed"
         class="btn btn-outline-light text-decoration-none me-2"
         aria-label="Expand sidebar"
       >
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import UserIcon from '@/components/UserIcon.vue'
-import { useMenuStore } from '@/stores/menu';
+import useMenuStore from '@/stores/menu';
 
 const menu = useMenuStore()
 
@@ -41,11 +41,6 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['toggle-collapse'])
-
-const toggleCollapse = () => {
-  emit('toggle-collapse')
-}
 </script>
 
 <style scoped>

@@ -30,7 +30,7 @@ $border-radius: 0.5rem;  // Adjust global border radius
 
 
 
-$link-color: map-get($theme-colors, "primary");
+$link-color: map-get($theme-colors, "dark");
 $link-hover-color: darken($link-color, 10%);
 
 // Pagination
@@ -42,6 +42,24 @@ $pagination-active-border-color: var(--bs-primary);
 $component-active-color: var(--bs-light);
 $component-active-bg: var(--bs-primary);
 $dropdown-link-active-bg: var(--bs-primary);
+
+.nav-link {
+  display: flex;
+  align-items: center;
+
+  &.active {
+    background-color: $secondary; // Bootstrap secondary color variable
+    color: $white; // Bootstrap white color variable
+  }
+
+  &:hover {
+    background-color: $gray-200; // Bootstrap light gray color variable
+  }
+}
+
+.nav-item {
+  color: $dark; // Bootstrap gray color variable
+}
 
 // 4. Import Bootstrap Core SCSS
 @import "bootstrap/scss/bootstrap";

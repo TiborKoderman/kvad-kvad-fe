@@ -3,10 +3,10 @@
   <div v-if="route.meta.layout === 'auth'">
     <router-view></router-view>
   </div>
-  <div v-else class="container-fluid">
-    <div class="row">
+  <div v-else class="container-fluid m-0 p-0">
+    <div class="d-flex flex-row h-100 m-0 p-0">
       <Sidebar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-      <div class="col p-0 d-flex flex-column">
+      <div class="d-flex flex-column flex-fill">
         <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
         <main class="content p-2 flex-grow-1">
           <router-view></router-view>
