@@ -22,6 +22,7 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import Vector from '@/utils/vector'
+const backdrop = new URL('@/assets/coordinates.png', import.meta.url).href
 
 echarts.use([
   LineChart,
@@ -38,7 +39,7 @@ const props = defineProps({
   S: {
     type: Number,
     required: false,
-    default: 50,
+    default: 120,
   },
   P: {
     type: Number,
@@ -51,7 +52,7 @@ const props = defineProps({
   cosPhi: {
     type: Number,
     required: false,
-    default: 0.9,
+    default: 0.6,
   },
 })
 // The input values can be either (P, Q) or (S, cosPhi), if all values are provided, they will be directly used
@@ -83,6 +84,19 @@ const chartOption = computed(() => ({
     min: -S.value,
     max: S.value,
     axisLine: { onZero: true },
+  },
+  graphic: {
+    type: 'image',
+    id: 'backdrop',
+    left: 'center',
+    top: 'center',
+    z: -10,
+    style: {
+      image: backdrop,
+      width: '100%',
+      height: '100%',
+      opacity: 1,
+    },
   },
   series: [
     {
@@ -161,6 +175,32 @@ const chartOption = computed(() => ({
         color: 'gray',
       },
     },
+    {
+      type: 'custom',
+      renderItem: (params, api) => {
+        const origin = api.coord([0, 0])
+        const pPoint = api.coord([P.value, 0])
+        const sPoint = api.coord([P.value, Q.value])
+        const radius = P.value // Radius of the arc
+
+        return {
+          type: 'sector',
+          shape: {
+            cx: origin[0],
+            cy: origin[1],
+            r: radius,
+            r0: 0,
+            clockwise: false,
+            startAngle: Math.atan2(pPoint[1] - origin[1], pPoint[0] - origin[0]),
+            endAngle: Math.atan2(sPoint[1] - origin[1], sPoint[0] - origin[0]),
+          },
+          style: {
+            fill: 'rgba(255, 165, 0, 0.5)', // Semi-transparent orange
+          },
+        }
+      },
+      data: [[0, 0]],
+    },
   ],
 }))
 
@@ -168,10 +208,10 @@ function vectorRenderer(params, api, text = null) {
   const origin = api.coord([0, 0])
   const end = api.coord([api.value(2), api.value(3)])
 
-  const textOffset = 0.15 // Offset for the text position
+  const textOffset = 7 // Offset for the text position
   const textCoord = api.coord([
     api.value(2) + textOffset,
-    api.value(3) + textOffset,
+    api.value(3) +5,
   ])
 
   const color = api.visual('color')
