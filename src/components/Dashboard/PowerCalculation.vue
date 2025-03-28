@@ -247,7 +247,7 @@ const chartOption = shallowRef({
       type: 'custom',
       coordinateSystem: 'polar',
       polarIndex: 1,
-      color: 'rgba(0,255, 0, 0.2)', // Semi-transparent blue for the sector
+      color: 'green', // Semi-transparent blue for the sector
       renderItem: sectorRenderer,
       data: [
       [0, 0, powers.value[1].INormalized(), powers.value[1].phiDegrees()],
@@ -289,7 +289,7 @@ const chartOption = shallowRef({
       type: 'custom',
       coordinateSystem: 'polar',
       polarIndex: 2,
-      color: 'rgba(255,0, 0, 0.2)', // Semi-transparent blue for the sector
+      color: 'rgba(255,0, 0,1)', // Semi-transparent blue for the sector
       renderItem: sectorRenderer,
       data: [
       [0, 0, powers.value[2].INormalized(), powers.value[2].phiDegrees()],
