@@ -47,8 +47,8 @@ const props = defineProps({
     required: true,
     default: () => [
       { V: 230, I: 10, cosPhi: 0.8 },
-      { V: 232, I: 11, cosPhi: 0.6 },
-      { V: 235, I: 13, cosPhi: 0.3 },
+      { V: 230, I: 11, cosPhi: 0.6 },
+      { V: 235, I: 13, cosPhi: 0.9 },
     ],
   },
   radians: {
@@ -85,6 +85,10 @@ class Power {
     return Math.acos(this.cosPhi)
   }
 
+  phiDegrees() {
+    return (this.phi() * 180) / Math.PI
+  }
+
   setMax(V_max: number, I_max: number) {
     this.V_max = V_max
     this.I_max = I_max
@@ -105,10 +109,10 @@ const chartOption = shallowRef({
     { id: 'L3', center: ['50%', '50%'] },
   ],
   tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'cross',
-    },
+    trigger: 'item',
+    // axisPointer: {
+    //   type: 'cross',
+    // },
   },
   angleAxis: [
     {
@@ -163,35 +167,150 @@ const chartOption = shallowRef({
   ],
   series: [
     {
-      type: 'line',
+      type: 'custom',
       coordinateSystem: 'polar',
       polarIndex: 0,
-      symbol: 'arrow',
-      symbolSize: 10,
-      symbolRotate: -90,
-      data: [
-        origin, // Start point [radius, angle]
-        [powers.value[0].VNormalized(), 0], // End point [radius, angle]
-      ],
+      color: 'blue',
+      renderItem: (params, api) => vectorRenderer(params, api, `${powers.value[0].V.toFixed(1)} V`),
+      data: [[0, 0, powers.value[0].VNormalized(), 0]],
+      tooltip: {
+        show: true,
+        formatter: `L1: ${powers.value[0].V.toFixed(1)} V`,
+      },
     },
     {
-      type: 'line',
+      type: 'custom',
+      coordinateSystem: 'polar',
+      polarIndex: 0,
+      color: 'blue',
+      renderItem: (params, api) => vectorRenderer(params, api, `${powers.value[0].I.toFixed(1)} A`),
+      data: [[0, 0, powers.value[0].INormalized(), powers.value[0].phiDegrees()]],
+      tooltip: {
+        show: true,
+        formatter: `L1: ${powers.value[0].I.toFixed(1)} A`,
+      },
+    },
+    {
+      type: 'custom',
       coordinateSystem: 'polar',
       polarIndex: 1,
-      data: [
-        origin, // Start point
-        [powers.value[1].VNormalized(), 0], // End point
-      ],
+      color: 'green',
+      renderItem: (params, api) => vectorRenderer(params, api, `${powers.value[1].V.toFixed(1)} V`),
+      data: [[0, 0, powers.value[1].VNormalized(), 0]],
+      tooltip: {
+        show: true,
+        formatter: `L2: ${powers.value[0].V.toFixed(1)} V`,
+      },
     },
     {
-      type: 'line',
+      type: 'custom',
+      coordinateSystem: 'polar',
+      polarIndex: 1,
+      color: 'green',
+      renderItem: (params, api) => vectorRenderer(params, api, `${powers.value[1].I.toFixed(1)} A`),
+      data: [[0, 0, powers.value[1].INormalized(), powers.value[1].phiDegrees()]],
+      tooltip: {
+      show: true,
+      formatter: `L1: ${powers.value[0].I.toFixed(1)} A`,
+      },
+    },
+    {
+      type: 'custom',
       coordinateSystem: 'polar',
       polarIndex: 2,
-      data: [
-        origin, // Start point
-        [powers.value[2].VNormalized(), 0], // End point
-      ],
+      color: 'red',
+      renderItem: (params, api) => vectorRenderer(params, api, `${powers.value[2].V.toFixed(1)} V`),
+      data: [[0, 0, powers.value[2].VNormalized(), 0]],
+      tooltip: {
+        show: true,
+        formatter: `L3: ${powers.value[1].V.toFixed(1)} V`,
+      },
+    },
+    {
+      type: 'custom',
+      coordinateSystem: 'polar',
+      polarIndex: 2,
+      color: 'red',
+      renderItem: (params, api) => vectorRenderer(params, api, `${powers.value[2].I.toFixed(1)} A`),
+      data: [[0, 0, powers.value[2].INormalized(), powers.value[2].phiDegrees()]],
+      tooltip: {
+        show: true,
+        formatter: `L1: ${powers.value[2].I.toFixed(1)} A`,
+      },
     },
   ],
 })
+
+function vectorRenderer(params, api, text) {
+  const origin = api.coord([api.value(0), api.value(1)])
+  const radius = api.value(2)
+  const angle = api.value(3)
+
+  
+  const end = api.coord([radius, angle])
+
+  console.log('origin', origin)
+  console.log('end', end)
+
+  const color = api.visual('color')
+
+  return {
+    type: 'group',
+    origin: [origin[0], origin[1]], // Set the origin for rotation
+    children: [
+      {
+        type: 'path',
+        shape: {
+          pathData: `M ${origin[0]} ${origin[1]} L ${end[0]} ${end[1]}`,
+        },
+        style: {
+          stroke: color,
+          lineWidth: 1,
+          fill: 'none',
+        },
+      },
+
+
+      {
+        type: 'rect',
+        shape: {
+          x: end[0] + (end[0] - origin[0]) * 0.2 - 20, // Adjust position for textbox
+          y: end[1] + (end[1] - origin[1]) * 0.2 - 10, // Adjust position for textbox
+          width: 40, // Width of the textbox
+          height: 20, // Height of the textbox
+        },
+        style: {
+          fill: 'rgba(255, 255, 255, 0.8)', // Background color with transparency
+          stroke: color, // Border color
+          lineWidth: 1, // Border width
+        },
+      },
+      {
+        type: 'text',
+        style: {
+          text: text, // Display the radius value
+          x: end[0] + (end[0] - origin[0]) * 0.2, // Move text slightly outward along the vector
+          y: end[1] + (end[1] - origin[1]) * 0.2, // Move text slightly outward along the vector
+          fill: color,
+          font: '12px sans-serif',
+          align: 'center',
+          verticalAlign: 'middle',
+        },
+      },
+      {
+        type: 'polygon',
+        shape: {
+          points: [
+            api.coord([radius, angle]), // Tip of the triangle
+            api.coord([radius - 0.1, angle - 2.5 / radius]), // Bottom left of the triangle
+            api.coord([radius - 0.1, angle + 2.5 / radius]), // Bottom right of the triangle
+          ],
+        },
+        style: {
+          fill: color,
+        },
+      },
+    ],
+  }
+}
 </script>
