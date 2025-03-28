@@ -309,8 +309,8 @@ function vectorRenderer(params, api, text) {
 
   const end = api.coord([radius, angle])
 
-  console.log('origin', origin)
-  console.log('end', end)
+  // console.log('origin', origin)
+  // console.log('end', end)
 
   const textOffset = 0.15 // Offset for the text position
 

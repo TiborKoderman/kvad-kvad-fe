@@ -73,6 +73,16 @@ export default class Vector {
     return `Vector(${this.values.join(', ')})`
   }
 
+  getPolar() {
+    if (this.values.length !== 2) {
+      throw new Error('Polar coordinates are only defined for 2-dimensional vectors.')
+    }
+    return {
+      radius: this.magnitude(),
+      angle: Math.atan2(this.values[1], this.values[0]),
+    }
+  }
+
   static fromAngle(angle: number) {
     return new Vector(Math.cos(angle), Math.sin(angle))
   }
