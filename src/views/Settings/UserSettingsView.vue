@@ -5,7 +5,9 @@
         <h3 class="card-title">Users</h3>
       </div>
       <div class="card-body">
-        <button class="btn btn-primary mb-3" @click="newUser">New User</button>
+        <button class="btn btn-primary mb-3" @click="modalStore.open('AddUserModal').then(() => getUsers())">
+          New User
+        </button>
         <DataTable
           :columns="columns"
           :data="data"
@@ -15,27 +17,22 @@
           <template #action="props">
             <i
               class="bi bi-pencil-square pointer-event"
-              @click="editUser(props)"
+              @click="modalStore.open('AddUserModal', { editUser: props.rowData }).then(() => getUsers())"
             />
           </template>
         </DataTable>
       </div>
     </div>
-    <AddUserModal ref="addusermodal" @close="getUsers"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import AddUserModal from '@/components/modals/AddUserModal.vue';
+import { useModalStore } from '@/stores/modals'
 
 import api from '@/api'
 
-// const addusermodal = ref(AddUserModal)
-import type { Ref } from 'vue'
-import type AddUserModalType from '@/components/Modals/AddUserModal.vue'
-
-const addusermodal: Ref<InstanceType<typeof AddUserModalType> | null> = ref(null)
+const modalStore = useModalStore()
 
 const columns = ref([
   { title: 'Username', data: 'username' },
@@ -53,12 +50,6 @@ const options = ref({
 })
 
 const data = ref([])
-
-function newUser() {
-  if (addusermodal.value !== null) {
-    addusermodal.value.open()
-  }
-}
 
 function getUsers() {
   api.get('/User/table').then(res => {

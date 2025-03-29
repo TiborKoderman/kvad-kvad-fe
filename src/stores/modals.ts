@@ -28,6 +28,7 @@ export const useModalStore = defineStore('modalStore', () => {
 
   async function open(name: string, props = {}): Promise<void> {
     console.log('open', name)
+    console.log('props', props)
     const entry = componentMap.value.get(name)
     const modalLoader = entry
     if (!modalLoader) {
@@ -39,7 +40,8 @@ export const useModalStore = defineStore('modalStore', () => {
       try {
         const modalComponent = (await modalLoader()).default
 
-        console.log('modalComponent', modalComponent);
+
+        // console.log('modalComponent', modalComponent);
         console.log('modalComponent.baseProps', modalComponent.baseProps);
         
 
@@ -58,11 +60,11 @@ export const useModalStore = defineStore('modalStore', () => {
             const submit = () => {
               console.log('submit clicked')
               modalRef.value
-                .submit()
-                .then(() => {
+                ?.submit()
+                ?.then(() => {
                   close()
                 })
-                .catch(() => {
+                ?.catch(() => {
                   console.log('submit failed')
                 })
             }
@@ -70,7 +72,7 @@ export const useModalStore = defineStore('modalStore', () => {
             return () =>
               h(
                 BaseModal,
-                { onClose: close, onSubmit: submit, ...modalComponent.baseProps },
+                { onClose: close, onSubmit: submit, ...modalComponent.baseProps?.({...props}) },
                 {
                   default: () => h(modalComponent, { ref: modalRef, ...props }),
                 },
