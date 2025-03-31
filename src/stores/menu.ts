@@ -5,6 +5,7 @@ const useMenuStore = defineStore('menuStore', () => {
     const editMode = ref(false)
     const collapsed = ref(JSON.parse(localStorage.getItem('menuStore.collapsed') || 'false'))
     const sidebarWidth = ref(localStorage.getItem('menuStore.sidebarWidth') || '250px')
+    const dashboards = ref([])
 
     const toggleCollapsed = async() => {
         collapsed.value = !collapsed.value
@@ -26,6 +27,7 @@ const useMenuStore = defineStore('menuStore', () => {
         toggleCollapsed,
         sidebarWidth,
         saveSidebarWidth,
+        dashboards
     }
 })
 

@@ -4,7 +4,7 @@
     :class="{ 'collapsed': menu.collapsed }"
     :style="sidebarStyle"
   >
-    <nav class="sidebar p-0 m-0 d-flex flex-column">
+    <nav class="sidebar p-0 m-0 d-flex flex-column flex-grow-1">
       <SidebarBrand />
       <!-- Sidebar navigation items -->
       <ul class="nav nav-pills d-flex flex-column flex-grow-1">

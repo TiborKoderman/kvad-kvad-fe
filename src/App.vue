@@ -4,9 +4,9 @@
     <router-view></router-view>
   </div>
   <div v-else class="container-fluid m-0 p-0">
-    <div class="d-flex flex-row h-100 m-0 p-0">
+    <div class="d-flex h-100 m-0 p-0 flex-grow-1">
       <Sidebar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-      <div class="d-flex flex-column flex-fill">
+      <div class="d-flex flex-column flex-grow-1">
         <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
         <main class="content p-2 flex-grow-1">
           <router-view></router-view>

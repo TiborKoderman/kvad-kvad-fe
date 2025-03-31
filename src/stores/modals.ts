@@ -42,7 +42,7 @@ export const useModalStore = defineStore('modalStore', () => {
 
 
         // console.log('modalComponent', modalComponent);
-        console.log('modalComponent.baseProps', modalComponent.baseProps);
+        // console.log('modalComponent.baseProps', modalComponent.baseProps);
         
 
         const modalRef = ref(null)
@@ -72,7 +72,7 @@ export const useModalStore = defineStore('modalStore', () => {
             return () =>
               h(
                 BaseModal,
-                { onClose: close, onSubmit: submit, ...modalComponent.baseProps?.({...props}) },
+                { onClose: close, onSubmit: submit, ...modalComponent?.baseProps?.({...props }) },
                 {
                   default: () => h(modalComponent, { ref: modalRef, ...props }),
                 },

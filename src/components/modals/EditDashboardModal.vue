@@ -121,16 +121,14 @@ async function submit() {
   })
 }
 
-defineExpose({ submit })
-</script>
+defineOptions({
+  name: 'EditDashboardModal',
+  baseProps: (props) => ({
+    title: "Edit dashboard",
+  }),
+})
 
-<script lang="ts">
-//This allowes us to pass parameters to the baseModalComponent
-export default {
-  baseProps: {
-    title: 'Edit Dashboard',
-  },
-}
+defineExpose({ submit })
 </script>
 
 <style scoped>

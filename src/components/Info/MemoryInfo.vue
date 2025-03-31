@@ -4,36 +4,40 @@
       <h3 class="card-title">Memory</h3>
     </div>
     <div class="card-body">
-      <div class="row">
-        <div class="fw-bold col">Total memory:</div>
-        <div class="col">
-          {{ data['MemTotal']?.['value'] }}
-          {{ data['MemTotal']?.['unit'] }}
+      <div class="info-container">
+        <div class="info-row">
+          <div class="fw-bold label">Total memory:</div>
+          <div class="value">
+            {{ data['MemTotal']?.['value'] }}
+            {{ data['MemTotal']?.['unit'] }}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="fw-bold col">Free memory:</div>
-        <div class="col">
-          {{ data['MemFree']?.['value'] }}
-          {{ data['MemFree']?.['unit'] }}
+        <div class="info-row">
+          <div class="fw-bold label">Free memory:</div>
+          <div class="value">
+            {{ data['MemFree']?.['value'] }}
+            {{ data['MemFree']?.['unit'] }}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="fw-bold col">Available memory:</div>
-        <div class="col">
-          {{ data['MemAvailable']?.['value'] }}
-          {{ data['MemAvailable']?.['unit'] }}
+        <div class="info-row">
+          <div class="fw-bold label">Available memory:</div>
+          <div class="value">
+            {{ data['MemAvailable']?.['value'] }}
+            {{ data['MemAvailable']?.['unit'] }}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="fw-bold col">Swap total:</div>
-        <div class="col">
-          {{ data['SwapTotal']?.['value'] }} {{ data['SwapTotal']?.['unit'] }}
+        <div class="info-row">
+          <div class="fw-bold label">Swap total:</div>
+          <div class="value">
+            {{ data['SwapTotal']?.['value'] }} {{ data['SwapTotal']?.['unit'] }}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="fw-bold col">Swap free:</div>
-        <div class="col">{{ data['SwapFree']?.['value'] }} {{ data['SwapFree']?.['unit'] }}</div>
+        <div class="info-row">
+          <div class="fw-bold label">Swap free:</div>
+          <div class="value">
+            {{ data['SwapFree']?.['value'] }} {{ data['SwapFree']?.['unit'] }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -44,12 +48,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import api from '@/api'
 
 const data = ref([])
-
-// const interval = setInterval(() => {
-//     api.get('/SystemInfo/memory').then(res => {
-//       data.value = res.data
-//     })
-//   }, 10000)
 
 onMounted(() => {
   api.get('/SystemInfo/memory').then(res => {
@@ -62,4 +60,25 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  font-weight: bold;
+  flex: 1;
+}
+
+.value {
+  flex: 1;
+  text-align: right;
+}
+</style>
