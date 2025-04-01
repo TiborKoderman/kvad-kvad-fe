@@ -5,6 +5,12 @@
       <div style="aspect-ratio: 1/1">
         <v-chart :option="chartOption" autoresize />
       </div>
+      <div class="text-center">
+        <p>Magnitude: {{ S.toFixed(2) }} VA</p>
+        <p>Active Power: {{ P.toFixed(2) }} W</p>
+        <p>Reactive Power: {{ Q.toFixed(2) }} VAR</p>
+        <p>Power Factor: {{ cosPhi.toFixed(2) }}</p>
+        <p>Angle: {{ angle.toFixed(2) }}°</p>
     </div>
   </div>
 </template>
