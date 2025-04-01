@@ -10,12 +10,10 @@
         <NodesTable />
       </div>
     </div>
-  <Modal ref="addItemModal" fullscreen > test </Modal>
 </template>
 
 <script setup lang="ts">
 import NodesTable from '@/components/Views/NodesView/NodesTable.vue'
-import Modal from '@/components/Modal.vue'
 
 import { ref } from 'vue'
 
