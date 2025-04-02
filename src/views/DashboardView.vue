@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import api from '@/api'
 import { useRoute, useRouter } from 'vue-router'
 import useMenuStore from '@/stores/menu'
@@ -73,7 +73,7 @@ import VectorDiagram from '@/components/Dashboard/VectorDiagram.vue'
 import PowerCalculation from '@/components/Dashboard/PowerCalculation.vue'
 const menu = useMenuStore()
 
-import { useModalStore } from '@/stores/modals'
+import { useModalStore, } from '@/stores/modals'
 import Swal from 'sweetalert2'
 const modals = useModalStore()
 
@@ -84,6 +84,12 @@ const dashboards = ref([])
 if (!route.params.id) {
   getDashboardItems()
 }
+
+onMounted(() => {
+  if (route.params.id) {
+    getDashboardItems()
+  }
+})
 
 function getDashboardItems() {
   api.get('/dashboard/all').then(res => {

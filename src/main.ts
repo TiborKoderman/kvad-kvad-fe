@@ -39,6 +39,7 @@ app.use(createPinia())
 app.use(router)
 app.component('DataTable', DataTable)
 app.component('DateTime', DateTime)
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Swal', Swal);
 
 // app.component('api', api)

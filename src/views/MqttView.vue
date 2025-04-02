@@ -28,7 +28,7 @@ const interval = ref(null)
 const columns = ref([
   { title: 'Client ID', data: 'id' },
   { title: 'Connected', data: 'connectedTimestamp' },
-  { title: 'Last Will', data: 'last_will' },
+  { title: 'Last Will', data: 'last_will'},
 ])
 
 const data = ref([])
@@ -37,7 +37,6 @@ const options = ref({
   searching: true,
   lengthChange: false,
   info: false,
-  order: [[0, 'asc']],
 })
 
 onMounted(() => {
