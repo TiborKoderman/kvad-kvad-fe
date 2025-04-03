@@ -1,16 +1,30 @@
 <template>
-  <div class="card" style="width: 25%">
+  <div class="card">
     <div class="card-header">Vector Diagram</div>
-    <div class="card-body">
-      <div style="aspect-ratio: 1/1">
+    <div class="card-body d-flex flex-row align-items-start">
+      <div style="flex: 3; aspect-ratio: 1/1; height: auto; min-height: 300px;">
         <v-chart :option="chartOption" autoresize />
       </div>
-      <div class="text-center">
-        <p>Magnitude: {{ S.toFixed(2) }} VA</p>
-        <p>Active Power: {{ P.toFixed(2) }} W</p>
-        <p>Reactive Power: {{ Q.toFixed(2) }} VAR</p>
-        <p>Power Factor: {{ cosPhi.toFixed(2) }}</p>
-        <p>Angle: {{ angle.toFixed(2) }}°</p>
+      <table class="table table-sm flex-fill" style="flex: 1; margin-left: 1rem;">
+        <tbody>
+          <tr>
+            <th class="text-nowrap">Apparent Power:</th>
+            <td class="text-nowrap">{{ S.toFixed(2) }} kVA</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap">Active Power:</th>
+            <td class="text-nowrap" >{{ P.toFixed(2) }} kW</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap">Reactive Power:</th>
+            <td class="text-nowrap">{{ Q.toFixed(2) }} kVAR</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap">Cos φ:</th>
+            <td class="text-nowrap">{{ cosPhi.toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -45,7 +59,7 @@ const props = defineProps({
   S: {
     type: Number,
     required: false,
-    default: 120,
+    default: -120,
   },
   P: {
     type: Number,
@@ -132,32 +146,45 @@ const chartOption = computed(() => ({
     {
       type: 'custom',
       renderItem: (params, api) => {
-        return vectorRenderer(params, api, S.value.toFixed(2))
+        return vectorRenderer(params, api, ``)
       },
       itemStyle: {
-        color: 'red',
+        color: 'black',
       },
       data: [[0, 0, P.value, Q.value]],
+      showSymbol: false,
     },
     {
       type: 'custom',
       renderItem: (params, api) => {
-        return vectorRenderer(params, api, `P: ${P.value.toFixed(2)}`)
+        return vectorRenderer(
+          params,
+          api,
+          `P: ${P.value.toFixed(2)} kW`,
+          [0, (S.value > 0 ? -12 : 12)]
+        )
       },
       itemStyle: {
-        color: 'green',
+        color: 'black',
       },
       data: [[0, 0, P.value, 0]],
-    },
-    {
+      showSymbol: false,
+        },
+        {
       type: 'custom',
       renderItem: (params, api) => {
-        return vectorRenderer(params, api, `Q: ${Q.value.toFixed(2)}`)
+        return vectorRenderer(
+          params,
+          api,
+          `Q: ${Q.value.toFixed(2)} kVAR`,
+          [0, (S.value > 0 ? 8 : -8)]
+        )
       },
       itemStyle: {
-        color: 'blue',
+        color: 'black',
       },
       data: [[0, 0, 0, Q.value]],
+      showSymbol: false,
     },
     {
       type: 'line',
@@ -169,6 +196,7 @@ const chartOption = computed(() => ({
         type: 'dashed',
         color: 'gray',
       },
+      showSymbol: false,
     },
     {
       type: 'line',
@@ -180,45 +208,45 @@ const chartOption = computed(() => ({
         type: 'dashed',
         color: 'gray',
       },
+      showSymbol: false,
     },
-    {
-      type: 'custom',
-      renderItem: (params, api) => {
-        const origin = api.coord([0, 0])
-        const pPoint = api.coord([P.value, 0])
-        const sPoint = api.coord([P.value, Q.value])
-        const radius = P.value // Radius of the arc
+    // {
+    //   type: 'custom',
+    //   renderItem: (params, api) => {
+    //     const origin = api.coord([0, 0])
+    //     const pPoint = api.coord([P.value, 0])
+    //     const sPoint = api.coord([P.value, Q.value])
+    //     const radius = P.value // Radius of the arc
 
-        return {
-          type: 'sector',
-          shape: {
-            cx: origin[0],
-            cy: origin[1],
-            r: radius,
-            r0: 0,
-            clockwise: false,
-            startAngle: Math.atan2(pPoint[1] - origin[1], pPoint[0] - origin[0]),
-            endAngle: Math.atan2(sPoint[1] - origin[1], sPoint[0] - origin[0]),
-          },
-          style: {
-            fill: 'rgba(255, 165, 0, 0.5)', // Semi-transparent orange
-          },
-        }
-      },
-      data: [[0, 0]],
-    },
+    //     return {
+    //       type: 'sector',
+    //       shape: {
+    //         cx: origin[0],
+    //         cy: origin[1],
+    //         r: radius,
+    //         r0: 0,
+    //         clockwise: false,
+    //         startAngle: Math.atan2(
+    //           pPoint[1] - origin[1],
+    //           pPoint[0] - origin[0],
+    //         ),
+    //         endAngle: Math.atan2(sPoint[1] - origin[1], sPoint[0] - origin[0]),
+    //       },
+    //       style: {
+    //         fill: 'rgba(255, 165, 0, 0.5)', // Semi-transparent orange
+    //       },
+    //     }
+    //   },
+    //   data: [[0, 0]],
+    // },
   ],
 }))
 
-function vectorRenderer(params, api, text = null) {
+function vectorRenderer(params, api, text = null, textOffset = [0,0]) {
   const origin = api.coord([0, 0])
   const end = api.coord([api.value(2), api.value(3)])
 
-  const textOffset = 7 // Offset for the text position
-  const textCoord = api.coord([
-    api.value(2) + textOffset,
-    api.value(3) +5,
-  ])
+  const textCoord = api.coord([api.value(2) + textOffset[0], api.value(3) + textOffset[1]])
 
   const color = api.visual('color')
 

@@ -17,49 +17,11 @@
   </div>
   <div
     v-else
-    class="d-flex gap-2 flex-wrap justify-content-around align-items-start"
+    class="d-flex flex-wrap justify-content-around align-items-start h-100"
   >
-    <div class="card w-25" v-for="dashboard in dashboards" :key="dashboard.id">
-      <div class="card-header">
-        <h5>
-          {{ dashboard.name }}
-          <IconButton
-            icon="pencil"
-            v-if="menu.editMode"
-            class="float-end"
-            @click="
-              modals
-                .open('EditDashboardModal', { id: dashboard.id })
-                .then(getDashboardItems)
-            "
-          />
-          <IconButton
-            icon="trash"
-            hcolor="var(--bs-danger)"
-            v-if="menu.editMode"
-            class="float-end"
-            @click="
-              Swal.fire({
-                title: 'Are you sure?',
-                text: 'You will not be able to recover this dashboard!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-              }).then(result => {
-                if (result.isConfirmed) {
-                  api
-                    .delete(`/dashboard/${dashboard.id}`)
-                    .then(getDashboardItems)
-                }
-              })
-            "
-          />
-        </h5>
-      </div>
-      <div class="card-body h-50">
-        {{ dashboard.description }}
-      </div>
-    </div>
+    <DashboardLayout />
+    <!-- <VectorDiagram />
+    <PowerCalculation /> -->
   </div>
 </template>
 
@@ -71,6 +33,7 @@ import useMenuStore from '@/stores/menu'
 import IconButton from '@/components/IconButton.vue'
 import VectorDiagram from '@/components/Dashboard/VectorDiagram.vue'
 import PowerCalculation from '@/components/Dashboard/PowerCalculation.vue'
+import DashboardLayout from '@/components/DashboardLayout.vue'
 const menu = useMenuStore()
 
 import { useModalStore, } from '@/stores/modals'

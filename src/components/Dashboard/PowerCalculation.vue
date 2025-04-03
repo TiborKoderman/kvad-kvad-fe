@@ -1,10 +1,25 @@
 <template>
-  <div class="card" style="width: 25%">
+  <div class="card">
     <div class="card-header">Power calc</div>
-    <div class="card-body">
-      <div style="aspect-ratio: 1/1">
+    <div class="card-body flex-row d-flex align-items-start">
+      <div style="flex: 3; aspect-ratio: 1/1; min-height: 300px">
         <v-chart :option="chartOption" autoresize />
       </div>
+      <table
+        class="table table-sm flex-fill"
+        style="flex: 1; margin-left: 1rem"
+      >
+        <tbody>
+            <tr v-for="(power, index) in powers" :key="index">
+            <th class="text-nowrap" :style="{ color: index === 0 ? 'blue' : index === 1 ? 'green' : 'red' }">
+              L{{ index + 1 }} Cos φ:
+            </th>
+            <td class="text-nowrap" :style="{ color: index === 0 ? 'blue' : index === 1 ? 'green' : 'red' }">
+              {{ power.cosPhi.toFixed(2) }}
+            </td>
+            </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -20,6 +35,7 @@ import {
   TooltipComponent,
   LegendComponent,
   PolarComponent,
+  GraphicComponent,
 } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 
@@ -28,6 +44,7 @@ echarts.use([
   CustomChart,
   ScatterChart,
   GridComponent,
+  GraphicComponent,
   TitleComponent,
   TooltipComponent,
   PolarComponent,
@@ -112,7 +129,7 @@ const chartOption = shallowRef({
     top: 20,
     bottom: 20,
     left: 20,
-    right: 20,
+    right: 40,
     containLabel: true,
   },
   tooltip: {
@@ -208,11 +225,11 @@ const chartOption = shallowRef({
       color: 'rgba(0, 0, 255, 0.2)', // Semi-transparent blue for the sector
       renderItem: sectorRenderer,
       data: [
-      [0, 0, powers.value[0].INormalized(), powers.value[0].phiDegrees()],
+        [0, 0, powers.value[0].INormalized(), powers.value[0].phiDegrees()],
       ],
       tooltip: {
-      show: true,
-      formatter: `Angle: ${powers.value[0].phiDegrees().toFixed(1)}°`,
+        show: true,
+        formatter: `Angle: ${powers.value[0].phiDegrees().toFixed(1)}°`,
       },
     },
     {
@@ -250,11 +267,11 @@ const chartOption = shallowRef({
       color: 'green', // Semi-transparent blue for the sector
       renderItem: sectorRenderer,
       data: [
-      [0, 0, powers.value[1].INormalized(), powers.value[1].phiDegrees()],
+        [0, 0, powers.value[1].INormalized(), powers.value[1].phiDegrees()],
       ],
       tooltip: {
-      show: true,
-      formatter: `Angle: ${powers.value[1].phiDegrees().toFixed(1)}°`,
+        show: true,
+        formatter: `Angle: ${powers.value[1].phiDegrees().toFixed(1)}°`,
       },
     },
     {
@@ -292,11 +309,11 @@ const chartOption = shallowRef({
       color: 'rgba(255,0, 0,1)', // Semi-transparent blue for the sector
       renderItem: sectorRenderer,
       data: [
-      [0, 0, powers.value[2].INormalized(), powers.value[2].phiDegrees()],
+        [0, 0, powers.value[2].INormalized(), powers.value[2].phiDegrees()],
       ],
       tooltip: {
-      show: true,
-      formatter: `Angle: ${powers.value[2].phiDegrees().toFixed(1)}°`,
+        show: true,
+        formatter: `Angle: ${powers.value[2].phiDegrees().toFixed(1)}°`,
       },
     },
   ],
@@ -377,7 +394,7 @@ function vectorRenderer(params, api, text) {
   }
 }
 
-function sectorRenderer(params,api: any, text: string | undefined) {
+function sectorRenderer(params, api: any, text: string | undefined) {
   const origin = api.coord([api.value(0), api.value(1)])
   const radius = api.value(2)
   const angle = api.value(3) // Make the angle negative for counterclockwise
@@ -420,7 +437,7 @@ function sectorRenderer(params,api: any, text: string | undefined) {
         },
         style: {
           fill: 'rgba(255, 255, 255, 0.8)', // Background color with transparency
-            stroke: `rgba(${echarts.color.parse(api.visual('color')).slice(0, 3).join(',')}, 1)`, // Border color
+          stroke: `rgba(${echarts.color.parse(api.visual('color')).slice(0, 3).join(',')}, 1)`, // Border color
           lineWidth: 1,
         },
       },
