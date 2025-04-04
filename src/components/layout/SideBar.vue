@@ -89,7 +89,9 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import SidebarBrand from './SidebarBrand.vue'
 import useMenuStore from '@/stores/menu'
-import SidebarMenuConfig from '@/assets/config/sidebar_menu.json'
+// import SidebarMenuConfig from '@/assets/config/sidebar_menu.json'
+
+
 
 const menu = useMenuStore()
 
@@ -110,7 +112,7 @@ interface Page {
 
 const route = useRoute()
 
-const pages: Array<Page> = SidebarMenuConfig
+const pages: Array<unknown> = menu.sidebarItems
 
 function expandItem(page: Page) {
   if (page.children) {
