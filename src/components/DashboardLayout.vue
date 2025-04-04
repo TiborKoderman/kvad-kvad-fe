@@ -1,9 +1,5 @@
 <template>
-    <div class="layout d-flex" :class="node.direction ? 'flex-direction-column' : ''">
-        <div class="grid">
-            <div v-for="n in 144" :key="n" class="grid-cell"></div> <!-- 12 columns x 12 rows -->
-        </div>
-    </div>
+    <div></div>
 </template>
 
 <script setup lang="ts">
