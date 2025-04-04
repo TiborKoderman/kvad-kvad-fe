@@ -9,25 +9,26 @@
       <!-- Sidebar navigation items -->
       <ul class="nav nav-pills d-flex flex-column flex-grow-1">
         <li class="nav-item p-1" v-for="(page, index) in pages" :key="index">
-          <RouterLink
+            <RouterLink
             :class="[
               'nav-link',
               {
-                active: isActiveRoute(page.link),
-                'bg-primary': isActiveRoute(page.link),
+              active: !page.children && isActiveRoute(page.link),
+              'bg-primary': !page.children && isActiveRoute(page.link),
               },
             ]"
-            :to="page.link"
+            class="d-flex align-items-center"
+            :to="page.children ? '#' : page.link"
             @click="expandItem(page)"
-          >
+            >
             <i :class="page.icon"></i>
             <span class="ms-2">{{ page.name }}</span>
             <transition name="rotate">
               <i
-                v-if="page.children"
-                class="bi ms-auto"
-                :class="page.isExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"
-                aria-hidden="true"
+              v-if="page.children"
+              class="bi ms-auto"
+              :class="page.isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'"
+              aria-hidden="true"
               ></i>
             </transition>
           </RouterLink>
