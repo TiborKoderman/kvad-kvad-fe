@@ -7,59 +7,67 @@
     <nav class="sidebar p-0 m-0 d-flex flex-column flex-grow-1">
       <SidebarBrand />
       <!-- Sidebar navigation items -->
-      <ul class="nav nav-pills d-flex flex-column flex-grow-1">
-        <li class="nav-item p-1" v-for="(page, index) in pages" :key="index">
+      <draggable
+        v-model="pages"
+        group="sidebar"
+        item-key="name"
+        class="nav nav-pills d-flex flex-column flex-grow-1"
+        @end="saveSidebarOrder"
+      >
+        <template #item="{ element: page }">
+          <li class="nav-item p-1">
             <RouterLink
-            :class="[
-              'nav-link',
-              {
-              active: !page.children && isActiveRoute(page.link),
-              'bg-primary': !page.children && isActiveRoute(page.link),
-              },
-            ]"
-            class="d-flex align-items-center"
-            :to="page.children ? '#' : page.link"
-            @click="expandItem(page)"
+              :class="[
+                'nav-link',
+                {
+                  active: !page.children && isActiveRoute(page.link),
+                  'bg-primary': !page.children && isActiveRoute(page.link),
+                },
+              ]"
+              class="d-flex align-items-center"
+              :to="page.children ? '#' : page.link"
+              @click="expandItem(page)"
             >
-            <i :class="page.icon"></i>
-            <span class="ms-2">{{ page.name }}</span>
-            <transition name="rotate">
-              <i
-              v-if="page.children"
-              class="bi ms-auto"
-              :class="page.isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'"
-              aria-hidden="true"
-              ></i>
-            </transition>
-          </RouterLink>
-          <transition name="expand">
-            <ul
-              v-if="page.children && page.isExpanded"
-              class="nav flex-column ms-3"
-            >
-              <li
-                class="nav-item p-1"
-                v-for="(child, childIndex) in page.children"
-                :key="childIndex"
+              <i :class="page.icon"></i>
+              <span class="ms-2">{{ page.name }}</span>
+              <transition name="rotate">
+                <i
+                  v-if="page.children"
+                  class="bi ms-auto"
+                  :class="page.isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'"
+                  aria-hidden="true"
+                ></i>
+              </transition>
+            </RouterLink>
+            <transition name="expand">
+              <ul
+                v-if="page.children && page.isExpanded"
+                class="nav flex-column ms-3"
               >
-                <RouterLink
-                  :class="[
-                    'nav-link',
-                    {
-                      active: isActiveRoute(child.link),
-                      'bg-primary': isActiveRoute(child.link),
-                    },
-                  ]"
-                  :to="child.link"
+                <li
+                  class="nav-item p-1"
+                  v-for="(child, childIndex) in page.children"
+                  :key="childIndex"
                 >
-                  <i :class="child.icon"></i>
-                  <span class="ms-2">{{ child.name }}</span>
-                </RouterLink>
-              </li>
-            </ul>
-          </transition>
-        </li>
-      </ul>
+                  <RouterLink
+                    :class="[
+                      'nav-link',
+                      {
+                        active: isActiveRoute(child.link),
+                        'bg-primary': isActiveRoute(child.link),
+                      },
+                    ]"
+                    :to="child.link"
+                  >
+                    <i :class="child.icon"></i>
+                    <span class="ms-2">{{ child.name }}</span>
+                  </RouterLink>
+                </li>
+              </ul>
+            </transition>
+          </li>
+        </template>
+      </draggable>
       <div class="nav-item p-1 mt-auto">
         <RouterLink
           to="/adminSettings"
@@ -85,82 +93,84 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
-import SidebarBrand from './SidebarBrand.vue'
-import useMenuStore from '@/stores/menu'
-// import SidebarMenuConfig from '@/assets/config/sidebar_menu.json'
+import { ref, computed, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
+import SidebarBrand from './SidebarBrand.vue';
+import useMenuStore from '@/stores/menu';
+import draggable from 'vuedraggable';
 
-
-
-const menu = useMenuStore()
+const menu = useMenuStore();
 
 defineProps({
   isCollapsed: {
     type: Boolean,
     default: false,
   },
-})
+});
 
 interface Page {
-  name: string
-  link: string
-  icon?: string
-  children?: Page[]
-  isExpanded?: boolean
+  name: string;
+  link: string;
+  icon?: string;
+  children?: Page[];
+  isExpanded?: boolean;
 }
 
-const route = useRoute()
+const route = useRoute();
 
-const pages: Array<unknown> = menu.sidebarItems
+const pages: Array<Page> = menu.sidebarItems;
 
 function expandItem(page: Page) {
   if (page.children) {
-    page.isExpanded = !page.isExpanded
+    page.isExpanded = !page.isExpanded;
   }
 }
 
 const isActiveRoute = (link: unknown) => {
-  return route.path === link
+  return route.path === link;
+};
+
+function saveSidebarOrder() {
+  menu.saveSidebarItems(pages); // Save the new order to the store or backend
 }
 
 // Resizing logic
-let isResizing = false
+let isResizing = false;
 
 function startResizing(event: MouseEvent) {
-  isResizing = true
-  document.body.style.userSelect = 'none'
-  document.addEventListener('mousemove', resize)
-  document.addEventListener('mouseup', stopResizing)
+  isResizing = true;
+  document.body.style.userSelect = 'none';
+  document.addEventListener('mousemove', resize);
+  document.addEventListener('mouseup', stopResizing);
 }
 
 function resize(event: MouseEvent) {
   if (isResizing) {
-    const newWidth = event.clientX
+    const newWidth = event.clientX;
     if (newWidth >= 150 && newWidth <= 400) {
-      menu.sidebarWidth = `${newWidth}px`
+      menu.sidebarWidth = `${newWidth}px`;
     }
   }
 }
 
 function stopResizing() {
-  isResizing = false
-  document.removeEventListener('mousemove', resize)
-  document.removeEventListener('mouseup', stopResizing)
-  document.body.style.userSelect = 'auto'
-  menu.saveSidebarWidth()
+  isResizing = false;
+  document.removeEventListener('mousemove', resize);
+  document.removeEventListener('mouseup', stopResizing);
+  document.body.style.userSelect = 'auto';
+  menu.saveSidebarWidth();
 }
 
 onUnmounted(() => {
-  document.removeEventListener('mousemove', resize)
-  document.removeEventListener('mouseup', stopResizing)
-})
+  document.removeEventListener('mousemove', resize);
+  document.removeEventListener('mouseup', stopResizing);
+});
 
 // Computed property for sidebar style
 const sidebarStyle = computed(() => ({
   width: menu.collapsed ? '0' : menu.sidebarWidth,
   transition: isResizing ? 'none' : 'width 0.3s ease-in-out',
-}))
+}));
 </script>
 
 <style scoped>

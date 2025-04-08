@@ -18,39 +18,41 @@ const useMenuStore = defineStore('menuStore', () => {
       icon: 'bi bi-speedometer2',
     },
     {
-      name: 'Orders',
-      link: '/orders',
-      icon: 'bi bi-cart',
-    },
-    {
-      name: 'Docker',
-      link: '/docker',
-      icon: 'bi bi-box-seam',
-    },
-    {
-      name: 'Nodes',
-      link: '/nodes',
-      icon: 'bi bi-server',
-    },
-    {
-      name: 'System',
-      link: '/system',
-      icon: 'bi bi-cpu',
-    },
-    {
       name: 'Chat',
       link: '/chat',
       icon: 'bi bi-chat-left',
     },
     {
-      name: 'Mqtt',
-      link: '/mqtt',
-      icon: 'bi bi-cloud',
-    },
-    {
-      name: 'WebSockets',
-      link: '/websockets',
-      icon: 'bi bi-cloud',
+      name: 'Management',
+      link: '/management',
+      icon: 'bi bi-people',
+      children: [
+        {
+          name: 'Mqtt',
+          link: '/mqtt',
+          icon: 'bi bi-cloud',
+        },
+        {
+          name: 'WebSockets',
+          link: '/websockets',
+          icon: 'bi bi-cloud',
+        },
+        {
+          name: 'Docker',
+          link: '/docker',
+          icon: 'bi bi-box-seam',
+        },
+        {
+          name: 'Orders',
+          link: '/orders',
+          icon: 'bi bi-cart',
+        },
+        {
+          name: 'Nodes',
+          link: '/nodes',
+          icon: 'bi bi-server',
+        },
+      ]
     },
     {
       name: 'Settings',
@@ -65,6 +67,12 @@ const useMenuStore = defineStore('menuStore', () => {
           name: 'User Settings',
           link: '/settings/users',
         },
+        {
+          name: 'System',
+          link: '/system',
+          icon: 'bi bi-cpu',
+        },
+
       ],
     },
   ])
