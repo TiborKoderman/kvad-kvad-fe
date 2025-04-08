@@ -88,7 +88,7 @@ const useMenuStore = defineStore('menuStore', () => {
     sidebarItems.value.find(item => item.name === 'Dashboard').children =
       response.data.map(dashboard => ({
         name: dashboard.name,
-        link: `/dashboard/${dashboard.name}`,
+        link: `/dashboard/${dashboard.id}`,
         icon: 'bi bi-speedometer2',
       }))
   }
