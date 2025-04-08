@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import api from '@/api'
 
 const useMenuStore = defineStore('menuStore', () => {
@@ -60,7 +60,6 @@ const useMenuStore = defineStore('menuStore', () => {
         {
           name: 'General Settings',
           link: '/settings/general',
-          icon: 'bi bi-gear',
         },
         {
           name: 'User Settings',

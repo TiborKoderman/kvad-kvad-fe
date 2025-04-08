@@ -19,9 +19,11 @@
     v-else
     class="d-flex flex-wrap justify-content-around align-items-start h-100"
   >
-    <DashboardLayout />
+    <!-- <DashboardLayout v-model="node" /> -->
     <!-- <VectorDiagram />
     <PowerCalculation /> -->
+    <MasonryDashboard
+    ></MasonryDashboard>
   </div>
 </template>
 
@@ -34,15 +36,18 @@ import IconButton from '@/components/IconButton.vue'
 import VectorDiagram from '@/components/Dashboard/VectorDiagram.vue'
 import PowerCalculation from '@/components/Dashboard/PowerCalculation.vue'
 import DashboardLayout from '@/components/DashboardLayout.vue'
+import MasonryDashboard from '@/components/Dashboard/MasonryDashboard.vue'
 const menu = useMenuStore()
 
-import { useModalStore, } from '@/stores/modals'
+import { useModalStore } from '@/stores/modals'
 import Swal from 'sweetalert2'
 const modals = useModalStore()
 
 const route = useRoute()
 const router = useRouter()
 const dashboards = ref([])
+
+const node = ref({})
 
 if (!route.params.id) {
   getDashboardItems()
