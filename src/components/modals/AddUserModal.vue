@@ -46,17 +46,14 @@
 </template>
 
 <script setup lang="ts">
-import Modal from '@/components/Modal.vue'
 import MultiPicker from '@/components/MultiPicker.vue'
-import { computed, ref, Ref } from 'vue'
+import { ref } from 'vue'
 import api from '@/api'
 
 interface Role {
   id: number
   name: string
 }
-
-const modal: Ref<InstanceType<typeof Modal> | null> = ref(null)
 
 const props = defineProps({
   editUser: {
@@ -136,11 +133,6 @@ async function addUser() {
       username: user.value.username,
       password: user.value.password,
       roles: selectedRoles.value,
-    })
-    .then(() => {
-      if (modal.value !== null) {
-        close()
-      }
     })
 }
 
