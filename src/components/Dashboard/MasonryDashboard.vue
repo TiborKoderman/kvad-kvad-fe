@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import useMenuStore from '@/stores/menu';
 
 const cards = ref([
   { id: 1, title: 'Card 1', content: 'This is the content of card 1.' },
@@ -22,6 +23,8 @@ const cards = ref([
   { id: 7, title: 'Card 7', content: 'This is the content of card 7.' },
   { id: 8, title: 'Card 8', content: 'This is the content of card 8.' },
 ]);
+
+const menuStore = useMenuStore();
 
 const gridColumns = ref(3); // Default number of columns
 
