@@ -24,6 +24,10 @@
       />
     </div>
     <div class="form-group">
+      <label for="">Dashboard type</label>
+      <SelectDropdown :options="['Canada', 'United States']"> </SelectDropdown>
+    </div>
+    <div class="form-group">
       <label for="new_username">Icon</label>
       <input
         type="text"
@@ -44,18 +48,8 @@
         v-model="dashboard.color"
       />
     </div>
-    <div class="form-group">
-      <div class="form-check">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="scrollableCheckbox"
-          v-model="dashboard.scrollable"
-        />
-        <label class="form-check-label" for="scrollableCheckbox"
-          >Scrollable</label
-        >
-      </div>
+    <div class="form-toggle">
+      <ToggleButton v-model="dashboard.scrollable" id="scrollableCheckbox" label="Scrollable"/>
     </div>
   </form>
 </template>
@@ -63,6 +57,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import api from '@/api'
+import SelectDropdown from '@/components/formItems/SelectDropdown.vue'
+import ToggleButton from '@/components/formItems/ToggleButton.vue'
 
 const props = defineProps({
   id: {
@@ -93,8 +89,6 @@ const dashboard = ref<DashboardDTO>({
   color: null,
 })
 
-
-
 ;(async function getDashboard() {
   if (!props.id) {
     return
@@ -123,8 +117,8 @@ async function submit() {
 
 defineOptions({
   name: 'EditDashboardModal',
-  baseProps: (props) => ({
-    title: "Edit dashboard",
+  baseProps: props => ({
+    title: 'Edit dashboard',
   }),
 })
 

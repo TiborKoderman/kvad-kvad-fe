@@ -1,9 +1,11 @@
 <template>
+  <transition name="fade">
     <div
       class="modal show"
       tabindex="-1"
       aria-hidden="false"
       @click.self="close"
+      v-if="isMounted"
     >
       <div
         class="modal-dialog modal-dialog-centered"
@@ -31,9 +33,21 @@
         </div>
       </div>
     </div>
+  </transition>
 </template>
 
 <script setup lang="ts">
+import { onMounted, onBeforeUnmount, ref } from 'vue'
+
+const isMounted = ref(false)
+
+onMounted(() => {
+  isMounted.value = true
+})
+
+onBeforeUnmount(() => {
+  isMounted.value = false
+})
 
 const emit = defineEmits([
   'close',
