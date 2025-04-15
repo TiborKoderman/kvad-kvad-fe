@@ -25,7 +25,7 @@
     </div>
     <div class="form-group">
       <label for="">Dashboard type</label>
-      <SelectDropdown :options="['Canada', 'United States']"> </SelectDropdown>
+      <SelectDropdown :options="dashboardTypes" label="name" v-model="dashboard.type"> </SelectDropdown>
     </div>
     <div class="form-group">
       <label for="new_username">Icon</label>
@@ -60,6 +60,8 @@ import api from '@/api'
 import SelectDropdown from '@/components/formItems/SelectDropdown.vue'
 import ToggleButton from '@/components/formItems/ToggleButton.vue'
 
+fetchDashboardTypes()
+
 const props = defineProps({
   id: {
     type: String,
@@ -78,6 +80,7 @@ interface DashboardDTO {
   scrollable: boolean
   icon: string | null
   color: string | null
+  type: string | null
 }
 
 const dashboard = ref<DashboardDTO>({
@@ -87,7 +90,10 @@ const dashboard = ref<DashboardDTO>({
   scrollable: false,
   icon: null,
   color: null,
+  type: null,
 })
+
+const dashboardTypes = ref([])
 
 ;(async function getDashboard() {
   if (!props.id) {
@@ -112,6 +118,12 @@ async function submit() {
 
   return api.post('/Dashboard', dashboard.value).then(() => {
     // Handle success
+  })
+}
+
+async function fetchDashboardTypes() {
+  return api.get('/dashboard/types').then(response => {
+    dashboardTypes.value = response.data
   })
 }
 
