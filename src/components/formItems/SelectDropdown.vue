@@ -73,7 +73,7 @@ const selectOption = (option) => {
 const hideDropdown = () => {
   setTimeout(() => {
     showDropdown.value = false;
-  }, 200);
+  }, 200);l
 };
 
 const getOptionLabel = (option) => {
