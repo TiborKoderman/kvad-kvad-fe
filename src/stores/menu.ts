@@ -52,6 +52,11 @@ const useMenuStore = defineStore('menuStore', () => {
           link: '/nodes',
           icon: 'bi bi-server',
         },
+        {
+          name: 'Devices',
+          link: '/devices',
+          icon: 'bi bi-laptop',
+        },
       ]
     },
     {
