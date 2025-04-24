@@ -41,7 +41,7 @@ const columns = ref([
 const data = ref([])
 
 onMounted(() => {
-    api.get('/Device/user/all').then((response) => {
+    api.get('/Device/all').then((response) => {
         data.value = response.data
     })
 })
