@@ -3,7 +3,7 @@
         <button class="btn btn-primary me-2" @click="modalStore.open('EditDeviceModal')">
           Add Device
         </button>
-        <button class="btn btn-primary" @click="modalStore.open('EditDeviceModal')">
+        <button class="btn btn-primary" @click="modalStore.open('EditDeviceModal', { virtual: true })">
           Add Virtual Device
         </button>
         <DataTable
@@ -34,14 +34,14 @@ DataTable.use(DataTablesCore)
 
 const columns = ref([
     { title: 'Name', data: 'name' },
-    { title: 'Observed Services', data: 'observedServices' },
-    { title: 'Observed Containers', data: 'observedContainers'},
+    { title: 'Description', data: 'description' },
+    { title: 'Actions', data: null, render: '#action' },
 ])
 
 const data = ref([])
 
 onMounted(() => {
-    api.get('/Device/all').then((response) => {
+    api.get('/Device/user/all').then((response) => {
         data.value = response.data
     })
 })
