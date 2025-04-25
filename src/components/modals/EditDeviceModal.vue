@@ -28,7 +28,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import api from '@/api'
-import ToggleButton from '@/components/formItems/ToggleButton.vue'
 
 const props = defineProps({
   id: {
@@ -36,7 +35,7 @@ const props = defineProps({
     required: false,
   },
   onSubmit: {
-    type: Function,
+    type: Promise,
     required: false,
   },
   virtual: {
@@ -58,8 +57,10 @@ const device = ref<DeviceEditDTO>({
 })
 
 //submit, define expose and export default baseProps are required for the modal system to work
-function submit() {
-  return api.put('device/virtual', device)
+async function submit() {
+  return api.put('Device/virtual', device.value).then((r) => {
+    console.log('Device created');
+  })
 }
 
 defineOptions({

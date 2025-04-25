@@ -3,7 +3,7 @@
         <button class="btn btn-primary me-2" @click="modalStore.open('EditDeviceModal')">
           Add Device
         </button>
-        <button class="btn btn-primary" @click="modalStore.open('EditDeviceModal', { virtual: true })">
+        <button class="btn btn-primary" @click="modalStore.open('EditDeviceModal', { virtual: true }).then(() => getDevices())">
           Add Virtual Device
         </button>
         <DataTable
@@ -23,7 +23,7 @@ import DataTablesCore from 'datatables.net-bs5'
 
 import { useModalStore } from '@/stores/modals'
 
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 import api from '@/api'
 
@@ -35,16 +35,17 @@ DataTable.use(DataTablesCore)
 const columns = ref([
     { title: 'Name', data: 'name' },
     { title: 'Description', data: 'description' },
-    { title: 'Actions', data: null, render: '#action' },
 ])
 
 const data = ref([])
 
-onMounted(() => {
-    api.get('/Device/all').then((response) => {
-        data.value = response.data
-    })
-})
+
+const getDevices = async () => {
+    const response = await api.get('/Device/user/all');
+    data.value = response.data;
+};
+
+getDevices();
 
 const options = ref({
     responsive: true,
