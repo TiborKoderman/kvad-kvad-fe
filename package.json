@@ -36,11 +36,13 @@
     "datatables.net-staterestore-bs5": "^1.4.1",
     "datatables.net-vue3": "^3.0.4",
     "echarts": "^5.6.0",
+    "imaskjs": "^1.1.0",
     "pinia": "3.0.1",
     "scss": "^0.2.4",
     "sweetalert2": "^11.17.2",
     "vue": "^3.5.12",
     "vue-echarts": "^7.0.3",
+    "vue-imask": "^7.6.1",
     "vue-router": "^4.4.5",
     "vue-select": "^4.0.0-beta.6",
     "vuedraggable": "^4.1.0"

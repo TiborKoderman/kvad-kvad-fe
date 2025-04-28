@@ -20,6 +20,8 @@ import 'datatables.net-searchpanes-bs5';
 import 'datatables.net-select-bs5';
 import 'datatables.net-staterestore-bs5';
 
+import { IMaskDirective } from 'vue-imask'
+
 
 DataTablesCore.use(bootstrap);
 DataTable.use(DataTablesCore);
@@ -42,6 +44,8 @@ app.component('DataTable', DataTable)
 app.component('DateTime', DateTime)
 // eslint-disable-next-line vue/multi-word-component-names
 app.component('Swal', Swal);
+
+app.directive('imask', IMaskDirective)
 
 // app.component('api', api)
 app.mount('#app')

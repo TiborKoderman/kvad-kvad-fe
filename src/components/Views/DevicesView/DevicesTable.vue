@@ -24,6 +24,7 @@ import DataTablesCore from 'datatables.net-bs5'
 import { useModalStore } from '@/stores/modals'
 
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import api from '@/api'
 
@@ -34,7 +35,17 @@ DataTable.use(DataTablesCore)
 
 const columns = ref([
     { title: 'Name', data: 'name' },
-    { title: 'Description', data: 'description' },
+    { title: 'Description', data: 'description', editable: true },
+    {
+        title: 'Type',
+        data: null,
+        render: (data, type, row) => {
+            if (row.virtual) {
+                return '<span class="badge bg-secondary">Virtual</span>';
+            }
+            return '';
+        }
+    }
 ])
 
 const data = ref([])
@@ -47,11 +58,18 @@ const getDevices = async () => {
 
 getDevices();
 
+const router = useRouter();
+
 const options = ref({
     responsive: true,
     autoWidth: false,
     lengthChange: false,
     pageLength: 5,
+    rowCallback: (row, data) => {
+        row.addEventListener('click', () => {
+            router.push(`/device/${data.id}`);
+        });
+    }
 })
 
 const layout = ref({

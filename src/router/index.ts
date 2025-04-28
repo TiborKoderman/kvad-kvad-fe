@@ -67,6 +67,11 @@ const router = createRouter({
       component: () => import('../views/DevicesView.vue'),
     },
     {
+      path: '/device/:id',
+      name: 'device',
+      component: () => import('../views/DeviceView.vue'),
+    },
+    {
       path: '/websockets',
       name: 'websockets',
       component: () => import('../views/WebSocketsView.vue'),
@@ -76,22 +81,22 @@ const router = createRouter({
       name: 'system',
       component: () => import('../views/SystemInfoView.vue'),
       meta: {
-        role: ['admin']
-      }
+        role: ['admin'],
+      },
     },
     {
       path: '/settings/users',
       name: 'user_settings',
       component: () => import('../views/Settings/UserSettingsView.vue'),
       meta: {
-        role: ['admin']
-      }
+        role: ['admin'],
+      },
     },
     {
       path: '/settings/profileSettings',
       name: 'profile_settings',
       component: () => import('../views/Settings/ProfileSettingsView.vue'),
-    }
+    },
   ],
 })
 
