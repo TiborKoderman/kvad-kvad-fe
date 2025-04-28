@@ -10,12 +10,17 @@
     >
       <template #body>
         <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
-          <td v-for="(column, colIndex) in columns" :key="colIndex">
+          <td
+            v-for="(column, colIndex) in columns"
+            :key="colIndex"
+            @click="editCell(rowIndex, colIndex)"
+          >
             <input
-              v-if="column.editable"
+              v-if="isEditing(rowIndex, colIndex) && column.editable"
               type="text"
               class="form-control"
               v-model="row[column.key]"
+              @blur="stopEditing"
             />
             <span v-else>{{ row[column.key] }}</span>
           </td>
@@ -33,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const tableData = ref([
   { id: 1, name: 'Tag 1', description: 'Description 1' },
@@ -41,9 +46,9 @@ const tableData = ref([
 ])
 
 const columns = [
-  { key: 'id', title: 'ID', editable: false },
-  { key: 'name', title: 'Name', editable: true },
-  { key: 'description', title: 'Description', editable: true },
+  { key: 'id', title: 'ID', data: 'id', editable: false },
+  { key: 'name', title: 'Name', data: 'name', editable: true },
+  { key: 'description', title: 'Description', data: 'description', editable: true },
 ]
 
 const options = {
@@ -56,7 +61,30 @@ const layout = {
   theme: 'bootstrap',
 }
 
-const tableKey = ref(0) // Add a reactive key for the table
+const tableKey = ref(0)
+
+// Reactive properties to track the currently edited cell
+const editingCell = ref<{ rowIndex: number; colIndex: number } | null>(null)
+
+function isEditing(rowIndex: number, colIndex: number) {
+  return editingCell.value?.rowIndex === rowIndex && editingCell.value?.colIndex === colIndex
+}
+
+function editCell(rowIndex: number, colIndex: number) {
+  editingCell.value = { rowIndex, colIndex }
+}
+
+function stopEditing() {
+  editingCell.value = null
+}
+
+// Debugging: Log tableData and columns to ensure they are correct
+watch(tableData, (newData) => {
+  console.log('Updated tableData:', newData)
+})
+watch(columns, (newColumns) => {
+  console.log('Updated columns:', newColumns)
+})
 
 function addTag() {
   tableData.value.push({ id: tableData.value.length + 1, name: '', description: '' })

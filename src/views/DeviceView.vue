@@ -43,6 +43,7 @@
           id="description"
           v-model="device.owner.username"
           readonly
+          style="user-select: none;"
         />
       </div>
       <div class="form-group">
