@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <div class="d-flex align-items-center mb-3">
       <button @click="goBack" class="btn btn-outline-dark me-2">
         <i class="bi bi-arrow-left"></i>
@@ -10,13 +10,13 @@
       <p style="font-size: 0.9rem; color: gray; font-style: italic">
         {{ route.params.id }}
       </p>
-      <p v-if="device.virtual" class="badge badge-success">Virtual Device</p>
+      <p v-if="device.virtual" class="badge bg-warning">Virtual</p>
     </div>
-    <form action="submit">
+    <form action="submit" class="mb-4">
       <div class="form-group">
         <label for="name">Name</label>
         <input
-          type="text" 
+          type="text"
           class="form-control"
           id="name"
           v-model="device.name"
@@ -43,7 +43,7 @@
           id="description"
           v-model="device.owner.username"
           readonly
-          style="user-select: none;"
+          style="user-select: none"
         />
       </div>
       <div class="form-group">
@@ -54,7 +54,7 @@
           id="mac"
           :placeholder="device.mac"
           v-imask="macMask"
-          style="font-family: monospace;"
+          style="font-family: monospace"
         />
       </div>
       <div class="form-group">
@@ -78,11 +78,10 @@
           autocomplete="off"
         />
       </div>
-      <div class="form-group">
-        <label for="description">Tags</label>
-        <TagsTable :deviceId="route.params.id" />
-      </div>
     </form>
+    
+    <h2 for="description">Tags</h2>
+    <TagsTable :deviceId="route.params.id" />
   </div>
 </template>
 
@@ -94,7 +93,19 @@ import TagsTable from '@/components/Views/DevicesView/TagsTable.vue'
 
 const route = useRoute()
 const router = useRouter()
-const device = ref({})
+const device = ref({
+  id: '',
+  name: '',
+  description: '',
+  owner: {
+    id: '',
+    username: '',
+  },
+  mac: '',
+  location: '',
+  type: '',
+  virtual: false,
+})
 
 const macMask = {
   mask: 'HH:HH:HH:HH:HH:HH', // Mask format for MAC address
@@ -105,7 +116,7 @@ const macMask = {
   },
   delimiter: ':', // Delimiter for the mask
   blocks: [2, 2, 2, 2, 2, 2], // Number of characters in each blockl
-  prepare: (value) => {
+  prepare: value => {
     return value.toUpperCase().replace(/[^0-9A-F]/g, '') // Convert to uppercase and remove invalid characters
   },
 }
@@ -113,9 +124,14 @@ const macMask = {
 function getDevice() {
   const deviceId = route.params.id
 
-  api.get(`/Device/${deviceId}`).then(response => {
-    device.value = response.data
-  })
+  api
+    .get(`/Device/${deviceId}`)
+    .then(response => {
+      device.value = response.data
+    })
+    .catch(error => {
+      console.error('Error fetching device:', error)
+    })
 }
 
 function goBack() {
@@ -126,21 +142,10 @@ getDevice()
 </script>
 
 <style scoped>
-.badge {
-  display: inline-block;
-  padding: 0.25em 0.4em;
-  font-size: 75%;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.25rem;
-}
-
-.badge-success {
-  color: #fff;
-  background-color: #28a745;
+.scrollable-container {
+  /* max-height: 80vh; Adjust height as needed */
+  overflow-y: auto;
+  padding-right: 1rem; /* Optional: Add padding for scrollbar spacing */
 }
 
 .mac-input::placeholder {

@@ -8,7 +8,7 @@
       <Sidebar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
       <div class="d-flex flex-column flex-grow-1">
         <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-        <main class="content p-2 flex-grow-1">
+        <main class="content p-2 flex-grow-1 scrollable-content">
           <router-view></router-view>
         </main>
       </div>
@@ -36,5 +36,9 @@ const toggleCollapse = () => {
 #app {
   height: 100vh;
   overflow: hidden;
+}
+
+.scrollable-content {
+  overflow-y: auto;
 }
 </style>

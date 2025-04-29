@@ -23,6 +23,11 @@ const useMenuStore = defineStore('menuStore', () => {
       icon: 'bi bi-chat-left',
     },
     {
+      name: 'Devices',
+      link: '/devices',
+      icon: 'bi bi-laptop',
+    },
+    {
       name: 'Management',
       link: '/management',
       icon: 'bi bi-people',
@@ -52,12 +57,7 @@ const useMenuStore = defineStore('menuStore', () => {
           link: '/nodes',
           icon: 'bi bi-server',
         },
-        {
-          name: 'Devices',
-          link: '/devices',
-          icon: 'bi bi-laptop',
-        },
-      ]
+      ],
     },
     {
       name: 'Settings',
@@ -77,7 +77,6 @@ const useMenuStore = defineStore('menuStore', () => {
           link: '/system',
           icon: 'bi bi-cpu',
         },
-
       ],
     },
   ])

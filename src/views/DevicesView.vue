@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3 class="card-title mb-0">Devices</h3>
+  <div class="container-fluid">
+    <h1 class="card-title mb-4">Devices</h1>
     <DevicesTable />
   </div>
 </template>
@@ -10,10 +10,6 @@ import DevicesTable from '@/components/Views/DevicesView/DevicesTable.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
-function goBack() {
-  router.back()
-}
 </script>
 
 <style lang="scss" scoped></style>

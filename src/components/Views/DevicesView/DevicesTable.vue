@@ -41,7 +41,7 @@ const columns = ref([
         data: null,
         render: (data, type, row) => {
             if (row.virtual) {
-                return '<span class="badge bg-secondary">Virtual</span>';
+                return '<span class="badge bg-warning">Virtual</span>';
             }
             return '';
         }
