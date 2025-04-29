@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, ObjectDirective } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
@@ -45,7 +45,7 @@ app.component('DateTime', DateTime)
 // eslint-disable-next-line vue/multi-word-component-names
 app.component('Swal', Swal);
 
-app.directive('imask', IMaskDirective)
+app.directive('imask', IMaskDirective as ObjectDirective)
 
 // app.component('api', api)
 app.mount('#app')

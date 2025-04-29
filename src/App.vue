@@ -6,15 +6,14 @@
   <div v-else class="container-fluid m-0 p-0">
     <div class="d-flex h-100 m-0 p-0 flex-grow-1">
       <Sidebar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-      <div class="d-flex flex-column flex-grow-1">
+      <div class="d-flex flex-column">
         <TopBar :is-collapsed="isCollapsed" @toggle-collapse="toggleCollapse" />
-        <main class="content p-2 flex-grow-1 scrollable-content">
+        <main class=" h-100">
           <router-view></router-view>
         </main>
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -38,7 +37,4 @@ const toggleCollapse = () => {
   overflow: hidden;
 }
 
-.scrollable-content {
-  overflow-y: auto;
-}
 </style>

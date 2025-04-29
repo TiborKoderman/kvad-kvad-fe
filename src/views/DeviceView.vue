@@ -1,16 +1,18 @@
 <template>
-  <div class="container-fluid">
+  <div class="container h-100 overflow-auto">
     <div class="d-flex align-items-center mb-3">
       <button @click="goBack" class="btn btn-outline-dark me-2">
-        <i class="bi bi-arrow-left"></i>
+      <i class="bi bi-arrow-left"></i>
       </button>
-      <h1 class="mb-0">Device details</h1>
+      <div class="d-flex flex-column align-items-center justify-content-center">
+        <h1 class="mb-0">Device details</h1>
+        <p v-if="device.virtual" class="badge bg-warning mt-2">Virtual</p>
+      </div>
     </div>
     <div>
       <p style="font-size: 0.9rem; color: gray; font-style: italic">
         {{ route.params.id }}
       </p>
-      <p v-if="device.virtual" class="badge bg-warning">Virtual</p>
     </div>
     <form action="submit" class="mb-4">
       <div class="form-group">
@@ -115,7 +117,7 @@ const macMask = {
     H: /[0-9A-F]/, // Hexadecimal characters
   },
   delimiter: ':', // Delimiter for the mask
-  blocks: [2, 2, 2, 2, 2, 2], // Number of characters in each blockl
+  blocks: [2, 2, 2, 2, 2, 2], // Number of characters in each block
   prepare: value => {
     return value.toUpperCase().replace(/[^0-9A-F]/g, '') // Convert to uppercase and remove invalid characters
   },

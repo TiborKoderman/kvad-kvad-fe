@@ -43,6 +43,14 @@ import { ref, watch } from 'vue'
 const tableData = ref([
   { id: 1, name: 'Tag 1', description: 'Description 1' },
   { id: 2, name: 'Tag 2', description: 'Description 2' },
+  { id: 3, name: 'Tag 3', description: 'Description 3' },
+  { id: 4, name: 'Tag 4', description: 'Description 4' },
+  { id: 5, name: 'Tag 5', description: 'Description 5' },
+  { id: 6, name: 'Tag 6', description: 'Description 6' },
+  { id: 7, name: 'Tag 7', description: 'Description 7' },
+  { id: 8, name: 'Tag 8', description: 'Description 8' },
+  { id: 9, name: 'Tag 9', description: 'Description 9' },
+  { id: 10, name: 'Tag 10', description: 'Description 10' },
 ])
 
 const columns = [

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <h1 class="card-title mb-4">Devices</h1>
     <DevicesTable />
   </div>
