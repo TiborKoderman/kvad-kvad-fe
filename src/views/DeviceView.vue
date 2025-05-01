@@ -1,19 +1,22 @@
 <template>
   <div class="container h-100">
     <div class="d-flex align-items-center mb-3">
-      <button @click="goBack" class="btn btn-outline-dark me-2">
-      <i class="bi bi-arrow-left"></i>
-      </button>
-      <div class="d-flex flex-row align-items-center justify-content-center">
-        <h1 class="mb-0">Device details</h1>
-        <p v-if="device.virtual" class="badge bg-warning mt-2">Virtual</p>
+      <div class="d-flex flex-column">
+        <div class="d-flex flex-row align-items-center justify-content-center">
+          <button @click="goBack" class="btn btn-outline-dark me-2">
+            <i class="bi bi-arrow-left"></i>
+          </button>
+          <h1 class="mb-0">Device details</h1>
+          <div class="ms-2 d-flex align-items-center justify-content-center flex-fill">
+            <p v-if="device.virtual" class="badge bg-warning mt-2 align-self-center">Virtual</p>
+          </div>
+        </div>
+        <p style="font-size: 0.9rem; color: gray; font-style: italic">
+          {{ route.params.id }}
+        </p>
       </div>
     </div>
-    <div>
-      <p style="font-size: 0.9rem; color: gray; font-style: italic">
-        {{ route.params.id }}
-      </p>
-    </div>
+    <div></div>
     <form action="submit" class="mb-4">
       <div class="form-group">
         <label for="name">Name</label>
@@ -81,7 +84,7 @@
         />
       </div>
     </form>
-    
+
     <h2 for="description">Tags</h2>
     <TagsTable v-model="device" />
   </div>

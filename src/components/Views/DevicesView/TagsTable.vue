@@ -13,7 +13,10 @@
           <td
             v-for="(column, colIndex) in columns"
             :key="colIndex"
-            :class="['text-center', { 'shrink': ['enabled', 'historicize'].includes(column.key) }]"
+            :class="[
+              'text-center',
+              { shrink: ['enabled', 'historicize'].includes(column.key) },
+            ]"
             @click="editCell(rowIndex, colIndex)"
           >
             <template v-if="['enabled', 'historicize'].includes(column.key)">
@@ -24,18 +27,18 @@
               />
             </template>
             <template v-else-if="column.key === 'source'">
+              <span v-if="!isEditing(rowIndex, colIndex)" @click="editCell(rowIndex, colIndex)">
+                {{ row[column.key] }}
+              </span>
               <select
+                v-else
                 class="form-select"
                 v-model="row[column.key]"
                 @change="stopEditing"
               >
-                <option value="mqtt">MQTT</option>
-                <option value="modbus">Modbus</option>
-                <option value="http">HTTP</option>
-                <option value="websocket">WebSocket</option>
-                <option value="constant">Constant</option>
-                <option value="computed">Computed</option>
-                <option value="random">Random</option>
+                <option v-for="option in sourceOptions" :key="option.id" :value="option.name">
+                  {{ option.name }}
+                </option>
               </select>
             </template>
             <template v-else>
@@ -60,6 +63,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import api from '@/api'
 
 const props = defineProps({
   modelValue: {
@@ -75,26 +79,33 @@ const device = ref({
   tags: props.modelValue.tags || [], // Ensure tags is initialized as an array
 })
 
-watch(device, (newValue) => {
+watch(device, newValue => {
   emit('update:modelValue', newValue)
 })
 
+const sourceOptions = ref<SourceOption[]>([])
+
+// Added a new column for 'Expression'
 const columns = [
   { title: 'ID', key: 'id', editable: true },
   { title: 'Unit', key: 'unit', editable: true },
   { title: 'Source', key: 'source', editable: true },
+  { title: 'Expression', key: 'expression', editable: true },
   { title: 'Enabled', key: 'enabled', editable: true },
   { title: 'Historicize', key: 'historicize', editable: true },
 ]
 
 // data
+// Updated the Tag interface to include 'expression'
 interface Tag {
   id: string
   unit: string
   source: string
+  expression: string
   virtual: boolean
   enabled: boolean
   historicize: boolean
+  Source: SourceOption
 }
 
 function fullId(tagId) {
@@ -133,11 +144,13 @@ function stopEditing() {
 
 // Debugging: Log tableData and columns to ensure they are correct
 
+// Updated the addTag function to initialize 'expression'
 function addTag() {
   const newTag: Tag = {
     id: '',
     unit: '',
     source: '',
+    expression: '',
     virtual: false,
     enabled: false,
     historicize: false,
@@ -146,6 +159,18 @@ function addTag() {
   device.value.tags.push(newTag)
   tableKey.value += 1 // Trigger re-render
 }
+
+interface SourceOption {
+  id: number
+  name: string
+}
+
+function getSourceOptions() {
+  return api.get('Device/tagSources').then(response => {
+    sourceOptions.value = response.data
+  })
+}
+getSourceOptions()
 </script>
 
 <style scoped>
@@ -156,6 +181,18 @@ function addTag() {
 
 .shrink {
   width: 1%;
+  white-space: nowrap;
+}
+
+/* Ensure table column widths remain static */
+.table {
+  table-layout: fixed;
+}
+
+.table th,
+.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 </style>
