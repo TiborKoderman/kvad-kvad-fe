@@ -1,7 +1,7 @@
 <!-- SidebarBrand.vue -->
 <template>
   <div
-    class="sidebar-brand d-flex align-items-center p-3 justify-content-between"
+    class="sidebar-brand d-flex align-items-center p-3 m-0 justify-content-between"
     :class="[props.brandClass]"
   >
     <div class="d-flex align-items-center">

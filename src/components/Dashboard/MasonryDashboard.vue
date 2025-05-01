@@ -1,5 +1,5 @@
 <template>
-  <div class="masonry-dashboard">
+  <div class="masonry-dashboard ">
     <div class="masonry-grid">
       <div v-for="card in cards" :key="card.id" class="masonry-card">
         <h3>{{ card.title }}</h3>

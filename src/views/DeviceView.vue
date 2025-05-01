@@ -1,10 +1,10 @@
 <template>
-  <div class="container h-100 overflow-auto">
+  <div class="container h-100">
     <div class="d-flex align-items-center mb-3">
       <button @click="goBack" class="btn btn-outline-dark me-2">
       <i class="bi bi-arrow-left"></i>
       </button>
-      <div class="d-flex flex-column align-items-center justify-content-center">
+      <div class="d-flex flex-row align-items-center justify-content-center">
         <h1 class="mb-0">Device details</h1>
         <p v-if="device.virtual" class="badge bg-warning mt-2">Virtual</p>
       </div>
@@ -83,7 +83,7 @@
     </form>
     
     <h2 for="description">Tags</h2>
-    <TagsTable :deviceId="route.params.id" />
+    <TagsTable v-model="device" />
   </div>
 </template>
 
