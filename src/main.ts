@@ -20,6 +20,8 @@ import 'datatables.net-searchpanes-bs5';
 import 'datatables.net-select-bs5';
 import 'datatables.net-staterestore-bs5';
 
+import 'datatables.net-plugins/features/scrollResize/dataTables.scrollResize.min.mjs'
+
 import { IMaskDirective } from 'vue-imask'
 
 

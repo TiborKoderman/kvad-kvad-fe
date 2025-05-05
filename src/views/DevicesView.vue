@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 class="card-title mb-4">Devices</h1>
+  <div class="container h-100 d-flex flex-column">
+    <h1 class="mb-4">Devices</h1>
     <DevicesTable />
   </div>
 </template>
