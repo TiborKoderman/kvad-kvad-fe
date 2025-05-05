@@ -1,6 +1,7 @@
 <template>
   <div class="dropdown">
     <input
+      v-if="searchable"
       type="text"
       class="form-control"
       v-model="searchQuery"
@@ -47,6 +48,10 @@ const props = defineProps({
     type: [String, Object],
     default: null,
   },
+  searchable: {
+    type: Boolean,
+    default: true, // Enable search by default
+  },
 });
 
 const emit = defineEmits(["select", "update:modelValue"]);
@@ -73,7 +78,7 @@ const selectOption = (option) => {
 const hideDropdown = () => {
   setTimeout(() => {
     showDropdown.value = false;
-  }, 200);l
+  }, 200);
 };
 
 const getOptionLabel = (option) => {

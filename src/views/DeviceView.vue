@@ -16,7 +16,12 @@
         </p>
       </div>
     </div>
-    <div></div>
+    <div v-if="pendingChanges" class="alert alert-warning mt-4 d-flex justify-content-between align-items-center">
+      <div>
+      You have unsaved changes.
+      </div>
+      <button @click="saveChanges" class="btn btn-primary btn-sm">Click here to save</button>
+    </div>
     <form action="submit" class="mb-4">
       <div class="form-group">
         <label for="name">Name</label>
@@ -73,7 +78,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="description">Type</label>
+        <label for="type">Type</label>
         <input
           type="text"
           class="form-control"
@@ -83,7 +88,27 @@
           autocomplete="off"
         />
       </div>
+      <div class="form-group">
+        <label for="update-interval">Historize interval</label>
+        <ToggleButton
+          v-model="device.immediate"
+          :true-value="true"
+          :false-value="false"
+          label="Immediate"
+          class="mb-2"
+        />
+        <input
+          type="text"
+          class="form-control"
+          id="update-interval"
+          v-model="device.historcizeInterval"
+          :disabled="device.immediate"
+          required
+          autocomplete="off"
+        />
+      </div>
     </form>
+
 
     <h2 for="description">Tags</h2>
     <TagsTable v-model="device" />
@@ -93,8 +118,10 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import TagsTable from '@/components/Views/DevicesView/TagsTable.vue'
+import ToggleButton from '@/components/formItems/ToggleButton.vue'
+const originalDevice = ref("")
 
 const route = useRoute()
 const router = useRouter()
@@ -102,14 +129,15 @@ const device = ref({
   id: '',
   name: '',
   description: '',
-  owner: {
-    id: '',
-    username: '',
-  },
+  ownerId: '',
   mac: '',
   location: '',
   type: '',
   virtual: false,
+})
+
+const pendingChanges = computed(()=> {
+  return originalDevice.value !== JSON.stringify(device.value)
 })
 
 const macMask = {
@@ -133,6 +161,7 @@ function getDevice() {
     .get(`/Device/${deviceId}`)
     .then(response => {
       device.value = response.data
+      originalDevice.value = JSON.stringify(device.value) // Store the original device data
     })
     .catch(error => {
       console.error('Error fetching device:', error)
@@ -140,7 +169,46 @@ function getDevice() {
 }
 
 function goBack() {
-  router.back()
+  if (pendingChanges.value) {
+    import('sweetalert2').then(Swal => {
+      Swal.default.fire({
+        title: 'Unsaved Changes',
+        text: 'You have unsaved changes. Are you sure you want to leave?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, leave',
+        cancelButtonText: 'No, stay',
+      }).then(result => {
+        if (result.isConfirmed) {
+          router.back()
+        }
+      })
+    })
+  } else {
+    router.back()
+  }
+}
+
+function saveChanges() {
+  const deviceId = route.params.id
+
+  return api
+    .put(`/Device/${deviceId}`, device.value)
+    .then(() => {
+      originalDevice.value = JSON.stringify(device.value) // Update the original device data
+      router.push({ name: 'DevicesView' })
+    })
+    .catch(error => {
+      console.error('Error saving device:', error)
+      import('sweetalert2').then(Swal => {
+        Swal.default.fire({
+          title: 'Error',
+          text: 'There was an error saving the device. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        })
+      })
+    })
 }
 
 getDevice()

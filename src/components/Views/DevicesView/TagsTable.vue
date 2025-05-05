@@ -20,14 +20,28 @@
             @click="editCell(rowIndex, colIndex)"
           >
             <template v-if="['enabled', 'historicize'].includes(column.key)">
-              <input
-                type="checkbox"
-                v-model="row[column.key]"
-                @change="stopEditing"
-              />
+              <ToggleButton v-model="row[column.key]" @change="stopEditing" />
+            </template>
+            <template v-else-if="column.key === 'unit'">
+              <span
+                v-if="!isEditing(rowIndex, colIndex)"
+                @click="editCell(rowIndex, colIndex)"
+              >
+                {{ row[column.key] }}
+              </span>
+                <div v-else class="position-relative">
+                  <v-select
+                    :options="units.map(unit => unit.symbol)"
+                    v-model="row[column.key]"
+                    class="form-select"
+                  />
+                </div>
             </template>
             <template v-else-if="column.key === 'source'">
-              <span v-if="!isEditing(rowIndex, colIndex)" @click="editCell(rowIndex, colIndex)">
+              <span
+                v-if="!isEditing(rowIndex, colIndex)"
+                @click="editCell(rowIndex, colIndex)"
+              >
                 {{ row[column.key] }}
               </span>
               <select
@@ -36,7 +50,11 @@
                 v-model="row[column.key]"
                 @change="stopEditing"
               >
-                <option v-for="option in sourceOptions" :key="option.id" :value="option.name">
+                <option
+                  v-for="option in sourceOptions"
+                  :key="option.id"
+                  :value="option.name"
+                >
                   {{ option.name }}
                 </option>
               </select>
@@ -64,6 +82,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import api from '@/api'
+import ToggleButton from '@/components/formItems/ToggleButton.vue'
+import vSelect from 'vue-select'
+import SelectDropdown from '@/components/formItems/SelectDropdown.vue'
+
+
 
 const props = defineProps({
   modelValue: {
@@ -84,6 +107,7 @@ watch(device, newValue => {
 })
 
 const sourceOptions = ref<SourceOption[]>([])
+const units = ref([])
 
 // Added a new column for 'Expression'
 const columns = [
@@ -149,10 +173,10 @@ function addTag() {
   const newTag: Tag = {
     id: '',
     unit: '',
-    source: '',
+    source: null,
     expression: '',
     virtual: false,
-    enabled: false,
+    enabled: true,
     historicize: false,
   }
 
@@ -171,6 +195,13 @@ function getSourceOptions() {
   })
 }
 getSourceOptions()
+
+function getUnits() {
+  return api.get('Device/units').then(response => {
+    units.value = response.data
+  })
+}
+getUnits()
 </script>
 
 <style scoped>
