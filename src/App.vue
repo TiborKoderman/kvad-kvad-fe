@@ -3,16 +3,14 @@
   <div v-if="route.meta.layout === 'auth'">
     <router-view></router-view>
   </div>
-  <div v-else class="container-fluid m-0 p-0 h-100">
-    <div class="d-flex h-100 m-0 p-0">
+  <div v-else class="container-fluid m-0 p-0 h-100 d-flex">
       <Sidebar />
-      <div class="d-flex flex-column flex-grow-1">
+      <div class="d-flex flex-column w-100">
         <TopBar/>
         <main class="h-100">
           <router-view></router-view>
         </main>
       </div>
-    </div>
   </div>
 </template>
 

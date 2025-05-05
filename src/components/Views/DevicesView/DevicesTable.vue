@@ -72,7 +72,7 @@ const router = useRouter()
 
 const options = ref({
   scrollResize: false,
-  scrollY: 100,
+  scrollY: "100%",
   scrollCollapse: false,
   paging: false,
   rowCallback: (row, data) => {
