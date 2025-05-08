@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table table-bordered table-hover">
+    <!-- <table class="table table-bordered table-hover">
       <thead>
         <tr>
           <th v-for="column in columns" :key="column.key" class="text-center">
@@ -75,7 +75,19 @@
     </table>
     <div class="text-center mt-3">
       <button @click="addTag" class="btn btn-primary">Add New Tag</button>
-    </div>
+    </div> -->
+  </div>
+
+  <div>
+    <DataTable
+      :data="device.tags"
+      :columns="columns"
+      :options="options"
+      :layout="layout"
+      class="table table-bordered table-hover display nowrap"
+      :key="tableKey"
+    >
+    </DataTable>
   </div>
 </template>
 
@@ -85,8 +97,6 @@ import api from '@/api'
 import ToggleButton from '@/components/formItems/ToggleButton.vue'
 import vSelect from 'vue-select'
 import SelectDropdown from '@/components/formItems/SelectDropdown.vue'
-
-
 
 const props = defineProps({
   modelValue: {
@@ -140,6 +150,9 @@ const options = {
   paging: true,
   searching: true,
   ordering: true,
+  scrollY: "50vh",
+  scrollCollapse: false,
+  responsive: true,
 }
 
 const layout = {

@@ -1,6 +1,6 @@
 <template>
   <div class="container h-100 d-flex flex-column">
-    <h1 class="mb-4">Devices</h1>
+    <h1 class="mb-4">Your devices</h1>
     <DevicesTable />
   </div>
 </template>

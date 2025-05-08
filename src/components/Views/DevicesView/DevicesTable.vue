@@ -17,7 +17,7 @@
       Add Virtual Device
     </button>
   </div>
-  <div class="d-flex flex-column ">
+  <div class="d-flex flex-column">
     <DataTable
       :data="data"
       :columns="columns"
@@ -72,7 +72,7 @@ const router = useRouter()
 
 const options = ref({
   scrollResize: false,
-  scrollY: "100%",
+  scrollY: "65vh",
   scrollCollapse: false,
   paging: false,
   rowCallback: (row, data) => {
