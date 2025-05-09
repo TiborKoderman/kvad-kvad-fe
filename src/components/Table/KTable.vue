@@ -1,5 +1,10 @@
 <template>
-    <table>
+    <table class="table"         :class="{
+        striped: striped,
+        bordered: bordered,
+        hoverable: hoverable
+    }"
+    >
         <thead>
             <tr>
                 <th v-for="(column, index) in columns" :key="index">
@@ -7,14 +12,14 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody
+        :class="options.ScrollY ? 'overflow-y-auto' : ''">
             <tr v-for="(row, rowIndex) in data" :key="rowIndex">
                 <td v-for="(column, colIndex) in columns" :key="colIndex">
                     {{ row[column.data] }}
                 </td>
             </tr>
         </tbody>
-
     </table>
 </template>
 
