@@ -97,6 +97,14 @@ const router = createRouter({
       name: 'profile_settings',
       component: () => import('../views/Settings/ProfileSettingsView.vue'),
     },
+    {
+      path: '/scada',
+      name: 'scada',
+      component: () => import('../views/ScadaView.vue'),
+      meta: {
+        role: ['admin'],
+      },
+    }
   ],
 })
 

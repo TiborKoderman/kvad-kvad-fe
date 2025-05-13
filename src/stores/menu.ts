@@ -28,6 +28,11 @@ const useMenuStore = defineStore('menuStore', () => {
       icon: 'bi bi-laptop',
     },
     {
+      name: 'Scada',
+      link: '/scada',
+      icon: 'bi bi-diagram-3',
+    },
+    {
       name: 'Management',
       link: '/management',
       icon: 'bi bi-people',

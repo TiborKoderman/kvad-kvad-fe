@@ -21,7 +21,7 @@
             </tr>
         </tbody>
     </table>
-</template>
+</template>l
 
 <script setup lang="ts">
 
