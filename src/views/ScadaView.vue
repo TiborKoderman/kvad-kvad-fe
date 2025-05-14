@@ -11,6 +11,7 @@ import { ref, onMounted } from "vue";
 const scadaContainer = ref<HTMLElement | null>(null);
 
 const scada = new Scada();
+scada.init();
 
 onMounted(() => {
   if (scadaContainer.value) {

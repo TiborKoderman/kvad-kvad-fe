@@ -1,5 +1,6 @@
 import Component from "./Components/Component";
 import Scada from "./Scada";
+import ComponentRegistry from "./ComponentRegistry";
 
 export default class SObject {
 
@@ -31,8 +32,14 @@ export default class SObject {
         });
     }
 
-    AddComponent(name: string, component: Component) {
-        this._components.set(name, component);
+    AddComponent(name: string, ...args: unknown[]) {
+        const component = ComponentRegistry.get(name);
+        if (!component) {
+            throw new Error(`Component ${name} not found in registry`);
+        }
+        else{
+            this._components.set(name, new component(...args));
+        }
     }
 
     GetComponent(name: string): Component | undefined {

@@ -5,6 +5,6 @@ export default class SRect extends SObject {
 
     constructor(scada: Scada, x: number, y: number, width: number, height: number) {
         super(scada);
-        this.AddComponent("RectComponent", this, x, y, width, height, 0, 1);
+        this.AddComponent("RectComponent", x, y, width, height, 0, 1);
     }
 }

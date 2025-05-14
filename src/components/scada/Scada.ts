@@ -16,13 +16,17 @@ export default class Scada {
     }
 
     init() {
-        console.log('Scada component initialized');
 
         this._sObjects.push(new SRect(this, 10, 10, 100, 100));
 
         this._sObjects.forEach((object) => {
             object.Init();
         });
+        console.log('Scada component initialized');
+
+        console.log();
+        
+
     }
 
     Update() {

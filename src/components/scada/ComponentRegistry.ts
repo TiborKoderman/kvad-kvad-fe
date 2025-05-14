@@ -1,24 +1,32 @@
-import Component from "./Components/Component";
+// ComponentRegistry.ts
 
-type ComponentConstructor = new (...args: unknown[]) => Component;
+export type ComponentConstructor = new (...args: unknown[]) => unknown;
+
+console.log("ComponentRegistry loaded");
+
 
 export default class ComponentRegistry {
-    private static registry: Map<string, ComponentConstructor> = new Map();
+  private static registry = new Map<string, ComponentConstructor>();
 
-    static registerComponent(name: string, componentConstructor: ComponentConstructor): void {
-        this.registry.set(name, componentConstructor);
-    }
+  static register(name: string, component: ComponentConstructor): void {
+    console.log(`Registering component: ${name}`);
+    this.registry.set(name, component);
+  }
 
-    static create(name:string, ...args: unknown[]): Component | undefined {
-        const componentConstructor = this.registry.get(name);
-        if (componentConstructor) {
-            return new componentConstructor(...args);
-        }
-        console.warn(`Component ${name} not found in registry.`);
-        return undefined;
-    }
+  static get(name: string): ComponentConstructor | undefined {
+    return this.registry.get(name);
+  }
 
-    static has(name: string): boolean {
-        return this.registry.has(name);
-    }
+  static create<T = unknown>(name: string, ...args: unknown[]): T | undefined {
+    const Ctor = this.registry.get(name);
+    return Ctor ? (new Ctor(...args) as T) : undefined;
+  }
+
+  static has(name: string): boolean {
+    return this.registry.has(name);
+  }
+
+  static remove(name: string): void {
+    this.registry.delete(name);
+  }
 }

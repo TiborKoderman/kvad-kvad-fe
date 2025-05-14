@@ -1,7 +1,6 @@
 import Component from "./Component"
-import ComponentRegistry from "../ComponentRegistry";
 import SObject from "../SObject";
-
+import ComponentRegistry from "../ComponentRegistry";
 export default class RectComponent extends Component {
     public x: number;
     public y: number;
@@ -48,7 +47,7 @@ export default class RectComponent extends Component {
     }
 
 
-    init() {
+    Mount() {
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rect.setAttribute("x", this.x.toString());
         rect.setAttribute("y", this.y.toString());
@@ -66,5 +65,5 @@ export default class RectComponent extends Component {
 
     }
 }
-
-ComponentRegistry.registerComponent("RectComponent", RectComponent);
+console.log("RectComponent loaded");
+ComponentRegistry.register("RectComponent", RectComponent);
