@@ -4,13 +4,26 @@ export type ComponentConstructor = new (...args: unknown[]) => unknown;
 
 console.log("ComponentRegistry loaded");
 
-
 export default class ComponentRegistry {
   private static registry = new Map<string, ComponentConstructor>();
+
+
+  constructor() {
+    console.log("ComponentRegistry initialized");
+
+  }
+
 
   static register(name: string, component: ComponentConstructor): void {
     console.log(`Registering component: ${name}`);
     this.registry.set(name, component);
+  }
+
+  static Register(name: string) {
+    return (constructor: ComponentConstructor) => {
+      console.log(`Registering component: ${name}`);
+      this.registry.set(name, constructor);
+    };
   }
 
   static get(name: string): ComponentConstructor | undefined {
@@ -30,3 +43,5 @@ export default class ComponentRegistry {
     this.registry.delete(name);
   }
 }
+
+// export default new ComponentRegistry();

@@ -1,6 +1,7 @@
 import Component from "./Components/Component";
 import Scada from "./Scada";
 import ComponentRegistry from "./ComponentRegistry";
+import RectComponent from "./Components/RectComponent";
 
 export default class SObject {
 
@@ -38,7 +39,8 @@ export default class SObject {
             throw new Error(`Component ${name} not found in registry`);
         }
         else{
-            this._components.set(name, new component(...args));
+            const ComponentCtor = component as new (this.scada, ...args: unknown[]) => Component;
+            this._components.set(name, new ComponentCtor(...args));
         }
     }
 

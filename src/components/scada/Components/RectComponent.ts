@@ -1,6 +1,8 @@
 import Component from "./Component"
 import SObject from "../SObject";
 import ComponentRegistry from "../ComponentRegistry";
+
+@ComponentRegistry.Register("RectComponent")
 export default class RectComponent extends Component {
     public x: number;
     public y: number;

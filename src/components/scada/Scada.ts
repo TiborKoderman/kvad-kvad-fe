@@ -1,7 +1,8 @@
 import SObject from "./SObject";
 import Svg from "./Svg";
-import RectComponent from "./Components/RectComponent";
 import SRect from "./SRect";
+import "./ComponentRegistry";
+import.meta.glob("./Components/*.ts", { eager: true });
 
 export default class Scada {
     public svg: Svg;
@@ -17,16 +18,15 @@ export default class Scada {
 
     init() {
 
-        this._sObjects.push(new SRect(this, 10, 10, 100, 100));
+        const rect = new SRect(this, 10, 10, 100, 100);
+
+        console.log(rect)
+        this._sObjects.push(rect);
 
         this._sObjects.forEach((object) => {
             object.Init();
         });
-        console.log('Scada component initialized');
-
-        console.log();
-        
-
+        console.log("Scada initialized");
     }
 
     Update() {
@@ -38,6 +38,16 @@ export default class Scada {
         this._sObjects.forEach((object) => {
             object.Render();
         });
+    }
+
+    AddObject(object: SObject) {
+        this._sObjects.push(object);
+    }
+    RemoveObject(object: SObject) {
+        const index = this._sObjects.indexOf(object);
+        if (index > -1) {
+            this._sObjects.splice(index, 1);
+        }
     }
 
 
