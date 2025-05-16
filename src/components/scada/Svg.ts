@@ -1,5 +1,8 @@
 export default class Svg {
     private svg: SVGSVGElement;
+
+    private layers: Map<string, SVGGElement> = new Map();
+
     constructor(width: string, height: string, viewBox: string) {
         // Create an SVG element using the SVG 2 standard
         this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -12,6 +15,24 @@ export default class Svg {
 
     Init() {
         console.log('Scada component initialized');
+    }
+
+    AddLayer(name: string): SVGGElement {
+        const layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        layer.setAttribute('id', name);
+        this.svg.appendChild(layer);
+        this.layers.set(name, layer);
+        return layer;
+    }
+    GetLayer(name: string): SVGGElement | undefined {
+        return this.layers.get(name);
+    }
+    RemoveLayer(name: string) {
+        const layer = this.layers.get(name);
+        if (layer) {
+            this.svg.removeChild(layer);
+            this.layers.delete(name);
+        }
     }
 
     Get(): SVGSVGElement {

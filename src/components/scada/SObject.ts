@@ -39,8 +39,8 @@ export default class SObject {
             throw new Error(`Component ${name} not found in registry`);
         }
         else{
-            const ComponentCtor = component as new (this.scada, ...args: unknown[]) => Component;
-            this._components.set(name, new ComponentCtor(...args));
+            const ComponentCtor = component as new (...args: unknown[]) => Component;
+            this._components.set(name, new ComponentCtor(this.scada, ...args));
         }
     }
 
