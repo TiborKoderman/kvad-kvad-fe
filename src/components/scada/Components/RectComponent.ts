@@ -1,6 +1,7 @@
 import Component from "./Component"
 import SObject from "../SObject";
 import ComponentRegistry from "../ComponentRegistry";
+import { log } from "console";
 
 @ComponentRegistry.Register("RectComponent")
 export default class RectComponent extends Component {
@@ -60,6 +61,7 @@ export default class RectComponent extends Component {
             rect.setAttribute("stroke", this.debugBoundsColor);
             rect.setAttribute("fill", "none");
         }
+        console.log("Mounting RectComponent", this);
         this.sObject.scada.svg.Get().appendChild(rect);
     }
     Update() {}

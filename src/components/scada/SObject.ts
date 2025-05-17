@@ -40,7 +40,7 @@ export default class SObject {
         }
         else{
             const ComponentCtor = component as new (...args: unknown[]) => Component;
-            this._components.set(name, new ComponentCtor(this.scada, ...args));
+            this._components.set(name, new ComponentCtor(this, ...args));
         }
     }
 

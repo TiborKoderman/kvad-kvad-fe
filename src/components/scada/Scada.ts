@@ -45,7 +45,7 @@ export default class Scada {
 
     init() {
 
-        const rect = new SRect(this, 10, 10, 100, 100);
+        const rect = new SRect(this, 10, 10, 200, 100);
 
         console.log(rect)
         this._sObjects.push(rect);
