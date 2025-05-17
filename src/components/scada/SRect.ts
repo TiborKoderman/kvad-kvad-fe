@@ -1,11 +1,12 @@
 import SObject from './SObject';
-import Scada from './Scada';
 export default class SRect extends SObject {
 
 
-    constructor(scada: Scada, x: number, y: number, width: number, height: number) {
-        super(scada);
-        console.log("Creating SRect for scada", scada);
+    constructor(x: number, y: number, width: number, height: number) {
+        super();
         this.AddComponent("RectComponent", x, y, width, height, 0, 1);
+        this.AddComponent("OnClickComponent", (event: MouseEvent) => {
+            console.log("SRect clicked", event);
+        });
     }
 }

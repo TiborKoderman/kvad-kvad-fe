@@ -7,16 +7,16 @@ export default class SObject {
 
 
     private _components = new Map<string, Component>();
-    public scada: Scada;
+    public scada: Scada | null = null;
 
-    constructor(scada: Scada, ...components: Component[]) {
-        this.scada = scada;
+    constructor(...components: Component[]) {
         components.forEach((component) => {
             this._components.set(component.constructor.name, component);
         });
-
     }
-    Init() {
+
+    Mount(scada: Scada) {
+        this.scada = scada;
         this._components.forEach((component) => {
             component.Mount();
         });
@@ -44,8 +44,9 @@ export default class SObject {
         }
     }
 
-    GetComponent(name: string): Component | undefined {
-        return this._components.get(name);
+    GetComponent<T extends Component>(name: string): T | undefined {
+        const component = this._components.get(name) as T | undefined;
+        return component ? component as T : undefined;
     }
 
     RemoveComponent(name: string) {
