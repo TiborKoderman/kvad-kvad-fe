@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "textFields": [
+      {
+        "selector": ".textPower",
+        "tag": {
+          "Id": "energy"
+        }
+      },
+      {
+        "selector": ".textCL1",
+        "tag": {
+          "Id": "L1.current"
+        }
+      },
+      {
+        "selector": ".textCL2",
+        "tag": {
+          "Id": "L2.current"
+        }
+      },
+      {
+        "selector": ".textCL3",
+        "tag": {
+          "Id": "L3.current"
+        }
+      }
+    ]
+  },
+
+  "svg": ""
+}

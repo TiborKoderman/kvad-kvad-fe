@@ -1,4 +1,7 @@
 <template>
+  <button @click="modalStore.open('ScadaObjectSelector')" class="btn btn-primary">
+    Add
+  </button>
   <div ref="scadaContainer"></div>
 </template>
 
@@ -6,7 +9,10 @@
 import RectComponent from '@/components/scada/Components/RectComponent'
 import Scada from '@/components/scada/Scada'
 import SRect from '@/components/scada/SRect'
+import { useModalStore } from '@/stores/modals'
 import { ref, onMounted } from 'vue'
+
+const modalStore = useModalStore()
 
 const scadaContainer = ref<HTMLElement | null>(null)
 
