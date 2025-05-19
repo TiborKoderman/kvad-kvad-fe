@@ -71,7 +71,7 @@ export default class RectComponent extends Component {
             this.rect.setAttribute("fill", "none");
         }
         console.log("Mounting RectComponent", this);
-        this.sObject.scada.svg.Get().appendChild(this.rect);
+        this.sObject.scada.svg.GetLayer("objects")?.appendChild(this.rect);
     }
     Update() {}
     Render() {

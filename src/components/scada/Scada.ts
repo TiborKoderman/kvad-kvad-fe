@@ -1,8 +1,6 @@
 import SObject from "./SObject";
 import Svg from "./Svg";
-import SRect from "./SRect";
 import "./ComponentRegistry";
-import RectComponent from "./Components/RectComponent";
 import.meta.glob("./Components/*.ts", { eager: true });
 
 interface ScadaOptions {

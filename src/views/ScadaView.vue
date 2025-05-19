@@ -10,12 +10,18 @@ import { ref, onMounted } from 'vue'
 
 const scadaContainer = ref<HTMLElement | null>(null)
 
-const scada = new Scada()
+const scada = new Scada({
+  border: "1px solid black",
+  autoresize: true,
+  backgroundColor: "#FFFFFF00",
+  width: 500,
+  height: 500,
+})
 scada.init()
 
 const rect = new SRect(100, 100, 200, 100)
 const rect2 = new SRect(200, 200, 100, 200)
-rect.GetComponent<RectComponent>('RectComponent')?.SetRotation(10)
+rect.GetComponent<RectComponent>('RectComponent')?.SetRotation(40)
 scada.AddObject(rect)
 scada.AddObject(rect2)
 
