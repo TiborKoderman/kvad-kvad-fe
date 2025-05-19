@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="90mm"
+   height="60mm"
+   viewBox="0 0 90 60"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   sodipodi:docname="Meter.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <style
+     id="style18">.textCL3 {  }
+.textCL2 {   }
+.textCL1 {   }
+.textEnergy {   }
+</style>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showguides="true"
+     inkscape:zoom="1.6639697"
+     inkscape:cx="263.82692"
+     inkscape:cy="125.90374"
+     inkscape:window-width="2560"
+     inkscape:window-height="1340"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="PowerMeter">
+    <sodipodi:guide
+       position="9.9182128e-07,123.18653"
+       orientation="-1,0"
+       id="guide1"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="90,120"
+       orientation="-1,0"
+       id="guide2"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="110.83455,99.912493"
+       orientation="0,1"
+       id="guide3"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="-4.999999,40"
+       orientation="0,1"
+       id="guide4"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="-4.999999,45.266923"
+       orientation="0,-1"
+       id="guide5"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="5.0000009,99.499999"
+       orientation="-1,0"
+       id="guide6"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="15.000001,94.999999"
+       orientation="0,1"
+       id="guide10"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="85,110"
+       orientation="-1,0"
+       id="guide11"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="45.000001,85.326473"
+       orientation="1,0"
+       id="guide12"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-4.999999,70"
+       orientation="0,1"
+       id="guide13"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="82.5,94.999999"
+       orientation="-1,0"
+       id="guide14"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="105.63424,92.499999"
+       orientation="0,1"
+       id="guide15"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="84.500001,87.5"
+       orientation="0,-1"
+       id="guide16"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="79.637098,75"
+       orientation="0,-1"
+       id="guide7"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="5.000003,80.000003"
+       orientation="0,-1"
+       id="guide8"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="85,72.5"
+       orientation="0,1"
+       id="guide9"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="PowerMeter"
+     inkscape:groupmode="layer"
+     id="PowerMeter"
+     transform="translate(-4.999999,-20)">
+    <rect
+       style="fill:#bfbfbf;fill-opacity:1;stroke:#000000;stroke-width:1"
+       id="rect1"
+       width="89"
+       height="59"
+       x="5.499999"
+       y="20.5"
+       ry="3.4725733"
+       inkscape:label="Background" />
+    <path
+       id="path8"
+       style="fill:#bfbfbf;stroke:#000000;stroke-width:0.999999"
+       d="m 68.63072,75.123824 -0.39075,-0.07424 -0.390748,0.07424 0.07424,-0.390748 -0.07424,-0.390748 0.390748,0.07424 0.39075,-0.07424 -0.07424,0.390748 z m 1.60925,-0.390748 h -4 m 2,-2 v 4 m 3.250001,-1.999999 a 3.250001,3.2500031 0 0 1 -3.250001,3.250003 3.250001,3.2500031 0 0 1 -3.250001,-3.250003 3.250001,3.2500031 0 0 1 3.250001,-3.250004 3.250001,3.2500031 0 0 1 3.250001,3.250004 z"
+       inkscape:label="ScrewL1" />
+    <path
+       id="path8-6"
+       style="fill:#bfbfbf;stroke:#000000;stroke-width:0.999999"
+       d="m 77.635735,75.123825 -0.39075,-0.07424 -0.390749,0.07424 0.07424,-0.390749 -0.07424,-0.390748 0.390749,0.07424 0.39075,-0.07424 -0.07424,0.390748 z m 1.60925,-0.390749 h -4.000001 m 2.000001,-2 v 4 m 3.250001,-1.999998 a 3.250001,3.2500031 0 0 1 -3.250001,3.250002 3.250001,3.2500031 0 0 1 -3.250001,-3.250002 3.250001,3.2500031 0 0 1 3.250001,-3.250004 3.250001,3.2500031 0 0 1 3.250001,3.250004 z"
+       inkscape:label="ScrewL2" />
+    <path
+       id="path8-6-2"
+       style="fill:#bfbfbf;stroke:#000000;stroke-width:0.999999"
+       d="m 86.640749,75.123825 -0.39075,-0.07424 -0.390749,0.07424 0.07424,-0.390749 -0.07424,-0.390748 0.390749,0.07424 0.39075,-0.07424 -0.07424,0.390748 z m 1.60925,-0.390749 h -4.000001 m 2.000001,-2 v 4 M 89.5,74.733078 A 3.250001,3.2500031 0 0 1 86.249999,77.98308 3.250001,3.2500031 0 0 1 82.999998,74.733078 3.250001,3.2500031 0 0 1 86.249999,71.483074 3.250001,3.2500031 0 0 1 89.5,74.733078 Z"
+       inkscape:label="ScrewL3" />
+    <rect
+       style="fill:#c3fffe;fill-opacity:1;stroke:#000000;stroke-width:0.999996"
+       id="rect8"
+       width="79"
+       height="14"
+       x="10.5"
+       y="25.499998"
+       ry="2.0000024"
+       inkscape:label="PowerScreen" />
+    <rect
+       style="fill:#c3fffe;fill-opacity:1;stroke:#000000;stroke-width:1"
+       id="rect9-2"
+       width="24"
+       height="9"
+       x="65.5"
+       y="45.5"
+       ry="1.9999996"
+       inkscape:label="CurrentScreenL3" />
+    <rect
+       style="fill:#c3fffe;fill-opacity:1;stroke:#000000;stroke-width:1"
+       id="rect9-2-6"
+       width="24"
+       height="9"
+       x="38"
+       y="45.5"
+       ry="1.9999996"
+       inkscape:label="CurrentScreenL2" />
+    <rect
+       style="fill:#c3fffe;fill-opacity:1;stroke:#000000;stroke-width:1"
+       id="rect9-2-9"
+       width="24"
+       height="9"
+       x="10.5"
+       y="45.5"
+       ry="1.9999996"
+       inkscape:label="CurrentScreenL1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.00001px;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:end;fill:#000000;stroke-width:1"
+       x="87.576172"
+       y="52.132816"
+       id="textCL3"
+       inkscape:label="CurrentL1"
+       class="textCL3"><tspan
+         sodipodi:role="line"
+         id="tspan17"
+         style="stroke-width:1"
+         x="87.576172"
+         y="52.132816">-- A</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6px;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:end;fill:#000000;stroke-width:1"
+       x="60.076172"
+       y="52.103516"
+       id="textCL2"
+       inkscape:label="CurrentL2"
+       class="textCL2"><tspan
+         sodipodi:role="line"
+         id="tspan9-6"
+         x="60.076172"
+         y="52.103516">-- A</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6px;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:end;fill:#000000;stroke-width:1"
+       x="32.576172"
+       y="52.103516"
+       id="textCL1"
+       inkscape:label="CurrentL3"
+       class="textCL1"><tspan
+         sodipodi:role="line"
+         id="tspan9-7"
+         x="32.576172"
+         y="52.103516">-- A</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:end;fill:#000000;stroke-width:1"
+       x="88.296875"
+       y="37"
+       id="textEnergy"
+       inkscape:label="Energy"
+       class="textEnergy"><tspan
+         sodipodi:role="line"
+         id="tspan18"
+         style="stroke-width:1"
+         x="88.296875"
+         y="37">-- kWh</tspan></text>
+  </g>
+</svg>

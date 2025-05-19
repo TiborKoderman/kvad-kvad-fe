@@ -2,7 +2,6 @@ import Component from "./Component"
 import RectComponent from "./RectComponent";
 import SObject from "../SObject";
 import ComponentRegistry from "../ComponentRegistry";
-import { Rect } from "@popperjs/core";
 
 @ComponentRegistry.Register("OnClickComponent")
 export default class OnClickComponent extends Component {

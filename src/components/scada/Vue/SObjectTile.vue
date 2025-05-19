@@ -1,18 +1,15 @@
 <template>
     <div class="tile">
-
+        {{ props.object.name }}
     </div>
 </template>
 
 <script setup lang="ts">
-import '../ScadaTypes'
+import type { ScadaObjectTemplate } from '../ScadaTypes'
 
-const props = defineProps({
-    object: {
-        type: ScadaObjectTemplate,
-        required: true
-    }
-})
+const props = defineProps<{
+    object: object | ScadaObjectTemplate
+}>()
 
 </script>
 

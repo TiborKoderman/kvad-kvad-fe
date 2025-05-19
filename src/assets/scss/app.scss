@@ -66,7 +66,12 @@ $input-btn-focus-border-color: map-get($theme-colors, "primary");
 $input-btn-focus-box-shadow: 0 0 0 0.25rem rgba(map-get($theme-colors, "primary"), 0.5);
 $input-btn-focus-color: $white;
 
-
+.modal-dialog.auto-width {
+  width: auto;
+  max-width: 100%;
+  min-width: var(--bs-modal-width); /* default is usually 500px */
+  display: inline-block;
+}
 
 // checkbox
 $form-check-input-checked-bg-color: map-get($theme-colors, "primary");

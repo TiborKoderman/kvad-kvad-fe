@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 
-interface ScadaObjectTemplate {
+export interface ScadaObjectTemplate {
     id: UUID;
     name: string;
     data: {
@@ -12,6 +12,17 @@ interface ScadaObjectTemplate {
                 };
                 default: string;
                 format: string;
+            }>;
+            "states": Array<{
+                name: string;
+                selector: string;
+                style: [
+                    {
+                        name: string;
+                        value: string;
+                    },
+                ];
+                class: string;
             }>;
         };
         svg: SVGElement;

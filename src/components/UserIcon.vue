@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-left" v-click-outside="closeDropdown" style="position: relative;">
+  <div class="dropdown-left"  style="position: relative;">
     <div class="user-icon" @click="toggleDropdown">
       <img :src="userIcon" alt="User Icon" />
     </div>
