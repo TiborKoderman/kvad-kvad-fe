@@ -205,6 +205,8 @@ export default class Svg {
       const target = event.target as SVGElement
       if (target && target !== this._svg) {
         draggingEl = target
+
+        // Always recalculate the origin on every mousedown
         const pt = this._svg.createSVGPoint()
         pt.x = event.clientX
         pt.y = event.clientY
@@ -224,6 +226,8 @@ export default class Svg {
 
     this._svg.onmousemove = (event: MouseEvent) => {
       if (!this._draggable || !draggingEl) return
+
+      // Get mouse position in SVG coordinates
       const pt = this._svg.createSVGPoint()
       pt.x = event.clientX
       pt.y = event.clientY
