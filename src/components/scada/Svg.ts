@@ -61,6 +61,8 @@ export default class Svg {
     Clear() {
         // Remove all children
         this.svg.innerHTML = '';
+        // Optionally, you can also remove any attributes if needed
+        
     }
 
 
