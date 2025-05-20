@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, provide, PropType, watch } from 'vue';
+import { computed, ref, provide, PropType} from 'vue';
 import Svg from '@/components/scada/Svg'
 import SvgNode from './SvgNode.vue'
 

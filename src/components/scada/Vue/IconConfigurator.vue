@@ -43,6 +43,8 @@ const svgContainer = ref<HTMLElement | null>(null)
 
 const hasSvg = ref(false)
 
+props.svg.enableSelectMode()
+
 watch(
   () => props.svg.isEmpty,
   (val) => {
