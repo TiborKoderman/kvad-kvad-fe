@@ -30,8 +30,8 @@ export const useModalStore = defineStore('modalStore', () => {
   //for each component in the folder, register it
 
   async function open(name: string, props = {}): Promise<void> {
-    console.log('open', name)
-    console.log('props', props)
+    // console.log('open', name)
+    // console.log('props', props)
     const entry = componentMap.value.get(name)
     const modalLoader = entry
     if (!modalLoader) {

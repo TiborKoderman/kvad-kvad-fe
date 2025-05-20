@@ -1,13 +1,26 @@
 <template>
-  <div class="d-flex flex-column body">
-    test
-  </div>
+    <div class="body d-flex flex-column justify-content-center align-content-center">
+        <div class="d-flex align-content-around flex-wrap">
+          <SObjectTile
+            v-for="object in objects"
+            :key="object.id"
+            :object="object"
+            class="m-2"
+            :selected="selectedObject?.id === object.id"
+            @click="selectedObject = object"
+            @dblclick="submit"
+          />
+        <SObjectNewTile
+            class="m-2"
+          />
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import api from '@/api'
 import SObjectTile from '../scada/Vue/SObjectTile.vue'
+import SObjectNewTile from '../scada/Vue/SObjectNewTile.vue'
 
 const selectedObject = ref(null)
 
@@ -92,7 +105,8 @@ const objects = [
 
 //submit, define expose and export default baseProps are required for the modal system to work
 async function submit() {
-  return
+    console.log('submit', selectedObject.value);
+  return selectedObject.value
 }
 
 defineOptions({
@@ -106,7 +120,8 @@ defineExpose({ submit })
 </script>
 <style scoped>
 .body {
-  width: 90vw;
+  width: 80vw;
   height: 80vh;
+  overflow: auto;
 }
 </style>

@@ -1,41 +1,94 @@
 export default class Svg {
     private svg: SVGSVGElement;
 
-    private layers: Map<string, SVGGElement> = new Map();
-
-    constructor(width: string, height: string, viewBox: string) {
-        // Create an SVG element using the SVG 2 standard
+    constructor(width: string = '100%', height: string = '100%', viewBox: string = '0 0 500 500') {
         this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         this.svg.setAttribute('width', width);
         this.svg.setAttribute('height', height);
         this.svg.setAttribute('viewBox', viewBox);
         this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-        this.svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink'); // SVG 2 compatibility
+        this.svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
     }
 
-    Init() {
-        console.log('Scada component initialized');
+    isEmpty(): boolean {
+        // After constructor, the SVG has no child nodes, so it's empty.
+        return this.svg?.childNodes?.length === 0;
     }
 
-    AddLayer(name: string): SVGGElement {
-        const layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        layer.setAttribute('id', name);
-        this.svg.appendChild(layer);
-        this.layers.set(name, layer);
-        return layer;
-    }
-    GetLayer(name: string): SVGGElement | undefined {
-        return this.layers.get(name);
-    }
-    RemoveLayer(name: string) {
-        const layer = this.layers.get(name);
-        if (layer) {
-            this.svg.removeChild(layer);
-            this.layers.delete(name);
-        }
-    }
 
     Get(): SVGSVGElement {
         return this.svg;
     }
+
+    Load(svg: string) {
+        this.Clear();
+
+        // Parse the SVG string and append it to the SVG element
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svg, 'image/svg+xml');
+        const svgElement = doc.documentElement;
+        if (svgElement instanceof SVGSVGElement) {
+            this.svg = svgElement;
+        } else {
+            throw new Error('Parsed element is not an SVGSVGElement');
+        }
+    }
+
+    toString() {
+        // Serialize the SVG element to a string
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(this.svg);
+        // Return the serialized SVG string
+        return svgString;
+    }
+
+    Save(): string {
+        // Serialize the SVG element to a string
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(this.svg);
+        // Return the serialized SVG string
+        return svgString;
+    }
+
+    Clear() {
+        // Remove all children
+        this.svg.innerHTML = '';
+    }
+
+
+    AddLayer(name: string): SVGGElement {
+        let layer = this.GetLayer(name);
+        if (layer) {
+            this.svg.removeChild(layer);
+        }
+        layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        layer.setAttribute('id', name);
+        this.svg.appendChild(layer);
+        return layer;
+    }
+    GetLayer(name: string): SVGGElement | undefined {
+        return this.svg.querySelector(`g#${name}`) as SVGGElement | undefined;
+    }
+    RemoveLayer(name: string) {
+        const layer = this.GetLayer(name);
+        if (layer) {
+            this.svg.removeChild(layer);
+        }
+    }
+
+    getHierarchy(): any[] {
+    function traverse(element: Element): any {
+        const children: Element[] = Array.from(element.children);
+        
+        return {
+        name: element.id || element.getAttribute("inkscape:label") || element.tagName, // or any label attribute
+        tagName: element.tagName,
+        children: children.map(traverse)
+        };
+    }
+
+    // Start from top-level children
+    return Array.from(this.svg.children).map(traverse);
+    }
+
 }

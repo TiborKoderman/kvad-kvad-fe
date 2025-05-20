@@ -130,6 +130,7 @@ $border-color: rgba(#000000, 0.25);
   background-color: white;
   min-width: 500px;
   max-width: 100vw;
+  max-height:100vh;
   border-radius: var(--bs-border-radius);
 }
 
