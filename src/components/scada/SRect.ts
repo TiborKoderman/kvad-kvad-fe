@@ -8,5 +8,6 @@ export default class SRect extends SObject {
         this.AddComponent("OnClickComponent", (event: MouseEvent) => {
             console.log("SRect clicked", event);
         });
+        this.AddComponent("SvgComponent");
     }
 }

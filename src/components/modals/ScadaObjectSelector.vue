@@ -36,8 +36,10 @@ const selectedObject = ref(null)
 const objects = ref<ScadaObjectTemplate[]>([])
 
 //submit, define expose and export default baseProps are required for the modal system to work
-async function submit() {
-  console.log('submit', selectedObject.value)
+async function submit(): Promise<ScadaObjectTemplate> {
+  if (!selectedObject.value) {
+    throw new Error('No object selected')
+  }
   return selectedObject.value
 }
 
