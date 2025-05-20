@@ -17,8 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import SvgNode from '@/components/scada/SvgNode.vue'
+import { ref, computed, PropType } from 'vue'
+import type { HieNode } from '../Svg'
+import SvgNode from './SvgNode.vue'
 
 const iconMap = {
     "g": "bi-file-earmark",
@@ -31,7 +32,7 @@ const iconMap = {
 
 const props = defineProps({
     node: {
-        type: Object,
+        type: Object as PropType<HieNode>,
         required: true,
     },
     depth: {
@@ -40,14 +41,7 @@ const props = defineProps({
     }
 })
 
-interface Node {
-    id: string
-    name: string
-    type: string
-    icon: string
-    color: string
-    svg: string
-}
+
 
 const expanded = ref(true)
 const hasChildren = computed(() => Array.isArray(props.node.children) && props.node.children.length > 0)

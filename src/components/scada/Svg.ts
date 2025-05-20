@@ -76,11 +76,12 @@ export default class Svg {
         }
     }
 
-    getHierarchy(): any[] {
-    function traverse(element: Element): any {
+    getHierarchy(): HieNode[] {
+    function traverse(element: Element): HieNode {
         const children: Element[] = Array.from(element.children);
         
         return {
+        id: element.id,
         name: element.id || element.getAttribute("inkscape:label") || element.tagName, // or any label attribute
         tagName: element.tagName,
         children: children.map(traverse)
@@ -91,4 +92,11 @@ export default class Svg {
     return Array.from(this.svg.children).map(traverse);
     }
 
+}
+
+export interface HieNode {
+    id: string
+    name: string
+    tagName: string
+    children: HieNode[]
 }

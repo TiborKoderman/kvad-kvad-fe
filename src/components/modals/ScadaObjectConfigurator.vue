@@ -5,8 +5,11 @@
     </div>
     <div class="flex-grow-1 d-flex flex-column w-100">
       <h1>Layers</h1>
+
       <div>
-        {{ svg?.getHierarchy() }}
+        <HierarchyTree
+          :nodes="svg.getHierarchy()" 
+        />
       </div>
     </div>
     <div class="flex-grow-1 d-flex flex-column w-100 p-2 m-2">
@@ -19,6 +22,9 @@
         required
         autocomplete="off"
       />
+      <div>
+        {{svg?.getHierarchy()}}
+      </div>
     </div>
   </div>
 </template>
@@ -26,8 +32,10 @@
 <script setup lang="ts">
 import { PropType, ref, watch } from 'vue'
 import IconConfigurator from '@/components/scada/Vue/IconConfigurator.vue'
+import HierarchyTree from '../scada/Vue/HierarchyTree.vue'
 import { ScadaObjectTemplate } from '../scada/ScadaTypes'
 import Svg from '@/components/scada/Svg'
+import type { HieNode } from '@/components/scada/Svg'
 
 const svg = ref<Svg>(new Svg())
 
