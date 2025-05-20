@@ -1,26 +1,44 @@
 <template>
-    <SvgNode
+    <!-- <SvgNode
         v-for="node in filteredNodes"
         :key="node.id"
         :node="node"
-    />
+    /> -->
+    <div>
+        hie
+    </div>
 </template>
 
 <script setup lang="ts">
-import { PropType, computed, ref } from 'vue';
+import { PropType, computed, ref, provide } from 'vue';
 import SvgNode from './SvgNode.vue'
-import type { HieNode } from '@/components/scada/Svg';
 
-const selected = ref([])
+const selected = ref<SVGElement[]>([])
+const filteredNodes = computed(() => Array.from(props.nodes).filter(node => node.tagName === 'g'));
+const flatNodes = computed(() => {
+    const nodes: SVGElement[] = []
+    function traverse(node: SVGElement) {
+        nodes.push(node)
+        if (node.children) {
+            Array.from(node.children).forEach(traverse)
+        }
+    }
+    filteredNodes.value.forEach(traverse)
+    return nodes
+})
+const lastSelectedIndex = ref(-1)
+provide('selectedNodes', selected)
+provide('filteredNodes', filteredNodes)
+provide('flatNodes', flatNodes)
+provide('lastSelectedIndex', lastSelectedIndex)
 
 const props = defineProps({
     nodes: {
-        type: Array as PropType<HieNode[]>,
+        type: HTMLCollection,
         required: true,
     },
 })
 
-const filteredNodes = computed(() => props.nodes.filter(node => node.tagName === 'g'));
 
 </script>
 <style scoped>

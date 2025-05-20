@@ -13,7 +13,7 @@ export interface ScadaObjectTemplate {
                 default: string;
                 format: string;
             }>;
-            "states": Array<{
+            states: Array<{
                 name: string;
                 selector: string;
                 style: [
@@ -23,6 +23,9 @@ export interface ScadaObjectTemplate {
                     },
                 ];
                 class: string;
+            }>;
+            components: Array<{
+                name: string;
             }>;
         };
         svg: string;

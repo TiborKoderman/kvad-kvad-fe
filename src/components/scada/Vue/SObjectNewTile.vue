@@ -1,6 +1,6 @@
 <template>
     <div class="tile" style="display: flex; flex-direction: column; align-items: center; justify-content: center;" @click="modals.open('ScadaObjectConfigurator', {})">
-        <span style="font-size: 3rem; color: #007bff; user-select: none;">+</span>
+        <span style="font-size: 3rem; color: var(--bs-primary); user-select: none;">+</span>
     </div>
 </template>
 

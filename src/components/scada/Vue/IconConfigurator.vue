@@ -28,11 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, Reactive } from 'vue'
 import Svg from '@/components/scada/Svg'
 
 // Use defineModel for v-model:svg
-const svg = defineModel<Svg>()
+const props = defineProps<{
+  svg: Reactive<Svg>
+}>()
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const dragging = ref(false)
@@ -40,7 +42,8 @@ const dragging = ref(false)
 const svgContainer = ref<HTMLElement | null>(null)
 
 const hasSvg = computed(() => {
-  return !svg.value.isEmpty()
+  console.log("computed svg", props.svg);
+  return !props.svg.isEmpty
 })
 
 onMounted(() => {})
@@ -79,15 +82,15 @@ function processFile(file: File) {
   const reader = new FileReader()
   reader.onload = e => {
     const svgContent = e.target?.result as string
-    svg.value.Load(svgContent)
-    svgContainer.value.appendChild(svg.value.Get())
-    console.log('SVG content:', svg.value)
+    props.svg.Load(svgContent)
+    svgContainer.value.appendChild(props.svg.Get())
+    console.log('SVG content:', props.svg)
   }
   reader.readAsText(file)
 }
 
 function clearSvg() {
-  svg.value.Clear()
+  props.svg.Clear()
 }
 </script>
 

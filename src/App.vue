@@ -5,7 +5,7 @@
   </div>
   <div v-else class="container-fluid m-0 p-0 h-100 d-flex">
       <Sidebar />
-      <div class="d-flex flex-column w-100">
+      <div class="d-flex flex-column h-100 w-100">
         <TopBar/>
         <main class="h-100">
           <router-view></router-view>
