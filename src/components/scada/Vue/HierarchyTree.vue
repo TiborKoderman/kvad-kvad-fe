@@ -7,9 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, computed } from 'vue';
+import { PropType, computed, ref } from 'vue';
 import SvgNode from './SvgNode.vue'
 import type { HieNode } from '@/components/scada/Svg';
+
+const selected = ref([])
 
 const props = defineProps({
     nodes: {

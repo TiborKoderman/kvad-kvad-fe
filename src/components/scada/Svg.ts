@@ -82,9 +82,10 @@ export default class Svg {
         
         return {
         id: element.id,
-        name: element.id || element.getAttribute("inkscape:label") || element.tagName, // or any label attribute
+        name: element.getAttribute("inkscape:label") || element.id || element.tagName, // or any label attribute
         tagName: element.tagName,
-        children: children.map(traverse)
+        children: children.map(traverse),
+        selected: element.classList.contains("selected") // Check if the element has the "selected" class
         };
     }
 
@@ -99,4 +100,5 @@ export interface HieNode {
     name: string
     tagName: string
     children: HieNode[]
+    selected: boolean
 }

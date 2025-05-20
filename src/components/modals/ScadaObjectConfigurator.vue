@@ -23,7 +23,6 @@
         autocomplete="off"
       />
       <div>
-        {{svg?.getHierarchy()}}
       </div>
     </div>
   </div>
