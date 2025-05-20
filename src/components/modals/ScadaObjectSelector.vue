@@ -1,6 +1,10 @@
 <template>
   <div
     class="body d-flex flex-column justify-content-center align-content-center"
+    @dragover.prevent="dragging = true"
+    @dragleave.prevent="dragging = false"
+    @drop.prevent="handleDrop"
+    :class="{ dragging }"
   >
     <div class="d-flex align-content-start flex-wrap flex-fill">
       <SObjectNewTile class="m-2" @click="modals.open('ScadaObjectConfigurator', {}).then(() => fetchTemplates())" />
@@ -43,6 +47,30 @@ async function fetchTemplates() {
   })
 }
 fetchTemplates()
+
+const dragging = ref(false)
+
+function handleDrop(event: DragEvent) {
+  dragging.value = false
+  if (!event.dataTransfer?.files.length) return
+
+  const file = event.dataTransfer.files[0]
+  if (file.type === 'application/json' || file.name.endsWith('.json')) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      try {
+        const json = JSON.parse(e.target?.result as string)
+        // Optionally validate json structure here
+        // Add to objects list or handle as needed
+        objects.value.push(json)
+      } catch (err) {
+        // Optionally show error
+        console.error('Invalid JSON:', err)
+      }
+    }
+    reader.readAsText(file)
+  }
+}
 
 defineOptions({
   name: 'ScadaObjectSelector',

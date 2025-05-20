@@ -5,9 +5,10 @@ export default class Svg {
   private _height: string = '100%'
   private _viewBox: string = '0 0 500 500'
 
-  private _highlight: string = 'highlight'
-
   private _selected: SVGElement[] = []
+  private _lastSelectedIndex: number = -1
+
+  private _draggable = false
 
   constructor(
     width: string = '100%',
@@ -96,18 +97,130 @@ export default class Svg {
     return this._svg.children
   }
 
-  select(element: SVGElement) {
-    if (this._selected.includes(element)) {
-      this._selected = this._selected.filter((el) => el !== element)
-      element.classList.remove(this._highlight)
-    } else {
-      this._selected.push(element)
-      element.classList.add(this._highlight)
-    }
-  }
-
   isSelected(element: SVGElement): boolean {
     return this._selected.includes(element)
   }
 
+  get selected(): SVGElement[] {
+    return this._selected
+  }
+
+  get filteredNodes() {
+    return Array.from(this._svg.children)
+      .filter(
+        (node): node is SVGElement =>
+          node instanceof SVGElement && node.tagName === 'g',
+      )
+      .reverse()
+  }
+
+  get flatNodes() {
+    const nodes: SVGElement[] = []
+    function traverse(node: Element) {
+      nodes.push(node as SVGElement)
+      if (node.children) {
+        Array.from(node.children).reverse().forEach(traverse)
+      }
+    }
+    this.filteredNodes.forEach(traverse)
+    return nodes
+  }
+
+  toggleSelect(event: MouseEvent, node: SVGElement) {
+    const ctrl = event.ctrlKey || event.metaKey
+    const shift = event.shiftKey
+
+    const nodes = this.flatNodes
+    const idx = nodes.indexOf(node)
+
+    if (shift && this._lastSelectedIndex !== -1 && nodes.length > 0) {
+      // Select range between lastSelectedIndex and current idx
+      const start = Math.min(this._lastSelectedIndex, idx)
+      const end = Math.max(this._lastSelectedIndex, idx)
+      const range = nodes.slice(start, end + 1)
+      this._selected = range
+    } else if (ctrl) {
+      // Toggle selection for this node
+      if (this._selected.includes(node)) {
+        this._selected = this._selected.filter(n => n !== node)
+      } else {
+        this._selected = [...this._selected, node]
+      }
+      this._lastSelectedIndex = idx
+    } else {
+      // Only select this node
+      this._selected = [node]
+      this._lastSelectedIndex = idx
+    }
+  }
+
+  getNode(node: SVGElement): SVGElement {
+    return node
+  }
+
+  setClickToSelect() {
+    this._svg.addEventListener('click', (event: MouseEvent) => {
+      const target = event.target as SVGElement
+      console.log('target', target)
+      if (target ) {
+        this.toggleSelect(event, target)
+      }
+    })
+    // Add hover effect to highlight hovered element
+    this._svg.addEventListener('mouseover', (event: MouseEvent) => {
+      const target = event.target as SVGElement
+      if (target && target !== this._svg) {
+        target.setAttribute('data-svg-hover', 'true')
+        target.style.filter = 'brightness(0.85)'
+      }
+    })
+    this._svg.addEventListener('mouseout', (event: MouseEvent) => {
+      const target = event.target as SVGElement
+      if (target && target !== this._svg) {
+        target.removeAttribute('data-svg-hover')
+        target.style.filter = ''
+      }
+    })
+  }
+
+  setDraggable(enabled: boolean) {
+    this._draggable = enabled
+    console.log('draggable', this._draggable);
+    this._svg.setAttribute('draggable', String(this._draggable))
+    
+    this._updateDraggable()
+  }
+
+  private _updateDraggable() {
+    // Remove all previous drag listeners
+    Array.from(this._svg.querySelectorAll('[data-svg-draggable]')).forEach(el => {
+      el.removeAttribute('draggable')
+      el.removeEventListener('dragstart', this._onDragStart)
+      el.removeEventListener('dragend', this._onDragEnd)
+      el.removeAttribute('data-svg-draggable')
+    })
+
+    if (this._draggable) {
+      // Make all direct children draggable (customize as needed)
+      Array.from(this._svg.children).forEach(el => {
+        if (el instanceof SVGElement) {
+          el.setAttribute('draggable', 'true')
+          el.setAttribute('data-svg-draggable', 'true')
+          el.addEventListener('dragstart', this._onDragStart)
+          el.addEventListener('dragend', this._onDragEnd)
+        }
+      })
+    }
+  }
+
+  private _onDragStart = (event: DragEvent) => {
+    const target = event.target as SVGElement
+    event.dataTransfer?.setData('text/plain', target.id || '')
+    target.classList.add('svg-dragging')
+  }
+
+  private _onDragEnd = (event: DragEvent) => {
+    const target = event.target as SVGElement
+    target.classList.remove('svg-dragging')
+  }
 }

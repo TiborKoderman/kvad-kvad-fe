@@ -42,7 +42,9 @@ const props = defineProps({
       id: '',
       name: '',
       data: {
-        metadata: {},
+        metadata: {
+          states: [],
+        },
         svg: '',
       },
     }),

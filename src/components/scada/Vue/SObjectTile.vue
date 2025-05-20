@@ -1,8 +1,8 @@
 <template>
   <div class="tile" :class="{ active: selected }" @mouseover="hovering = true" @mouseleave="hovering = false">
     <div class="obj-toolbox" v-show="hovering">
-      <i class="bi bi-floppy"></i>
-      <i class="bi bi-copy"></i>
+      <i class="bi bi-download" @click="downloadFile"></i>
+      <i class="bi bi-copy" @click="copyToClipboard"></i>
       <i class="bi bi-pencil-square" @click="modals.open('ScadaObjectConfigurator', { deviceTemplate: props.object }).then(() => emit('reload'))"></i>
       <i class="bi bi-trash"></i>
     </div>
@@ -26,6 +26,28 @@ const props = defineProps<{
   object: ScadaObjectTemplate
   selected: boolean
 }>()
+
+const copyToClipboard = () => {
+  const svgString = JSON.stringify(props.object, null, 2)
+  navigator.clipboard.writeText(svgString).then(() => {
+    console.log('Object copied to clipboard')
+  }).catch(err => {
+    console.error('Failed to copy Object: ', err)
+  })
+}
+
+const downloadFile = () => {
+  const svgString = JSON.stringify(props.object)
+  const blob = new Blob([svgString], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${props.object.name}.json`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
 
 </script>
 
