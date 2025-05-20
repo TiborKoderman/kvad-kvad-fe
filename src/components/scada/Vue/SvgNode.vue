@@ -121,7 +121,7 @@ watch(editing, val => {
   }
 })
 
-const isSelected = computed(() => svg.isSelected(props.node))
+const isSelected = computed(() => svg?.value?.isSelected(props.node))
 
 watch(isSelected, (val) => {
   if (val) emit('expand')

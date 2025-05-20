@@ -66,8 +66,8 @@ onMounted(() => {
     svgContainer.value.appendChild(props.svg.svg)
     hasSvg.value = true
   }
-  props.svg.setClickToSelect()
-  // props.svg.setDraggable(true)
+  // props.svg.setClickToSelect()
+  props.svg.setDraggable(true)
 })
 
 function handleDragOver(event: DragEvent) {

@@ -31,7 +31,7 @@ const scada = new Scada({
 scada.init()
 
 // const rect = new SRect(100, 100, 200, 100)
-const rect2 = new SRect(200, 200, "100mm", "100mm")
+const rect2 = new SRect(200, 200, 100, 100)
 // rect.GetComponent<RectComponent>('RectComponent')?.SetRotation(40)
 // scada.AddObject(rect)
 scada.AddObject(rect2)
