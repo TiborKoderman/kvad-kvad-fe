@@ -1,3 +1,5 @@
+import { computed } from 'vue';
+
 export default class Svg {
     private svg: SVGSVGElement;
 
@@ -14,6 +16,12 @@ export default class Svg {
         // Returns true if the SVG element has no child elements.
         return this.svg.children.length === 0;
     }
+
+    public isEmptyComputed = computed(() => {
+        // Returns true if the SVG element has no child elements.
+        return this.svg.children.length === 0;
+    }
+    );
 
 
     Get(): SVGSVGElement {

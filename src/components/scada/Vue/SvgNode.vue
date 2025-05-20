@@ -118,6 +118,11 @@ const folderIconClass = computed(() => {
 .nameLine {
     cursor: pointer;
     user-select: none;
+    width: 100%;
+}
+.nameLine:hover {
+    background-color: color-mix(in srgb, var(--bs-secondary) 10%, white 30%);
+    border-radius: 3px;
 }
 .nodeLine {
     align-items: center;
@@ -128,6 +133,7 @@ const folderIconClass = computed(() => {
     border: 1px solid transparent;
     border-radius: 3px;
 }
+
 .selected {
     background-color: color-mix(in srgb, var(--bs-secondary) 40%, white 30%);
     border: 1px solid gray;

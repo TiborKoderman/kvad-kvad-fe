@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, ref, watch } from 'vue'
+import { PropType, ref, watch, reactive } from 'vue'
 import IconConfigurator from '@/components/scada/Vue/IconConfigurator.vue'
 import HierarchyTree from '../scada/Vue/HierarchyTree.vue'
 import { ScadaObjectTemplate } from '../scada/ScadaTypes'

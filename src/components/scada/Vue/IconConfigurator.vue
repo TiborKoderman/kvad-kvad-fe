@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="icon-configurator"
     :class="{ 'icon-configurator-hover': !hasSvg }"
     @dragover.prevent="handleDragOver"
@@ -8,27 +8,21 @@
     @click="triggerFileInput"
   >
     <!-- Trash button (top right, only when SVG is present and hovering) -->
-    <button
-      v-if="hasSvg"
-      class="trash-btn"
-      @click.stop="clearSvg"
-      title="Remove icon"
-    >
-      <i class="bi bi-trash"></i>
-    </button>
+
+    <i class="bi bi-trash" @click.stop="clearSvg"></i>
     <!-- Display SVG if available -->
     <div v-show="hasSvg" class="svg-container" ref="svgContainer"></div>
     <!-- Upload placeholder if no SVG -->
     <div v-show="!hasSvg" class="upload-placeholder" :class="{ dragging }">
       <i class="bi bi-cloud-arrow-up"></i>
       <p>Drag & drop or click to upload SVG</p>
-      <input 
-        type="file" 
-        ref="fileInput" 
+      <input
+        type="file"
+        ref="fileInput"
         accept=".svg"
-        @change="handleFileUpload" 
+        @change="handleFileUpload"
         class="file-input"
-      >
+      />
     </div>
   </div>
 </template>
@@ -49,9 +43,7 @@ const hasSvg = computed(() => {
   return !svg.value.isEmpty()
 })
 
-onMounted(() => {
-
-})
+onMounted(() => {})
 
 function handleDragOver(event: DragEvent) {
   dragging.value = true
@@ -60,7 +52,7 @@ function handleDragOver(event: DragEvent) {
 function handleDrop(event: DragEvent) {
   dragging.value = false
   if (!event.dataTransfer?.files.length) return
-  
+
   const file = event.dataTransfer.files[0]
   if (file.type === 'image/svg+xml') {
     processFile(file)
@@ -76,7 +68,7 @@ function triggerFileInput() {
 function handleFileUpload(event: Event) {
   const target = event.target as HTMLInputElement
   if (!target.files?.length) return
-  
+
   const file = target.files[0]
   if (file.type === 'image/svg+xml') {
     processFile(file)
@@ -85,7 +77,7 @@ function handleFileUpload(event: Event) {
 
 function processFile(file: File) {
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     const svgContent = e.target?.result as string
     svg.value.Load(svgContent)
     svgContainer.value.appendChild(svg.value.Get())
@@ -118,7 +110,6 @@ function clearSvg() {
 }
 .icon-configurator-hover {
   border: 1px dashed #ccc;
-
 }
 .icon-configurator-hover:hover {
   border-color: #666;
@@ -174,27 +165,20 @@ function clearSvg() {
   display: none;
 }
 
-.trash-btn {
+.bi-trash {
   position: absolute;
   top: 0.5em;
   right: 0.5em;
   z-index: 2;
-  background: rgba(255,255,255,0.8);
-  border: none;
-  border-radius: 50%;
-  padding: 0.3em 0.4em;
   cursor: pointer;
-  opacity: 0;
   transition: opacity 0.15s;
-  font-size: 1.2em;
-  color: #b00b69;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  font-size: 1.5rem;
+  color: var(--bs-dark);
 }
-.icon-configurator:hover .trash-btn {
+.icon-configurator:hover .bi-trash {
   opacity: 1;
 }
-.trash-btn:hover {
-  background: #ffe6ef;
-  color: #e44102;
+.bi-trash:hover {
+  color: var(--bs-danger);
 }
 </style>
