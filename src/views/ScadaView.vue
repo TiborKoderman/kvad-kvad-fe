@@ -36,7 +36,7 @@ const rect2 = new SRect(200, 200, 100, 200)
 scada.AddObject(rect2)
 
 function scaleSvgToFitContainer() {
-  const svgEl = scada.svg.Get()
+  const svgEl = scada.svg.svg
   const container = scadaContainer.value
   if (!svgEl || !container) return
 
@@ -61,7 +61,7 @@ function scaleSvgToFitContainer() {
 
 onMounted(() => {
   if (scadaContainer.value) {
-    scadaContainer.value.appendChild(scada.svg.Get())
+    scadaContainer.value.appendChild(scada.svg.svg)
     nextTick(() => {
       scaleSvgToFitContainer()
     })

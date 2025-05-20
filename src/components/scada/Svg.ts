@@ -1,26 +1,31 @@
-import { computed } from 'vue'
-
 export default class Svg {
   private _svg: SVGSVGElement
+
+  width: string = '100%'
+  height: string = '100%'
+  viewBox: string = '0 0 500 500'
 
   constructor(
     width: string = '100%',
     height: string = '100%',
     viewBox: string = '0 0 500 500',
   ) {
+    this.width = width
+    this.height = height
+    this.viewBox = viewBox
     this._svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    this._svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    this._svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
     this._svg.setAttribute('width', width)
     this._svg.setAttribute('height', height)
     this._svg.setAttribute('viewBox', viewBox)
-    this._svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
-    this._svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
   }
 
   get isEmpty() {
-    return computed(() => this._svg?.hasChildNodes() === false)
+    return this._svg?.hasChildNodes() === false
   }
 
-  Get(): SVGSVGElement {
+  get svg(): SVGSVGElement {
     return this._svg
   }
 
@@ -55,12 +60,12 @@ export default class Svg {
   }
 
   Clear() {
-    // Remove all children
-    Array.from(this._svg.children).forEach(child => {
-      this._svg.removeChild(child)
-    })
-    this._svg.innerHTML = ''
-    // Optionally, you can also remove any attributes if needed
+    this._svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    this._svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    this._svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    this._svg.setAttribute('width', this.width)
+    this._svg.setAttribute('height', this.height)
+    this._svg.setAttribute('viewBox', this.viewBox)
   }
 
   AddLayer(name: string): SVGGElement {

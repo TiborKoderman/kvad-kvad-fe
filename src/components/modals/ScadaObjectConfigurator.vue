@@ -7,7 +7,7 @@
       <h1>Layers</h1>
 
       <div class="flex-grow-1 d-flex flex-column w-100 overflow-auto">
-        <HierarchyTree :nodes="svg.getHierarchy()" />
+        <HierarchyTree :svg="svg" />
       </div>
     </div>
     <div class="flex-grow-1 d-flex flex-column w-100 p-2 m-2">

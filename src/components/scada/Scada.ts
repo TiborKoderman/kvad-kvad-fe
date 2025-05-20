@@ -34,7 +34,7 @@ export default class Scada {
         );
         // Create an SVG element using the SVG 2 standard
         this.svg = new Svg(finalOptions.width, finalOptions.height, finalOptions.viewBox);
-        this.svg.Get().setAttribute('style', 'border: 1px solid black;');
+        this.svg.svg.setAttribute('style', 'border: 1px solid black;');
         this.svg.AddLayer("background");
         this.svg.AddLayer("objects");
         this.svg.AddLayer("annotations");

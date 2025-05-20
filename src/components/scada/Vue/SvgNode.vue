@@ -23,14 +23,14 @@
                 <span ref="sizer" class="input-sizer">{{ editValue || ' ' }}</span>
             </template>
             <template v-else>
-                {{ props.node.name }}
+                {{ props.node.getAttribute('inkscape:label') || props.node.id }}
             </template>
         </span>
     </div>
     <div v-if="expanded">
         <SvgNode
-            v-for="child in Array.from(props.node.children)"
-            :key="child.id || child.name || child.tagName"
+            v-for="child in Array.from(props.node.children).reverse()"
+            :key="child.id || child.tagName"
             :node="child"
             :depth="depth + 1"
         />
@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, PropType, nextTick, watch, inject } from 'vue'
+import { ref, computed, nextTick, watch, inject, Ref } from 'vue'
 import SvgNode from './SvgNode.vue'
 
 const editing = ref(false)
@@ -47,21 +47,19 @@ const editInput = ref<HTMLInputElement>()
 const sizer = ref<HTMLElement>()
 const sizerWidth = ref(0)
 
-import type { Ref } from 'vue'
 const selectedNodes = inject<Ref<Element[]>>('selectedNodes', ref([]))
-const filteredNodes = inject<Ref<Element[]>>('filteredNodes', ref([]))
-const flatNodes = inject<Ref<Element[]>>('flatNodes', ref([]))
 const lastSelectedIndex = inject<Ref<number>>('lastSelectedIndex', ref(-1))
+const flatNodes = inject<Ref<Element[]>>('flatNodes', ref([]))
 
 function saveEdit() {
     editing.value = false
     if (editValue.value.trim() !== '') {
-        props.node.name = editValue.value
+        props.node.id = editValue.value
     }
 }
 function cancelEdit() {
     editing.value = false
-    editValue.value = props.node.name
+    editValue.value = props.node.id
 }
 
 
@@ -71,7 +69,7 @@ function toggleSelect(event: MouseEvent) {
     const shift = event.shiftKey
     const node = props.node
 
-    const nodes = filteredNodes.value
+    const nodes = flatNodes.value
     const idx = nodes.indexOf(node)
 
     if (shift && lastSelectedIndex.value !== -1 && nodes.length > 0) {
@@ -106,7 +104,7 @@ watch(editValue, () => {
 })
 watch(editing, (val) => {
     if (val) {
-        editValue.value = props.node.name
+        editValue.value = props.node.id
         nextTick(() => {
             editInput.value?.focus()
             editInput.value?.select()
