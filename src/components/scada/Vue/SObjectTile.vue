@@ -1,12 +1,12 @@
 <template>
   <div class="tile" :class="{ active: selected }" @mouseover="hovering = true" @mouseleave="hovering = false">
     <div class="obj-toolbox" v-show="hovering">
-            <i class="bi bi-floppy"></i>
-            <i class="bi bi-copy"></i>
-            <i class="bi bi-pencil-square"></i>
-            <i class="bi bi-trash"></i>
+      <i class="bi bi-floppy"></i>
+      <i class="bi bi-copy"></i>
+      <i class="bi bi-pencil-square" @click="modals.open('ScadaObjectConfigurator', { deviceTemplate: props.object }).then(() => emit('reload'))"></i>
+      <i class="bi bi-trash"></i>
     </div>
-    <div class="obj-icon"></div>
+    <div class="obj-icon" v-html="props.object.data.svg"></div>
     <div class="obj-name">{{ props.object.name }}</div>
   </div>
 </template>
@@ -14,11 +14,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { ScadaObjectTemplate } from '../ScadaTypes'
+import { useModalStore } from '@/stores/modals'
+
+const modals = useModalStore()
+
+const emit = defineEmits(['reload'])
 
 const hovering = ref(false)
 
 const props = defineProps<{
-  object: object | ScadaObjectTemplate
+  object: ScadaObjectTemplate
   selected: boolean
 }>()
 
@@ -52,6 +57,18 @@ const props = defineProps<{
 .obj-icon {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.obj-icon :deep(svg) {
+  width: 90%;
+  height: 90%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
 }
 
 .obj-name {
@@ -96,5 +113,4 @@ const props = defineProps<{
 .obj-toolbox-icon i {
   font-size: 1.5rem;
 }
-
 </style>

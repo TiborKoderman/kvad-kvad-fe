@@ -31,6 +31,7 @@ import IconConfigurator from '@/components/scada/Vue/IconConfigurator.vue'
 import HierarchyTree from '../scada/Vue/HierarchyTree.vue'
 import { ScadaObjectTemplate } from '../scada/ScadaTypes'
 import Svg from '@/components/scada/Svg'
+import api from '@/api'
 
 const svg = reactive<Svg>(new Svg())
 
@@ -48,26 +49,23 @@ const props = defineProps({
   },
 })
 
-const template = ref<ScadaObjectTemplate>({
-  id: null,
-  name: '',
-  data: {
-    metadata: {
-      states: [],
-      textFields: [],
-      components: [],
-    },
-    svg: '',
-  },
-})
-
+const template = ref<ScadaObjectTemplate>(JSON.parse(JSON.stringify(props.deviceTemplate)))
+if (template.value.data.svg) {
+  svg.Load(template.value.data.svg)
+}
 //submit, define expose and export default baseProps are required for the modal system to work
 async function submit() {
-  return
+  return api.post('/scada/template', {
+    ...template.value,
+    data: {
+      ...template.value.data,
+      svg: svg.svg.outerHTML,
+    },
+  })
 }
 
 defineOptions({
-  name: 'ScadaObjectSelector',
+  name: 'ScadaObjectConfigurator',
   baseProps: () => ({
     title: 'Configure SCADA object template',
   }),

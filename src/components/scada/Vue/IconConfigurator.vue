@@ -5,11 +5,17 @@
     @dragover.prevent="handleDragOver"
     @dragleave.prevent="dragging = false"
     @drop.prevent="handleDrop"
+    @mouseenter="hovering = true"
+    @mouseleave="hovering = false"
     @click="triggerFileInput"
   >
     <!-- Trash button (top right, only when SVG is present and hovering) -->
 
-    <i class="bi bi-trash" @click.stop="clearSvg"></i>
+    <i
+      v-if="hasSvg && hovering"
+      class="bi bi-trash"
+      @click.stop="clearSvg"
+    ></i>
     <!-- Display SVG if available -->
     <div v-show="hasSvg" class="svg-container" ref="svgContainer"></div>
     <!-- Upload placeholder if no SVG -->
@@ -29,6 +35,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, Reactive, watch } from 'vue'
+import IconConfiguratorToolbox from './IconConfiguratorToolbox.vue';
 import Svg from '@/components/scada/Svg'
 
 // Use defineModel for v-model:svg
@@ -38,12 +45,12 @@ const props = defineProps<{
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const dragging = ref(false)
+const hovering = ref(false)
 
 const svgContainer = ref<HTMLElement | null>(null)
 
 const hasSvg = ref(false)
 
-props.svg.enableSelectMode()
 
 watch(
   () => props.svg.isEmpty,
@@ -53,7 +60,13 @@ watch(
   { immediate: true }
 )
 
-onMounted(() => {})
+onMounted(() => {
+  // If SVG is not empty and not already in the container, append it
+  if (!props.svg.isEmpty && svgContainer.value && !svgContainer.value.contains(props.svg.svg)) {
+    svgContainer.value.appendChild(props.svg.svg)
+    hasSvg.value = true
+  }
+})
 
 function handleDragOver(event: DragEvent) {
   dragging.value = true
