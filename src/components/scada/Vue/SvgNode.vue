@@ -18,21 +18,22 @@
                     @keyup.esc="cancelEdit"
                     ref="editInput"
                     class="edit-input"
-                    :style="{ width: `${Math.max(editValue.length, 4)}ch` }"
+                    :style="{ width: sizerWidth + 'px' }"
                 />
+                <span ref="sizer" class="input-sizer">{{ editValue || ' ' }}</span>
             </template>
             <template v-else>
                 {{ props.node.name }}
             </template>
         </span>
-        <div v-if="expanded">
-            <SvgNode
-                v-for="child in props.node.children"
-                :key="child.id || child.name || child.tagName"
-                :node="child"
-                :depth="depth + 1"
-            />
-        </div>
+    </div>
+    <div v-if="expanded">
+        <SvgNode
+            v-for="child in props.node.children"
+            :key="child.id || child.name || child.tagName"
+            :node="child"
+            :depth="depth + 1"
+        />
     </div>
 </template>
 
@@ -45,6 +46,8 @@ const selected = ref(false)
 const editing = ref(false)
 const editValue = ref('')
 const editInput = ref<HTMLInputElement>()
+const sizer = ref<HTMLElement>()
+const sizerWidth = ref(0)
 
 function saveEdit() {
     editing.value = false
@@ -57,12 +60,22 @@ function cancelEdit() {
     editValue.value = props.node.name
 }
 
+watch(editValue, () => {
+    nextTick(() => {
+        if (sizer.value) {
+            sizerWidth.value = sizer.value.offsetWidth + 8 // add a little padding
+        }
+    })
+})
 watch(editing, (val) => {
     if (val) {
         editValue.value = props.node.name
         nextTick(() => {
             editInput.value?.focus()
             editInput.value?.select()
+            if (sizer.value) {
+                sizerWidth.value = sizer.value.offsetWidth + 8
+            }
         })
     }
 })
@@ -115,7 +128,21 @@ const folderIconClass = computed(() => {
 .bi-folder2-open {
     color: #007bff;
 }
+.nodeLine {
+    display: flex;
+    align-items: center;
+    margin: 0.1em 0;
+    font-size: 1rem;
+    color: #333;
+    font-family: sans-serif;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    /* Remove width: 100% if present, let it be natural */
+}
 .nameLine {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
     cursor: pointer;
     user-select: none;
     width: 100%;
@@ -124,16 +151,6 @@ const folderIconClass = computed(() => {
     background-color: color-mix(in srgb, var(--bs-secondary) 10%, white 30%);
     border-radius: 3px;
 }
-.nodeLine {
-    align-items: center;
-        margin: 0.1em 0;
-    font-size: 1rem;
-    color: #333;
-    font-family: sans-serif;
-    border: 1px solid transparent;
-    border-radius: 3px;
-}
-
 .selected {
     background-color: color-mix(in srgb, var(--bs-secondary) 40%, white 30%);
     border: 1px solid gray;
@@ -147,7 +164,20 @@ const folderIconClass = computed(() => {
     background: #fff;
     color: #222;
     margin-left: 0.2em;
-    min-width: 4ch;
+    min-width: 6ch;
     max-width: 20ch;
+    box-sizing: content-box;
+    /* width is now set inline */
 }
+.input-sizer {
+    position: absolute;
+    visibility: hidden;
+    height: 0;
+    overflow: scroll;
+    white-space: pre;
+    font: inherit;
+    padding: 0 0.2em;
+    /* match .edit-input styles */
+}
+/* Optionally, add a left border or guide for tree lines if desired */
 </style>
