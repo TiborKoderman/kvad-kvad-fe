@@ -13,6 +13,7 @@ $theme-colors: (
     "dark":       #370748,
     "primary":    #b00b69,
     "secondary":  #f52b2b,
+    "tertiary":   #2597ee,
     "info":       #f37e10,
     "success":    #07ab77,
     "warning":    #d6d206,
@@ -65,6 +66,16 @@ $input-btn-focus-bg: map-get($theme-colors, "primary");
 $input-btn-focus-border-color: map-get($theme-colors, "primary");
 $input-btn-focus-box-shadow: 0 0 0 0.25rem rgba(map-get($theme-colors, "primary"), 0.5);
 $input-btn-focus-color: $white;
+
+// Add background utility classes for each theme color (lighter backgrounds)
+@each $name, $color in $theme-colors {
+  .bg-#{$name} {
+    background-color: mix($color, #fff, 85%) !important;
+  }
+  .text-#{$name} {
+    color: #{$color} !important;
+  }
+}
 
 .modal-dialog.auto-width {
   width: auto;
@@ -215,3 +226,5 @@ $swal2-input-border-radius: $input-border-radius !default;
 $swal2-input-padding: $input-padding-y $input-padding-x !default;
 
 @import url("sweetalert2/src/sweetalert2.scss");
+
+

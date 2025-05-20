@@ -1,14 +1,23 @@
 <template>
   <div 
     class="icon-configurator"
+    :class="{ 'icon-configurator-hover': !hasSvg }"
     @dragover.prevent="handleDragOver"
     @dragleave.prevent="dragging = false"
     @drop.prevent="handleDrop"
     @click="triggerFileInput"
   >
+    <!-- Trash button (top right, only when SVG is present and hovering) -->
+    <button
+      v-if="hasSvg"
+      class="trash-btn"
+      @click.stop="clearSvg"
+      title="Remove icon"
+    >
+      <i class="bi bi-trash"></i>
+    </button>
     <!-- Display SVG if available -->
     <div v-show="hasSvg" class="svg-container" ref="svgContainer"></div>
-    
     <!-- Upload placeholder if no SVG -->
     <div v-show="!hasSvg" class="upload-placeholder" :class="{ dragging }">
       <i class="bi bi-cloud-arrow-up"></i>
@@ -84,6 +93,10 @@ function processFile(file: File) {
   }
   reader.readAsText(file)
 }
+
+function clearSvg() {
+  svg.value.Clear()
+}
 </script>
 
 <style scoped>
@@ -91,8 +104,9 @@ function processFile(file: File) {
   aspect-ratio: 1/1;
   min-width: 150px;
   min-height: 150px;
-  border: 1px dashed #ccc;
   border-radius: 8px;
+  border: 1px solid #ccc;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,9 +114,13 @@ function processFile(file: File) {
   cursor: pointer;
   background-color: #f8f9fa;
   transition: all 0.2s ease;
+  position: relative;
 }
+.icon-configurator-hover {
+  border: 1px dashed #ccc;
 
-.icon-configurator:hover {
+}
+.icon-configurator-hover:hover {
   border-color: #666;
   background-color: #f0f0f0;
 }
@@ -154,5 +172,29 @@ function processFile(file: File) {
 
 .file-input {
   display: none;
+}
+
+.trash-btn {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  z-index: 2;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 50%;
+  padding: 0.3em 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+  font-size: 1.2em;
+  color: #b00b69;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.icon-configurator:hover .trash-btn {
+  opacity: 1;
+}
+.trash-btn:hover {
+  background: #ffe6ef;
+  color: #e44102;
 }
 </style>

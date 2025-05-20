@@ -11,8 +11,8 @@ export default class Svg {
     }
 
     isEmpty(): boolean {
-        // After constructor, the SVG has no child nodes, so it's empty.
-        return this.svg?.childNodes?.length === 0;
+        // Returns true if the SVG element has no child elements.
+        return this.svg.children.length === 0;
     }
 
 
