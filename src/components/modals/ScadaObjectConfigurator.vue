@@ -39,7 +39,7 @@ const props = defineProps({
   deviceTemplate: {
     type: Object as PropType<ScadaObjectTemplate>,
     default: () => ({
-      id: '',
+      id: null,
       name: '',
       data: {
         metadata: {
