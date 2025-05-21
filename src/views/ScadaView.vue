@@ -26,18 +26,17 @@ const scada = new Scada({
   backgroundColor: "#FFFFFF00",
   width: "100%",
   height: "100%",
-  viewBox: "0 0 1600 900 ",
 })
 scada.init()
 
 // const rect = new SRect(100, 100, 200, 100)
-const rect2 = new SRect(200, 200, 100, 100)
+const rect2 = new SRect(200, 200, 100, 200)
 // rect.GetComponent<RectComponent>('RectComponent')?.SetRotation(40)
 // scada.AddObject(rect)
 scada.AddObject(rect2)
 
 function scaleSvgToFitContainer() {
-  const svgEl = scada.svg.svg
+  const svgEl = scada.svg.Get()
   const container = scadaContainer.value
   if (!svgEl || !container) return
 
@@ -62,7 +61,7 @@ function scaleSvgToFitContainer() {
 
 onMounted(() => {
   if (scadaContainer.value) {
-    scadaContainer.value.appendChild(scada.svg.svg)
+    scadaContainer.value.appendChild(scada.svg.Get())
     nextTick(() => {
       scaleSvgToFitContainer()
     })
