@@ -1,9 +1,26 @@
+import { deepMerge } from "./utils"
+
+interface ISvgOptions {
+  width: string
+  height: string
+  viewBox: string
+  autoresize: boolean
+  backgroundColor: string
+  border: string
+}
+
+
 export default class Svg {
   private _svg: SVGSVGElement
 
-  private _width: string = '100%'
-  private _height: string = '100%'
-  private _viewBox: string = '0 0 500 500'
+  private _options: Partial<ISvgOptions> = {
+    width: '100%',
+    height: '100%',
+    viewBox: '0 0 500 500',
+    autoresize: true,
+    backgroundColor: '#FFFFFF00',
+    border: '1px solid gray',
+  }
 
   private _selected: SVGElement[] = []
   private _lastSelectedIndex: number = -1
@@ -11,19 +28,21 @@ export default class Svg {
   private _draggable = false
 
   constructor(
-    width: string = '100%',
-    height: string = '100%',
-    viewBox: string = '0 0 500 500',
+    options: Partial<ISvgOptions> = {},
   ) {
-    this._width = width
-    this._height = height
-    this._viewBox = viewBox
-    this._svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    this._svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
-    this._svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
-    this._svg.setAttribute('width', width)
-    this._svg.setAttribute('height', height)
-    this._svg.setAttribute('viewBox', viewBox)
+    this._options = deepMerge(this._options, options)
+    this.New()
+  }
+
+  set options(options: Partial<ISvgOptions>) {
+    this._options = deepMerge(this._options, options)
+  }
+
+  get options(): Partial<ISvgOptions> {
+    return this._options
+  }
+
+  Update() {
   }
 
   get isEmpty() {
@@ -35,7 +54,7 @@ export default class Svg {
   }
 
   Load(svg: string) {
-    this.Clear()
+    this.New()
 
     // Parse the SVG string and append it to the SVG element
     const parser = new DOMParser()
@@ -64,13 +83,13 @@ export default class Svg {
     return svgString
   }
 
-  Clear() {
+  New() {
     this._svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     this._svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
     this._svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
-    this._svg.setAttribute('width', this._width)
-    this._svg.setAttribute('height', this._height)
-    this._svg.setAttribute('viewBox', this._viewBox)
+    this._svg.setAttribute('width', this.options.width)
+    this._svg.setAttribute('height', this.options.height)
+    this._svg.setAttribute('viewBox', this.options.viewBox)
   }
 
   AddLayer(name: string): SVGGElement {
