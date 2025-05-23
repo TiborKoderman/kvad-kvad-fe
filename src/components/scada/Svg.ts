@@ -25,8 +25,8 @@ export default class Svg {
 
   private _selected: SVGElement[] = []
   private _lastSelectedIndex: number = -1
-
   private _draggable = false
+
 
   constructor(
     options: Partial<ISvgOptions> = {},
