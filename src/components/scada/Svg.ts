@@ -1,4 +1,4 @@
-import { deepMerge } from "./utils"
+import { deepMerge } from './utils'
 
 interface ISvgOptions {
   width: string
@@ -6,10 +6,11 @@ interface ISvgOptions {
   viewBox: string
   autoresize: boolean
   backgroundColor: string
-  border: string,
+  border: string
   grid?: number
+  clickToSelect: boolean
+  draggable: boolean
 }
-
 
 export default class Svg {
   private _svg: SVGSVGElement
@@ -21,16 +22,15 @@ export default class Svg {
     autoresize: true,
     backgroundColor: '#FFFFFF00',
     border: '1px solid gray',
+    grid: null,
+    clickToSelect: true,
+    draggable: false,
   }
 
   private _selected: SVGElement[] = []
   private _lastSelectedIndex: number = -1
-  private _draggable = false
 
-
-  constructor(
-    options: Partial<ISvgOptions> = {},
-  ) {
+  constructor(options: Partial<ISvgOptions> = {}) {
     this._options = deepMerge(this._options, options)
     this.New()
   }
@@ -43,8 +43,7 @@ export default class Svg {
     return this._options
   }
 
-  Update() {
-  }
+  Update() {}
 
   get isEmpty() {
     return this._svg?.hasChildNodes() === false
@@ -91,6 +90,57 @@ export default class Svg {
     this._svg.setAttribute('width', this.options.width)
     this._svg.setAttribute('height', this.options.height)
     this._svg.setAttribute('viewBox', this.options.viewBox)
+    this._setupEventListeners()
+  }
+
+  private _setupEventListeners() {
+    // Remove previous listeners by cloning node (if needed)
+    const oldSvg = this._svg
+    const newSvg = oldSvg.cloneNode(true) as SVGSVGElement
+    if (oldSvg.parentNode) {
+      oldSvg.parentNode.replaceChild(newSvg, oldSvg)
+    }
+    this._svg = newSvg
+
+    // Click
+    this._svg.addEventListener('click', this._onClick.bind(this))
+    // Mouseover
+    this._svg.addEventListener('mouseover', this._onMouseOver.bind(this))
+    // Mouseout
+    this._svg.addEventListener('mouseout', this._onMouseOut.bind(this))
+    // ...add more event listeners as needed, always check options...
+  }
+
+  private _onClick(event: MouseEvent) {
+    if (this._options.clickToSelect) {
+      const target = event.target as SVGElement
+      if (target) {
+        this.toggleSelect(event, target)
+      }
+    }
+    // ...add more click-based features here...
+  }
+
+  private _onMouseOver(event: MouseEvent) {
+    if (this._options.clickToSelect) {
+      const target = event.target as SVGElement
+      if (target && target !== this._svg) {
+        target.setAttribute('data-svg-hover', 'true')
+        target.style.filter = 'brightness(0.85)'
+      }
+    }
+    // ...add more mouseover-based features here...
+  }
+
+  private _onMouseOut(event: MouseEvent) {
+    if (this._options.clickToSelect) {
+      const target = event.target as SVGElement
+      if (target && target !== this._svg) {
+        target.removeAttribute('data-svg-hover')
+        target.style.filter = ''
+      }
+    }
+    // ...add more mouseout-based features here...
   }
 
   AddLayer(name: string): SVGGElement {
@@ -182,7 +232,7 @@ export default class Svg {
     this._svg.addEventListener('click', (event: MouseEvent) => {
       const target = event.target as SVGElement
       console.log('target', target)
-      if (target ) {
+      if (target) {
         this.toggleSelect(event, target)
       }
     })
@@ -203,6 +253,14 @@ export default class Svg {
     })
   }
 
-
+  onClick(event: MouseEvent) {
+    if (this._options.clickToSelect === false) {
+      const target = event.target as SVGElement
+      console.log('target', target)
+      if (target) {
+        this.toggleSelect(event, target)
+      }
+    }
+  }
 
 }

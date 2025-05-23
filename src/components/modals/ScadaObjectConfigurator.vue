@@ -20,7 +20,16 @@
         required
         autocomplete="off"
       />
-      <div></div>
+      <StateSelector
+        class="mt-2"
+        :states="template.data.metadata.states"
+        @update:states="(states) => (template.data.metadata.states = states)"
+      />
+      <StateCustomizer
+        class="mt-2"
+        :states="template.data.metadata.states"
+        @update:states="(states) => (template.data.metadata.states = states)"
+      />
     </div>
   </div>
 </template>
@@ -28,6 +37,8 @@
 <script setup lang="ts">
 import { PropType, reactive, ref } from 'vue'
 import IconConfigurator from '@/components/scada/Vue/IconConfigurator.vue'
+import StateSelector from '../scada/Vue/StateSelector.vue'
+import StateCustomizer from '../scada/Vue/StateCustomizer.vue'
 import HierarchyTree from '../scada/Vue/HierarchyTree.vue'
 import { ScadaObjectTemplate } from '../scada/ScadaTypes'
 import Svg from '@/components/scada/Svg'
