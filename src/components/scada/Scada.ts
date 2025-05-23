@@ -2,7 +2,7 @@ import SObject from './SObject'
 import Svg from './Svg'
 import './ComponentRegistry'
 import.meta.glob('./Components/*.ts', { eager: true })
-import defaultCursor from './Cursors/scadaCursor.png'
+// import defaultCursor from './Cursors/scadaCursor.png'
 import { deepMerge } from './utils'
 
 interface ScadaOptions {
@@ -43,7 +43,7 @@ export default class Scada {
     )
 
     this.svg.svg.setAttribute('style', 'border: 1px solid black;')
-    this.svg.svg.setAttribute('cursor', `url(${defaultCursor}), default`)
+    this.svg.svg.setAttribute('cursor', `crosshair`)
     this.svg.AddLayer('background')
     this.svg.AddLayer('objects')
     this.svg.AddLayer('annotations')

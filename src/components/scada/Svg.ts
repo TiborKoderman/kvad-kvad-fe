@@ -6,7 +6,8 @@ interface ISvgOptions {
   viewBox: string
   autoresize: boolean
   backgroundColor: string
-  border: string
+  border: string,
+  grid?: number
 }
 
 
@@ -20,8 +21,6 @@ export default class Svg {
     autoresize: true,
     backgroundColor: '#FFFFFF00',
     border: '1px solid gray',
-    selectableItems: true,
-    draggableItems: true,
   }
 
   private _selected: SVGElement[] = []
