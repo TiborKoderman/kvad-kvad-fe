@@ -53,7 +53,7 @@
       </span>
     </span>
   </div>
-  <div v-if="expanded">
+  <div v-show="expanded">
     <SvgNode
       v-for="child in Array.from(props.node.children).reverse()"
       :key="child.id || child.tagName"
@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, watch, inject, Ref } from 'vue'
+import { ref, computed, nextTick, watch, inject, Reactive } from 'vue'
 import SvgNode from './SvgNode.vue'
 import Svg from '../Svg'
 
@@ -75,7 +75,7 @@ const editInput = ref<HTMLInputElement>()
 const sizer = ref<HTMLElement>()
 const sizerWidth = ref(0)
 
-const svg = inject<Ref<Svg>>('svg', null)
+const svg = inject<Reactive<Svg>>('svg', null)
 
 const emit = defineEmits(['expand'])
 
@@ -121,7 +121,9 @@ watch(editing, val => {
   }
 })
 
-const isSelected = computed(() => svg?.value?.isSelected(props.node))
+const isSelected = computed(() => {
+  return svg.isSelected(props.node)
+})
 
 watch(isSelected, (val) => {
   if (val) emit('expand')

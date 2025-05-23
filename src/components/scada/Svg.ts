@@ -203,66 +203,6 @@ export default class Svg {
     })
   }
 
-  setDraggable(enabled: boolean) {
-    this._draggable = enabled
 
-    // Remove previous listeners if any
-    this._svg.onmousedown = null
-    this._svg.onmousemove = null
-    this._svg.onmouseup = null
-    this._svg.onmouseleave = null
-
-    if (!enabled) return
-
-    let draggingEl: SVGElement | null = null
-    let startX = 0
-    let startY = 0
-    let origX = 0
-    let origY = 0
-
-    this._svg.onmousedown = (event: MouseEvent) => {
-      if (!this._draggable) return
-      const target = event.target as SVGElement
-      if (target && target !== this._svg) {
-        draggingEl = target
-
-        // Always recalculate the origin on every mousedown
-        const pt = this._svg.createSVGPoint()
-        pt.x = event.clientX
-        pt.y = event.clientY
-        const svgP = pt.matrixTransform(this._svg.getScreenCTM()?.inverse())
-        startX = svgP.x
-        startY = svgP.y
-
-        // Get current transform
-        const transform = draggingEl.getAttribute('transform')
-        const match = transform && /translate\(([-\d.]+)[ ,]([-\d.]+)\)/.exec(transform)
-        origX = match ? parseFloat(match[1]) : 0
-        origY = match ? parseFloat(match[2]) : 0
-
-        event.preventDefault()
-      }
-    }
-
-    this._svg.onmousemove = (event: MouseEvent) => {
-      if (!this._draggable || !draggingEl) return
-
-      // Get mouse position in SVG coordinates
-      const pt = this._svg.createSVGPoint()
-      pt.x = event.clientX
-      pt.y = event.clientY
-      const svgP = pt.matrixTransform(this._svg.getScreenCTM()?.inverse())
-      const dx = svgP.x - startX
-      const dy = svgP.y - startY
-      draggingEl.setAttribute('transform', `translate(${origX + dx}, ${origY + dy})`)
-    }
-
-    const stopDrag = () => {
-      draggingEl = null
-    }
-
-    this._svg.onmouseup = stopDrag
-    this._svg.onmouseleave = stopDrag
-  }
 
 }

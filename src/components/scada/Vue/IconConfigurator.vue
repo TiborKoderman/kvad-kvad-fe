@@ -66,8 +66,6 @@ onMounted(() => {
     svgContainer.value.appendChild(props.svg.svg)
     hasSvg.value = true
   }
-  // props.svg.setClickToSelect()
-  props.svg.setDraggable(true)
 })
 
 function handleDragOver(event: DragEvent) {
@@ -114,7 +112,7 @@ function processFile(file: File) {
 
 function clearSvg() {
   svgContainer.value?.removeChild(props.svg.svg)
-  props.svg.Clear()
+  props.svg.New()
   hasSvg.value = false
   if (!hasSvg.value) return
 }

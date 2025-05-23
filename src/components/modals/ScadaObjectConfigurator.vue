@@ -54,6 +54,7 @@ const props = defineProps({
 const template = ref<ScadaObjectTemplate>(JSON.parse(JSON.stringify(props.deviceTemplate)))
 if (template.value.data.svg) {
   svg.Load(template.value.data.svg)
+  svg.setClickToSelect(true)
 }
 //submit, define expose and export default baseProps are required for the modal system to work
 async function submit() {
