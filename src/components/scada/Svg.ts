@@ -20,6 +20,8 @@ export default class Svg {
     autoresize: true,
     backgroundColor: '#FFFFFF00',
     border: '1px solid gray',
+    selectableItems: true,
+    draggableItems: true,
   }
 
   private _selected: SVGElement[] = []
