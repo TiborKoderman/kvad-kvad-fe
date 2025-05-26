@@ -4,8 +4,6 @@
             <label>Fill:</label>
             <input type="color" v-model="fill" />
             <input type="text" v-model="fill" placeholder="Fill color (CSS)" />
-        </div>
-        <div class="row">
             <label>Stroke:</label>
             <input type="color" v-model="stroke" />
             <input type="text" v-model="stroke" placeholder="Stroke color (CSS)" />

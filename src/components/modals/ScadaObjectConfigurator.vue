@@ -3,32 +3,28 @@
     <div class="flex-shrink-1 d-flex align-center justify-center">
       <IconConfigurator :svg="svg" />
     </div>
+    <HierarchyTree :svg="svg" />
     <div class="flex-grow-1 d-flex flex-column w-100">
-      <h1>Layers</h1>
-
-      <div class="flex-grow-1 d-flex flex-column w-100 overflow-auto">
-        <HierarchyTree :svg="svg" />
+      <div class="device-name-container border p-3 mb-3">
+        <h5 class="mb-2 border-bottom">Device name</h5>
+        <input
+          type="text"
+          class="form-control"
+          id="deviceName"
+          v-model="template.name"
+          required
+          autocomplete="off"
+        />
       </div>
-    </div>
-    <div class="flex-grow-1 d-flex flex-column w-100 p-2 m-2">
-      <label for="deviceName">Device name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="deviceName"
-        v-model="template.name"
-        required
-        autocomplete="off"
-      />
       <StateSelector
         class="mt-2"
         :states="template.data.metadata.states"
-        @update:states="(states) => (template.data.metadata.states = states)"
+        @update:states="states => (template.data.metadata.states = states)"
       />
       <StateCustomizer
         class="mt-2"
         :states="template.data.metadata.states"
-        @update:states="(states) => (template.data.metadata.states = states)"
+        @update:states="states => (template.data.metadata.states = states)"
       />
     </div>
   </div>
@@ -62,7 +58,9 @@ const props = defineProps({
   },
 })
 
-const template = ref<ScadaObjectTemplate>(JSON.parse(JSON.stringify(props.deviceTemplate)))
+const template = ref<ScadaObjectTemplate>(
+  JSON.parse(JSON.stringify(props.deviceTemplate)),
+)
 if (template.value.data.svg) {
   svg.Load(template.value.data.svg)
   svg.setClickToSelect(true)
