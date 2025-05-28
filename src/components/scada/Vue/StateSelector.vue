@@ -40,7 +40,7 @@
         </span>
       </div>
     </div>
-    <div class="add-row-fixed" style="justify-content: center;">
+    <div class="add-row-fixed" style="justify-content: center;" @click="addState">
       <i class="bi bi-plus"></i>
     </div>
   </div>
@@ -240,7 +240,8 @@ function moveStateDown(idx: number) {
   display: flex;
   align-items: center;
   padding: 0 0.75em;
-  border-top: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e0;
+  border-collapse: collapse;
   background: #f4fff4;
   gap: 0.5em;
   cursor: pointer;
