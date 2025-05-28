@@ -1,5 +1,6 @@
 <template>
-  <div>
+        <div class="device-name-container border p-3 mb-3">
+        <h5 class="mb-2 border-bottom">State</h5>
     <div class="state-list" style="margin-bottom: 0;">
       <div
       v-for="(state, idx) in States"
@@ -145,11 +146,10 @@ function moveStateDown(idx: number) {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  border: 1px solid #bdbdbd;
-  background: #f8fff8;
-  box-shadow: 0 1px 4px 0 #0001;
-  padding: 0.25em 0;
-  margin: 0.5em 0;
+  border: 1px solid var(--bs-border-color);
+  background: var(--bs-body-bg);
+  padding:0;
+  margin: 0;
 }
 .state-list > div {
   min-height: 2em;
@@ -157,7 +157,7 @@ function moveStateDown(idx: number) {
   align-items: center;
   padding: 0 0.75em;
   cursor: pointer;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--bs-border-color);
   transition: background 0.15s, color 0.15s;
   position: relative;
 }
@@ -165,14 +165,14 @@ function moveStateDown(idx: number) {
   border-bottom: none;
 }
 .state-list > div.selected {
-  background: #43a047;
-  color: #fff;
+  background: var(--bs-primary);
+  color: var(--bs-primary-text-emphasis);
   font-weight: bold;
   border-radius: 4px;
 }
 .state-list > div:hover:not(.selected) {
-  background: #e8f5e9;
-  color: #222;
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-emphasis-color);
 }
 .state-list > div.editable .actions {
   display: flex;
@@ -197,13 +197,13 @@ function moveStateDown(idx: number) {
 }
 .move-carat {
   font-size: 0.8em;
-  color: #888;
+  color: var(--bs-secondary);
   cursor: pointer;
   opacity: 0.8;
   transition: color 0.15s, opacity 0.15s;
 }
 .move-carat:hover:not(.disabled) {
-  color: #43a047;
+  color: var(--bs-primary);
   opacity: 1;
 }
 .move-carat.disabled {
@@ -217,20 +217,20 @@ function moveStateDown(idx: number) {
   transition: color 0.15s, opacity 0.15s;
 }
 .edit-icon:hover {
-  color: #1976d2;
+  color: var(--bs-info);
   opacity: 1;
 }
 .trash-icon:hover {
-  color: #b71c1c;
+  color: var(--bs-danger);
   opacity: 1;
 }
 .edit-input {
   font: inherit;
   padding: 0 0.2em;
-  border: 1px solid #aaa;
+  border: 1px solid var(--bs-border-color);
   border-radius: 3px;
-  background: #fff;
-  color: #222;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
   min-width: 6ch;
   max-width: 100%;
   box-sizing: border-box;
@@ -240,9 +240,9 @@ function moveStateDown(idx: number) {
   display: flex;
   align-items: center;
   padding: 0 0.75em;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--bs-border-color);
   border-collapse: collapse;
-  background: #f4fff4;
+  background: var(--bs-secondary-bg);
   gap: 0.5em;
   cursor: pointer;
   position: sticky;
@@ -251,21 +251,21 @@ function moveStateDown(idx: number) {
 }
 
 .add-row-fixed:hover {
-  background: #e8f5e9;
-  color: #222;
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-emphasis-color);
 }
 .add-input {
   flex: 1 1 auto;
   min-width: 0;
   padding: 0.3em 0.5em;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--bs-border-color);
   border-radius: 4px;
   font: inherit;
-  background: #fff;
+  background: var(--bs-body-bg);
 }
 .add-btn {
-  background: #43a047;
-  color: #fff;
+  background: var(--bs-primary);
+  color: var(--bs-primary-text-emphasis);
   border: none;
   border-radius: 4px;
   padding: 0.3em 0.7em;
@@ -276,9 +276,9 @@ function moveStateDown(idx: number) {
   align-items: center;
 }
 .add-btn:disabled {
-  background: #bdbdbd;
+  background: var(--bs-secondary);
   cursor: not-allowed;
-  color: #eee;
+  color: var(--bs-secondary-color);
 }
 .add-btn .bi-plus {
   font-weight: bold;
