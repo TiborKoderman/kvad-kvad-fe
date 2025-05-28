@@ -1,50 +1,49 @@
 <template>
-    <div class="state-list">
-        <div
-          v-for="(state, idx) in States"
-          :key="state.id"
-          :class="{ selected: selectedState === state.id, editable: state.id !== 'fallback' }"
-          @click="selectedState = state.id"
-          @mouseenter="hovered = state.id"
-          @mouseleave="hovered = null"
-        >
-            <span class="move-actions" v-if="state.id !== 'fallback'">
-              <i class="bi bi-caret-up-fill move-carat"
-                 @click.stop="moveStateUp(idx)"
-                 :class="{ disabled: idx === 1 }"
-                 title="Move up"
-              ></i>
-              <i class="bi bi-caret-down-fill move-carat"
-                 @click.stop="moveStateDown(idx)"
-                 :class="{ disabled: idx === States.length - 1 }"
-                 title="Move down"
-              ></i>
-            </span>
-            <template v-if="editing === state.id">
-              <input
-                v-model="editValue"
-                @blur="saveEdit(state)"
-                @keyup.enter="saveEdit(state)"
-                @keyup.esc="cancelEdit"
-                class="edit-input"
-                ref="editInput"
-              />
-            </template>
-            <template v-else>
-              {{ state.id }}
-            </template>
-            <span class="actions" v-if="state.id !== 'fallback' && hovered === state.id">
-              <i class="bi bi-pencil edit-icon" @click.stop="startEdit(state)" title="Rename"></i>
-              <i class="bi bi-trash trash-icon" @click.stop="removeState(state)" title="Delete"></i>
-            </span>
-        </div>
+  <div>
+    <div class="state-list" style="margin-bottom: 0;">
+      <div
+      v-for="(state, idx) in States"
+      :key="state.id"
+      :class="{ selected: selectedState === state.id, editable: state.id !== 'fallback' }"
+      @click="selectedState = state.id"
+      @mouseenter="hovered = state.id"
+      @mouseleave="hovered = null"
+      >
+        <span class="move-actions" v-if="state.id !== 'fallback'">
+        <i class="bi bi-caret-up-fill move-carat"
+           @click.stop="moveStateUp(idx)"
+           :class="{ disabled: idx === 1 }"
+           title="Move up"
+        ></i>
+        <i class="bi bi-caret-down-fill move-carat"
+           @click.stop="moveStateDown(idx)"
+           :class="{ disabled: idx === States.length - 1 }"
+           title="Move down"
+        ></i>
+        </span>
+        <template v-if="editing === state.id">
+        <input
+          v-model="editValue"
+          @blur="saveEdit(state)"
+          @keyup.enter="saveEdit(state)"
+          @keyup.esc="cancelEdit"
+          class="edit-input"
+          ref="editInput"
+        />
+        </template>
+        <template v-else>
+        {{ state.id }}
+        </template>
+        <span class="actions" v-if="state.id !== 'fallback' && hovered === state.id">
+        <i class="bi bi-pencil edit-icon" @click.stop="startEdit(state)" title="Rename"></i>
+        <i class="bi bi-trash trash-icon" @click.stop="removeState(state)" title="Delete"></i>
+        </span>
+      </div>
     </div>
-    <div class="add-row-fixed">
-
-      <button class="add-btn" @click="addState" :disabled="!canAddState || editing !== null">
-        <i class="bi bi-plus"></i> Add
-      </button>
+    <div class="add-row-fixed" style="justify-content: center;">
+      <i class="bi bi-plus"></i>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -190,12 +189,14 @@ function moveStateDown(idx: number) {
 }
 .move-actions {
   display: flex;
-  gap: 0.1em;
+  flex-direction: column;
+  gap: 0;
   margin-right: 0.5em;
   align-items: center;
+  line-height: 0.6;
 }
 .move-carat {
-  font-size: 1.2em;
+  font-size: 0.8em;
   color: #888;
   cursor: pointer;
   opacity: 0.8;
@@ -242,10 +243,15 @@ function moveStateDown(idx: number) {
   border-top: 1px solid #e0e0e0;
   background: #f4fff4;
   gap: 0.5em;
-  cursor: default;
+  cursor: pointer;
   position: sticky;
   bottom: 0;
   z-index: 2;
+}
+
+.add-row-fixed:hover {
+  background: #e8f5e9;
+  color: #222;
 }
 .add-input {
   flex: 1 1 auto;
