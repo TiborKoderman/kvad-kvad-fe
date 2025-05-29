@@ -7,7 +7,7 @@
             .open('ScadaObjectSelector')
             .then((selectedObject) => {
               console.log('Selected object:', selectedObject)
-              if (selectedObject) {
+              if (selectedObject !=null ) {
                 const no = new SObject()
                 no.AddComponent('RectComponent', 300, 300, 100, 100)
                 no.AddComponent('SvgComponent', selectedObject.data.svg)

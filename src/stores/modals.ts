@@ -29,7 +29,7 @@ export const useModalStore = defineStore('modalStore', () => {
 
   //for each component in the folder, register it
 
-  async function open(name: string, props = {}): Promise<void> {
+  async function open(name: string, props = {}): Promise<any> {
     // console.log('open', name)
     // console.log('props', props)
     const entry = componentMap.value.get(name)
@@ -39,7 +39,7 @@ export const useModalStore = defineStore('modalStore', () => {
       return
     }
 
-    return new Promise<void>(async resolve => {
+    return new Promise<any>(async (resolve, reject) => {
       try {
         const modalComponent = (await modalLoader()).default
 
@@ -54,21 +54,24 @@ export const useModalStore = defineStore('modalStore', () => {
 
         const app = createApp({
           setup() {
-            const close = () => {
+            const close = (returnValue?: any) => {
               app.unmount()
               mountTarget.remove()
-              resolve() // <-- Fulfill the promise when the modal closes
+              resolve(returnValue)
             }
 
             const submit = () => {
               console.log('submit clicked')
-              modalRef.value
+              return modalRef.value
                 ?.submit()
-                ?.then(() => {
+                ?.then((value) => {
+                  console.log('submit success', value)
                   close()
+                  return value
                 })
-                ?.catch(() => {
-                  console.log('submit failed')
+                ?.catch((error) => {
+                  console.log('submit failed', error)
+                  reject(error)
                 })
             }
 
@@ -86,6 +89,7 @@ export const useModalStore = defineStore('modalStore', () => {
         app.mount(mountTarget)
       } catch (error) {
         console.error(`Failed to load modal ${name}:`, error)
+        reject(error)
       }
     })
   }

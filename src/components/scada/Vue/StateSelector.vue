@@ -6,7 +6,7 @@
         v-for="(state, idx) in States"
         :key="state.id"
         :class="{ 
-          selected: selectedState === state.id, 
+          selected: selectedState === state.id,
           editable: state.id !== 'fallback',
           dragging: draggedState?.id === state.id,
           'drop-target': dropTargetIndex === idx
