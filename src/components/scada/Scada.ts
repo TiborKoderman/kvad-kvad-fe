@@ -39,6 +39,7 @@ export default class Scada {
         autoresize: this._options.autoresize,
         backgroundColor: this._options.backgroundColor,
         border: this._options.border,
+        clickToSelect: false
       }
     )
 
@@ -74,7 +75,7 @@ export default class Scada {
     })
   }
 
-  AddObject(object: SObject) {
+  AddObject(object: SObject): void {
     this._sObjects.push(object)
     object.Mount(this)
   }
