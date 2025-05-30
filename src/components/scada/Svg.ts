@@ -7,9 +7,10 @@ interface ISvgOptions {
   autoresize: boolean
   backgroundColor: string
   border: string
-  grid?: number
   clickToSelect: boolean
-  draggable: boolean
+  selectionDepth: number
+  draggable: boolean,
+  pannable: boolean
 }
 
 export default class Svg {
@@ -22,9 +23,10 @@ export default class Svg {
     autoresize: true,
     backgroundColor: '#FFFFFF00',
     border: '1px solid gray',
-    grid: null,
     clickToSelect: true,
     draggable: false,
+    pannable: false,
+    selectionDepth: 0,
   }
 
   private _selected: SVGElement[] = []

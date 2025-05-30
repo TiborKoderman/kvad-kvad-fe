@@ -66,12 +66,11 @@ export const useModalStore = defineStore('modalStore', () => {
                 ?.submit()
                 ?.then((value) => {
                   console.log('submit success', value)
-                  close()
-                  return value
+                  close(value)
                 })
                 ?.catch((error) => {
                   console.log('submit failed', error)
-                  reject(error)
+                  return Promise.reject(error)
                 })
             }
 
