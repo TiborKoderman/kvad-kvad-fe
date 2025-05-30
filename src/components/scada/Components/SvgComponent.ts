@@ -44,13 +44,40 @@ export default class SvgComponent extends Component {
 
     Mount() {
         if (this._svgElement) {
-            if (this._svgElement.tagName.toLowerCase() === 'svg') {
-                this._svgElement.setAttribute('width', '100%')
-                this._svgElement.setAttribute('height', '100%')
-                this._svgElement.setAttribute('viewBox', '0 0 100 100')
-                this._svgElement.setAttribute('preserveAspectRatio', 'xMinYMin meet')
+            // Create a group to contain both the rect and SVG
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+            group.setAttribute('id', this.sObject.id)
+            
+            // Mount the rect component first (background/bounds)
+            this.rectComponent.Mount()
+            
+            // Move the rect element to our group
+            const rectElement = this.sObject.scada.svg.GetLayer('objects')?.querySelector(`#${this.sObject.id}_rect`)
+            if (rectElement) {
+                group.appendChild(rectElement)
             }
-            this.sObject.scada.svg.GetLayer('objects')?.appendChild(this._svgElement)
+            
+            if (this._svgElement.tagName.toLowerCase() === 'svg') {
+                // For SVG elements, position at rect coordinates and scale to fit
+                this._svgElement.setAttribute('x', this.rectComponent.x.toString())
+                this._svgElement.setAttribute('y', this.rectComponent.y.toString()) 
+                this._svgElement.setAttribute('width', this.rectComponent.width.toString())
+                this._svgElement.setAttribute('height', this.rectComponent.height.toString())
+                this._svgElement.setAttribute('preserveAspectRatio', 'none')
+                group.appendChild(this._svgElement)
+            } else {
+                // For other elements, wrap and position at rect coordinates
+                const svgWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+                svgWrapper.setAttribute('x', this.rectComponent.x.toString())
+                svgWrapper.setAttribute('y', this.rectComponent.y.toString())
+                svgWrapper.setAttribute('width', this.rectComponent.width.toString())
+                svgWrapper.setAttribute('height', this.rectComponent.height.toString())
+                svgWrapper.appendChild(this._svgElement)
+                group.appendChild(svgWrapper)
+            }
+            
+            // Add group to the objects layer (no transform needed)
+            this.sObject.scada.svg.GetLayer('objects')?.appendChild(group)
         }
     }
     Update() {}

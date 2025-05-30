@@ -10,7 +10,7 @@ export default class RectComponent extends Component {
     public height: number;
     public rotation: number;
     public scale: number;
-    public debugBounds: boolean = false;
+    public debugBounds: boolean = true;
     public debugBoundsColor: string = "#FF0000";
     public rect: SVGRectElement | null = null;
 
@@ -66,9 +66,12 @@ export default class RectComponent extends Component {
         this.rect.setAttribute("width", this.width.toString());
         this.rect.setAttribute("height", this.height.toString());
         this.rect.setAttribute("transform", `rotate(${this.rotation}, ${this.x + this.width / 2}, ${this.y + this.height / 2}) scale(${this.scale})`);
+        this.rect.setAttribute("fill", "none");
         if (this.debugBounds) {
             this.rect.setAttribute("stroke", this.debugBoundsColor);
-            this.rect.setAttribute("fill", "none");
+        }
+        else {
+            this.rect.setAttribute("stroke", "none");
         }
         console.log("Mounting RectComponent", this);
         this.sObject.scada.svg.GetLayer("objects")?.appendChild(this.rect);

@@ -11,6 +11,9 @@
                 const no = new SObject()
                 no.AddComponent('RectComponent', 300, 300, 100, 100)
                 no.AddComponent('SvgComponent', selectedObject.data.svg)
+                no.AddComponent('OnClickComponent', () => {
+                  console.log('Clicked on object:', no)
+                })
                 scada.AddObject(no)
               }
             })
@@ -50,46 +53,11 @@ const scada = new Scada({
 })
 scada.init()
 
-// const rect = new SRect(100, 100, 200, 100)
-const rect2 = new SRect(200, 200, 100, 200)
-// rect.GetComponent<RectComponent>('RectComponent')?.SetRotation(40)
-// scada.AddObject(rect)
-scada.AddObject(rect2)
-
-function scaleSvgToFitContainer() {
-  const svgEl = scada.svg.svg
-  const container = scadaContainer.value
-  if (!svgEl || !container) return
-
-  // Get container and SVG viewBox sizes
-  const viewBox = svgEl.getAttribute('viewBox')?.split(' ').map(Number) || [
-    0, 0, 500, 500,
-  ]
-  const vbWidth = viewBox[2]
-  const vbHeight = viewBox[3]
-  const cWidth = container.clientWidth
-  const cHeight = container.clientHeight
-
-  if (!vbWidth || !vbHeight || !cWidth || !cHeight) return
-
-  // Calculate scale to fit, constrained by the smaller ratio
-  const scale = Math.min(cWidth / vbWidth, cHeight / vbHeight)
-
-  // Center the SVG in the container
-  svgEl.style.display = 'block'
-  svgEl.style.margin = 'auto'
-  svgEl.style.width = `${vbWidth * scale}px`
-  svgEl.style.height = `${vbHeight * scale}px`
-}
 
 onMounted(() => {
   if (scadaContainer.value) {
     scadaContainer.value.appendChild(scada.svg.svg)
-    nextTick(() => {
-      scaleSvgToFitContainer()
-    })
-    // Re-scale on resize
-    window.addEventListener('resize', scaleSvgToFitContainer)
+
   }
 })
 </script>
