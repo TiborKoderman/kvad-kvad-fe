@@ -44,7 +44,7 @@ export default class SvgComponent extends Component {
 
     Mount() {
         if (this._svgElement) {
-            // Create a group to contain both the rect and SVG
+            // Create a group to contain both the rect and SVG content
             const group = document.createElementNS('http://www.w3.org/2000/svg', 'g')
             group.setAttribute('id', this.sObject.id)
             
@@ -57,26 +57,45 @@ export default class SvgComponent extends Component {
                 group.appendChild(rectElement)
             }
             
-            if (this._svgElement.tagName.toLowerCase() === 'svg') {
-                // For SVG elements, position at rect coordinates and scale to fit
-                this._svgElement.setAttribute('x', this.rectComponent.x.toString())
-                this._svgElement.setAttribute('y', this.rectComponent.y.toString()) 
-                this._svgElement.setAttribute('width', this.rectComponent.width.toString())
-                this._svgElement.setAttribute('height', this.rectComponent.height.toString())
-                this._svgElement.setAttribute('preserveAspectRatio', 'none')
-                group.appendChild(this._svgElement)
+            // Create a group for SVG content
+            const svgContentGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+            
+            // Extract all children from the SVG element
+            const children = Array.from(this._svgElement.children)
+            children.forEach(child => {
+                const importedChild = document.importNode(child, true)
+                svgContentGroup.appendChild(importedChild)
+            })
+            
+            // Position and scale the content group to fit the rect
+            const rectAttrs = this.rectComponent.GetRect()
+            const x = rectAttrs.getAttribute('x') || '0'
+            const y = rectAttrs.getAttribute('y') || '0'
+            const width = rectAttrs.getAttribute('width') || '0'
+            const height = rectAttrs.getAttribute('height') || '0'
+            
+            // Get original SVG viewBox or dimensions for scaling
+            const viewBox = this._svgElement.getAttribute('viewBox')
+            let originalWidth, originalHeight
+            
+            if (viewBox) {
+                const [, , vbWidth, vbHeight] = viewBox.split(' ').map(Number)
+                originalWidth = vbWidth
+                originalHeight = vbHeight
             } else {
-                // For other elements, wrap and position at rect coordinates
-                const svgWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-                svgWrapper.setAttribute('x', this.rectComponent.x.toString())
-                svgWrapper.setAttribute('y', this.rectComponent.y.toString())
-                svgWrapper.setAttribute('width', this.rectComponent.width.toString())
-                svgWrapper.setAttribute('height', this.rectComponent.height.toString())
-                svgWrapper.appendChild(this._svgElement)
-                group.appendChild(svgWrapper)
+                originalWidth = parseFloat(this._svgElement.getAttribute('width') || '100')
+                originalHeight = parseFloat(this._svgElement.getAttribute('height') || '100')
             }
             
-            // Add group to the objects layer (no transform needed)
+            // Calculate scale and apply transform
+            const scaleX = parseFloat(width) / originalWidth
+            const scaleY = parseFloat(height) / originalHeight
+            const transform = `translate(${x}, ${y}) scale(${scaleX}, ${scaleY})`
+            svgContentGroup.setAttribute('transform', transform)
+            
+            group.appendChild(svgContentGroup)
+            
+            // Add group to the objects layer
             this.sObject.scada.svg.GetLayer('objects')?.appendChild(group)
         }
     }
