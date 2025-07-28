@@ -95,7 +95,6 @@
 import { ref, watch } from 'vue'
 import api from '@/api'
 import ToggleButton from '@/components/formItems/ToggleButton.vue'
-import vSelect from 'vue-select'
 import SelectDropdown from '@/components/formItems/SelectDropdown.vue'
 
 const props = defineProps({

@@ -1,7 +1,7 @@
-// 1. Import Bootstrap functions and variables
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
+// 1. use strap functions and variabl;
+@use "bootstrap/scss/functions";
+@use "bootstrap/scss/variables";
+@use "bootstrap/scss/mixins";
 
 
 
@@ -70,11 +70,9 @@ $input-btn-focus-color: $white;
 // Add background utility classes for each theme color (lighter backgrounds)
 @each $name, $color in $theme-colors {
   .bg-#{$name} {
-    background-color: mix($color, #fff, 85%) !important;
-  }
+    background-color: mix($color, #fff, 85%) !use  ;
   .text-#{$name} {
-    color: #{$color} !important;
-  }
+    color: #{$color} !use  ;
 }
 
 .modal-dialog.auto-width {
@@ -141,9 +139,9 @@ select:focus {
   color: $dark; // Bootstrap gray color variable
 }
 
-// 4. Import Bootstrap Core SCSS
-@import "bootstrap/scss/bootstrap";
-@import "bootstrap/scss/maps";
+// 4. use strap Core SC;
+@use "bootstrap/scss/bootstrap";
+@use "bootstrap/scss/maps";
 
 
 // 5. Custom Styles
@@ -179,23 +177,23 @@ select:focus {
   border-color: map-get($theme-colors, "primary");
 }
 
-// Import Bootstrap
+// use str;
 
 
 // 
-@import url('bootstrap');
-@import url('datatables.net-bs5');
-@import url('datatables.net-buttons-bs5');
-@import url('datatables.net-fixedheader-bs5');
-@import url('datatables.net-keytable-bs5');
-@import url('datatables.net-responsive-bs5');
-@import url('datatables.net-rowgroup-bs5');
-@import url('datatables.net-rowreorder-bs5');
-@import url('datatables.net-scroller-bs5');
-@import url('datatables.net-searchbuilder-bs5');
-@import url('datatables.net-searchpanes-bs5');
-@import url('datatables.net-select-bs5');
-@import url('datatables.net-staterestore-bs5');
+@use "bootstrap";
+@use "datatables.net-bs5";
+@use "datatables.net-buttons-bs5";
+@use "datatables.net-fixedheader-bs5";
+@use "datatables.net-keytable-bs5";
+@use "datatables.net-responsive-bs5";
+@use 'datatables.net-rowgroup-bs5';
+@use 'datatables.net-rowreorder-bs5';
+@use 'datatables.net-scroller-bs5';
+@use 'datatables.net-searchbuilder-bs5';
+@use 'datatables.net-searchpanes-bs5';
+@use 'datatables.net-select-bs5';
+@use 'datatables.net-staterestore-bs5';
 
 // Then override SweetAlert2 variables
 $swal2-background: $body-bg !default;
@@ -225,6 +223,6 @@ $swal2-input-color: $input-color !default;
 $swal2-input-border-radius: $input-border-radius !default;
 $swal2-input-padding: $input-padding-y $input-padding-x !default;
 
-@import url("sweetalert2/src/sweetalert2.scss");
+@use "sweetalert2/src/sweetalert2.scss";
 
 

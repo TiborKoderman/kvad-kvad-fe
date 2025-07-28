@@ -46,7 +46,7 @@ export const useModalStore = defineStore('modalStore', () => {
 
         // console.log('modalComponent', modalComponent);
         // console.log('modalComponent.baseProps', modalComponent.baseProps);
-        
+
 
         const modalRef = ref(null)
         const mountTarget = document.createElement('div')
