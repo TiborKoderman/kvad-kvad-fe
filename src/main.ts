@@ -31,7 +31,6 @@ DataTable.use(DataTablesCore);
 import api from '@/api'
 
 
-import 'sweetalert2/src/sweetalert2.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './assets/scss/app.scss'
 import Swal from 'sweetalert2'
