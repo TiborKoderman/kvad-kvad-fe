@@ -1,11 +1,23 @@
-@import 'bootstrap/scss/functions';
+// 1. Import Bootstrap functions and variables
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
 
-// If '_theme' is a SCSS file, use @import instead:
-@import '_theme';
+
+
+// 2. Define Custom Colors
 $white: #ffffff;
 
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap/scss/variables';
+$theme-colors: (
+    "light":      #f6eeff,
+    "dark":       #370748,
+    "primary":    #b00b69,
+    "secondary":  #f52b2b,
+    "info":       #f37e10,
+    "success":    #07ab77,
+    "warning":    #d6d206,
+    "danger":     #e44102,
+);
 
 // 3. Override Bootstrap Variables
 $body-bg: map-get($theme-colors, "light");
@@ -54,22 +66,7 @@ $input-btn-focus-border-color: map-get($theme-colors, "primary");
 $input-btn-focus-box-shadow: 0 0 0 0.25rem rgba(map-get($theme-colors, "primary"), 0.5);
 $input-btn-focus-color: $white;
 
-// Add background utility classes for each theme color (lighter backgrounds)
-@each $name, $color in $theme-colors {
-  .bg-#{$name} {
-    background-color: mix($color, #fff, 85%) !important;
-  };
-  .text-#{$name} {
-    color: #{$color} !important;
-  };
-}
 
-.modal-dialog.auto-width {
-  width: auto;
-  max-width: 100%;
-  min-width: var(--bs-modal-width); /* default is usually 500px */
-  display: inline-block;
-}
 
 // checkbox
 $form-check-input-checked-bg-color: map-get($theme-colors, "primary");
@@ -128,6 +125,10 @@ select:focus {
   color: $dark; // Bootstrap gray color variable
 }
 
+// 4. Import Bootstrap Core SCSS
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/maps";
+
 
 // 5. Custom Styles
 body {
@@ -162,3 +163,48 @@ select:focus {
   border-color: map-get($theme-colors, "primary");
 }
 
+// Import Bootstrap
+
+
+// 
+@import url('bootstrap');
+@import url('datatables.net-bs5');
+@import url('datatables.net-buttons-bs5');
+@import url('datatables.net-fixedheader-bs5');
+@import url('datatables.net-keytable-bs5');
+@import url('datatables.net-responsive-bs5');
+@import url('datatables.net-rowgroup-bs5');
+@import url('datatables.net-rowreorder-bs5');
+@import url('datatables.net-scroller-bs5');
+@import url('datatables.net-searchbuilder-bs5');
+@import url('datatables.net-searchpanes-bs5');
+@import url('datatables.net-select-bs5');
+@import url('datatables.net-staterestore-bs5');
+
+// Then override SweetAlert2 variables
+$swal2-background: $body-bg !default;
+$swal2-color: $body-color !default;
+
+$swal2-confirm-button-background: $primary !default;
+$swal2-confirm-button-color: color-contrast($primary) !default;
+
+$swal2-cancel-button-background: $secondary !default;
+$swal2-cancel-button-color: color-contrast($secondary) !default;
+
+$swal2-deny-button-background: $danger !default;
+$swal2-deny-button-color: color-contrast($danger) !default;
+
+$swal2-title-font-size: $font-size-lg !default;
+$swal2-content-font-size: $font-size-base !default;
+
+$swal2-border-radius: $border-radius-lg !default;
+$swal2-padding: 1.5rem !default;
+
+$swal2-icon-color: $warning !default; // Customize each icon type separately if needed
+
+// You can also adjust input styles
+$swal2-input-border: 1px solid $input-border-color !default;
+$swal2-input-background: $input-bg !default;
+$swal2-input-color: $input-color !default;
+$swal2-input-border-radius: $input-border-radius !default;
+$swal2-input-padding: $input-padding-y $input-padding-x !default;
