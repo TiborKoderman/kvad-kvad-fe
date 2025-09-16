@@ -57,7 +57,7 @@ export default class Scada {
     return this
   }
 
-  init() {
+  Init() {
     this._sObjects.forEach(object => {
       object.Mount(this)
     })

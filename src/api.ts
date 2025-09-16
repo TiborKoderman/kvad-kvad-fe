@@ -18,10 +18,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (
-      error.response && 
-      (error.response.status === 401 || 
-      error.code === 'ECONNABORTED' || 
-      !error.response || 
+      error.response &&
+      (error.response.status === 401 ||
+      error.code === 'ECONNABORTED' ||
+      !error.response ||
       error.message.includes('Network Error'))
     ) {
       localStorage.removeItem('token');

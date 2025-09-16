@@ -51,7 +51,7 @@ const scada = new Scada({
   height: '100%',
   viewBox: '0 0 1600 900 ',
 })
-scada.init()
+scada.Init()
 
 
 onMounted(() => {
