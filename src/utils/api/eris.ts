@@ -1,6 +1,14 @@
 export class ErisBuilder {
   methods: ApiMethod[]
   interceptors: InterceptorManager = new InterceptorManager()
+  authorization?: IAuthorization<unknown>
+
+  constructor(private config: BuilderConfig) {
+  }
+
+  useAuthorization<T>(auth: IAuthorization<T>): void {
+    this.authorization = auth
+  }
 
 }
 
@@ -14,13 +22,23 @@ interface BuilderConfig {
 type JWToken = `${string}.${string}.${string}`
 interface IAuthorization<T> {
   authType: 'none' | 'basic' | 'bearer' | 'custom'
-  get:  () => T
+  get?:  () => T
   handler?: (ctx: Ctx) => void | Promise<void>
 }
 
 const BearerAuthorization: IAuthorization<JWToken> = {
   authType: 'bearer',
   handler: async (ctx: Ctx) => {
+    if (typeof BearerAuthorization.get !== "function") return
+    ctx.init.headers["Authorization"] = `Bearer ${BearerAuthorization.get()}`
+  }
+}
+
+const BasicAuthorization: IAuthorization<string> = {
+  authType: 'basic',
+  handler: async (ctx: Ctx) => {
+    if (typeof BasicAuthorization.get !== "function") return
+    ctx.init.headers["Authorization"] = `Basic ${BasicAuthorization.get()}`
   }
 }
 
@@ -94,6 +112,8 @@ const defaultMethods: ApiMethod[] = [
 interface Lifecycle {
   onInit?: Hook
   onRequest?: Hook
+  onRequestError?: Hook
+  onSend?: Hook
   onResponse?: Hook
   onHttpError?: Hook
   onParse?: Hook
@@ -101,25 +121,27 @@ interface Lifecycle {
   onFinally?: Hook
 }
 
-class InterceptorManager<T = unknown> {
-  onInit: Interceptors<T> = new Interceptors<T>()
+class InterceptorManager {
+  onInit: Interceptors = new Interceptors()
 
   // Request lifecycle hooks
-  onRequest: Interceptors<T> = new Interceptors<T>()
-  onRequestError: Interceptors<T> = new Interceptors<T>()
-  onSend: Interceptors<T> = new Interceptors<T>()
+  onRequest: Interceptors = new Interceptors()
+  onRequestError: Interceptors = new Interceptors()
+  onSend: Interceptors = new Interceptors()
 
   // Response lifecycle hooks
-  onResponse: Interceptors<T> = new Interceptors<T>()
-  onHttpError: Interceptors<T> = new Interceptors<T>()
-  onParse: Interceptors<T> = new Interceptors<T>()
-  onNetworkError: Interceptors<T> = new Interceptors<T>()
-  onFinally: Interceptors<T> = new Interceptors<T>()
+  onResponse: Interceptors = new Interceptors()
+  onHttpError: Interceptors = new Interceptors()
+  onParse: Interceptors = new Interceptors()
+  onNetworkError: Interceptors = new Interceptors()
+  onFinally: Interceptors = new Interceptors()
 
   compose(): Required<Lifecycle> {
     return {
       onInit: this.onInit.compose(),
       onRequest: this.onRequest.compose(),
+      onRequestError: this.onRequestError.compose(),
+      onSend: this.onSend.compose(),
       onResponse: this.onResponse.compose(),
       onHttpError: this.onHttpError.compose(),
       onParse: this.onParse.compose(),
@@ -145,13 +167,16 @@ export class Eris {
   private headers: Headers
   private maxRetries: number
   private lifecycle: Required<Lifecycle>
+  private authorization?: IAuthorization<unknown>
 
   public async request(ctx: Ctx): Promise<Response> {
-    lifecycle.onInit(ctx)
+    this.lifecycle.onInit(ctx)
 
     // Build the Request instance
     if (!ctx.request) {
       ctx.request = new Request(ctx.url, ctx.init)
     }
+
+    // Run the onRequest hooks
   }
 }

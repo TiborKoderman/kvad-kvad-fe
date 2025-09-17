@@ -3,12 +3,16 @@ type Listener = (token: string | null) => void;
 
 class AuthManager {
   private token: string | null;
+  private bearerToken: string | null;
+
   private listeners = new Set<Listener>();
 
   constructor(private storageKey = 'token') {
     this.token = (typeof window !== 'undefined')
       ? localStorage.getItem(storageKey)
       : null;
+
+    this.bearerToken = this.token ? `Bearer ${this.token}` : null;
 
     // Cross-tab sync
     if (typeof window !== 'undefined') {
@@ -23,8 +27,11 @@ class AuthManager {
 
   getToken() { return this.token; }
 
+  getBearerToken() { return this.bearerToken; }
+
   setToken(tok: string | null) {
     this.token = tok;
+    this.bearerToken = tok ? `Bearer ${tok}` : null;
     if (typeof window !== 'undefined') {
       if (tok) localStorage.setItem(this.storageKey, tok);
       else localStorage.removeItem(this.storageKey);
