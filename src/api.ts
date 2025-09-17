@@ -1,13 +1,14 @@
 import axios from 'axios'
 
 import router from '@/router'
+import { authManager } from '@/utils/auth-manager'
 
 const api = axios.create({
   baseURL: (import.meta.env.VITE_BASE_URL),
 })
 
 api.interceptors.request.use(config => {
-  const token = localStorage.getItem('token')
+  const token = authManager.getToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -24,7 +25,7 @@ api.interceptors.response.use(
       !error.response ||
       error.message.includes('Network Error'))
     ) {
-      localStorage.removeItem('token');
+     authManager.clear();
       // Redirect to /login
       router.push('/login');
     }

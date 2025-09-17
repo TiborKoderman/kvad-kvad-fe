@@ -62,6 +62,7 @@ import { ref } from 'vue'
 import logo from '@/assets/logo.svg'
 import api from '@/api'
 import { useRouter } from 'vue-router'
+import { authManager } from '@/utils/auth-manager'
 const username = ref('')
 const password = ref('')
 
@@ -80,7 +81,7 @@ function login() {
     })
     .then(response => {
       // Handle set token and redirect to dashboard
-      localStorage.setItem('token', response.data.token)
+      authManager.setToken(response.data.token)
       router.push('/')
     })
     .catch(error => {

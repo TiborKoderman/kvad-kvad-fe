@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { authManager } from '@/utils/auth-manager'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -112,7 +113,7 @@ router.beforeEach((to, from, next) => {
   let loggedIn = !!localStorage.getItem('token')
 
   // Check if the token has expired
-  const token = localStorage.getItem('token')
+  const token = authManager.getToken()
   if (token) {
     const payload = JSON.parse(atob(token.split('.')[1]))
     const exp = payload.exp
