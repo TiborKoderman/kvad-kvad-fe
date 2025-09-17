@@ -4,31 +4,12 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-import * as bootstrap from 'bootstrap'
-import DataTable from 'datatables.net-vue3'
-import DataTablesCore from 'datatables.net-bs5';
-import 'datatables.net-buttons-bs5';
-import DateTime from 'datatables.net-datetime';
-import 'datatables.net-fixedheader-bs5';
-import 'datatables.net-keytable-bs5';
-import 'datatables.net-responsive-bs5';
-import 'datatables.net-rowgroup-bs5';
-import 'datatables.net-rowreorder-bs5';
-import 'datatables.net-scroller-bs5';
-import 'datatables.net-searchbuilder-bs5';
-import 'datatables.net-searchpanes-bs5';
-import 'datatables.net-select-bs5';
-import 'datatables.net-staterestore-bs5';
-
-import 'datatables.net-plugins/features/scrollResize/dataTables.scrollResize.min.mjs'
+// Import DataTables components (fully initialized)
+import { DataTable, DateTime } from './utils/datatables'
 
 import { IMaskDirective } from 'vue-imask'
 
-
-DataTablesCore.use(bootstrap);
-DataTable.use(DataTablesCore);
-
-import api from '@/api'
+// import api from '@/api' // Commented out as it's not used here
 
 
 import 'bootstrap-icons/font/bootstrap-icons.css'

@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import VChart from 'vue-echarts'
 import { computed, PropType, shallowRef } from 'vue'
 import * as echarts from 'echarts/core'
 import { LineChart, CustomChart, ScatterChart } from 'echarts/charts'

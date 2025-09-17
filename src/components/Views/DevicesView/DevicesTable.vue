@@ -30,8 +30,9 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from 'datatables.net-vue3'
-import DataTablesCore from 'datatables.net-bs5'
+// DataTable is already configured in main.ts, just import the component
+// import DataTable from 'datatables.net-vue3'
+// import DataTablesCore from 'datatables.net-bs5'
 
 import { useModalStore } from '@/stores/modals'
 
@@ -42,7 +43,7 @@ import api from '@/api'
 
 const modalStore = useModalStore()
 
-DataTable.use(DataTablesCore)
+// DataTable.use(DataTablesCore) // This is now done in main.ts
 
 const columns = ref([
   { title: 'Name', data: 'name' },

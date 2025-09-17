@@ -19,9 +19,10 @@
 import api from '@/api'
 import { onMounted, onUnmounted, ref } from 'vue'
 
-import DataTable from 'datatables.net-vue3'
-import DataTablesCore from 'datatables.net-bs5'
-DataTable.use(DataTablesCore)
+// DataTable is already configured in main.ts
+// import DataTable from 'datatables.net-vue3'
+// import DataTablesCore from 'datatables.net-bs5'
+// DataTable.use(DataTablesCore)
 
 const interval = ref(null)
 

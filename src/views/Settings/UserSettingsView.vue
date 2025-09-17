@@ -43,7 +43,7 @@ const columns = ref([
 const options = ref({
   // pageLength: 10,
   autoresize: false,
-  responsive: true,
+  // responsive: true, // Temporarily disabled until responsive extension is fixed
   lengthChange: false,
   scrollY: '100%',
   scrollCollapse: true,
