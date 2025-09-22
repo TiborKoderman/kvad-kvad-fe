@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 
-import { ref, computed, PropType } from 'vue'
+import { PropType } from 'vue'
 
 const props = defineProps({
     columns: {
