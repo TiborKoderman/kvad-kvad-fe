@@ -14,7 +14,7 @@ import { WebSocketClient } from "../WsTopics";
 const ws = new WebSocketClient("ws");
 ws.onopen = () => {
   ws.subscribe("device/state"); // or ws.subscribe("device/123/state", "user");
-}.
+};
 
 const offAny = ws.onAnyMessage((frame) => {
   console.log("Any:", frame.command, frame.headers);
