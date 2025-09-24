@@ -1,22 +1,17 @@
 <template>
-  <tr :class="[
+  <td :class="[
         bordered ? 'border' : '',
         hoverable ? 'table-hover' : '',
         striped ? 'table-striped' : ''
     ]">
-        <KTableCell
-            v-for="(col, index) in columns"
-            :key="index"
-            :striped="striped"
-            :bordered="bordered"
-            :hoverable="hoverable"
-        ></KTableCell>
-  </tr>
+        <slot></slot>
+
+
+  </td>
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue'
-import KTableCell from './KTableCell.vue'
 
 const props = defineProps({
     striped: {

@@ -12,9 +12,11 @@ import { frameJson, frameText } from "../FrameProtool";
 import { WebSocketClient } from "../WsTopics";
 
 const ws = new WebSocketClient("ws");
-ws.onopen = () => {
+ws.connect().then(() => {
+  ws.subscribe("news");
   ws.subscribe("device/state"); // or ws.subscribe("device/123/state", "user");
-};
+  ws.connect();
+});
 
 const offAny = ws.onAnyMessage((frame) => {
   console.log("Any:", frame.command, frame.headers);

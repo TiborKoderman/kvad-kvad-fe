@@ -14,14 +14,17 @@
         </thead>
         <tbody
         :class="options.ScrollY ? 'overflow-y-auto' : ''">
-            <tr v-for="(row, rowIndex) in data" :key="rowIndex">
-                <td v-for="(column, colIndex) in columns" :key="colIndex">
-                    {{ row[column.data] }}
-                </td>
-            </tr>
+          KTableRow
+          v-for="(row, rowIndex) in data"
+          :key="rowIndex"
+          :columns="columns"
+          :striped="striped"
+          :bordered="bordered"
+          :hoverable="hoverable"
+          ></KTableRow>
         </tbody>
     </table>
-</template>l
+</template>
 
 <script setup lang="ts">
 

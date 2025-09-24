@@ -76,8 +76,25 @@ export const FrameFactory = {
     const h = { ...headers, DataType: "text" };
     return { command, headers: h, payload: utf8.encode(text) };
   },
+
+  // Helper to derive a readable type name without using `any`.
+  // Works for objects, arrays, primitives and functions.
+  // Kept here close to FrameFactory so it's easy to reason about produced headers.
+  getTypeName(obj: unknown): string {
+    if (obj === null) return 'null';
+    if (Array.isArray(obj)) return 'Array';
+    const t = typeof obj;
+    if (t === 'object') {
+      // Try to read constructor name in a type-safe way
+      const ctor = (obj as { constructor?: { name?: string } })?.constructor;
+      return ctor?.name ?? 'Object';
+    }
+  if (t === 'function') return (obj as { name?: string }).name || 'Function';
+    return t;
+  },
   json<T>(command: Command | string, obj: T, headers: Record<string, string> = {}): Frame {
-    const h = { ...headers, DataType: "json", ContentType: "application/json", Type: (obj as any)?.constructor?.name ?? "Object" };
+    const typeName = this.getTypeName(obj);
+    const h = { ...headers, DataType: "json", ContentType: "application/json", Type: typeName };
     return { command, headers: h, payload: utf8.encode(JSON.stringify(obj)) };
   },
   binary(command: Command | string, bytes: Uint8Array, headers: Record<string, string> = {}): Frame {
@@ -105,13 +122,29 @@ export function encodeFrame(frame: Frame): string | Blob {
 /** Decode incoming WebSocket event.data to a Frame. */
 export async function decodeWsData(data: string | ArrayBuffer | Blob): Promise<Frame> {
   if (typeof data === "string") {
-    // Split once on \n\n for headers/payload
-    const idx = data.indexOf("\n\n");
-    const headerText = idx >= 0 ? data.slice(0, idx + 1) /* include last \n for safe parse */ : data;
-    const payloadText = idx >= 0 ? data.slice(idx + 2) : "";
+    // Split once on \n\n for headers/payload. If not found, tolerate CRLF CRLF ("\r\n\r\n").
+    const lfIdx = data.indexOf("\n\n");
+    let headerText: string;
+    let payloadText: string;
 
-    const { command, headers } = parseHeaderBytes(utf8.encode(headerText));
-    const dt = (headers["DataType"] || "").toLowerCase();
+    if (lfIdx >= 0) {
+      // lfIdx points at the first '\n' of the pair. Include that single '\n' when passing to parser.
+      headerText = data.slice(0, lfIdx + 1); // include last \n for safe parse
+      payloadText = data.slice(lfIdx + 2);
+    } else {
+      const crlfIdx = data.indexOf("\r\n\r\n");
+      if (crlfIdx >= 0) {
+        // crlfIdx points at the first '\r' of the sequence. Include up to the first '\n' so parser
+        // sees lines separated by '\n' (we trim any trailing '\r' per-line in parser).
+        headerText = data.slice(0, crlfIdx + 2); // include up to first '\n'
+        payloadText = data.slice(crlfIdx + 4);
+      } else {
+        headerText = data;
+        payloadText = "";
+      }
+    }
+
+  const { command, headers } = parseHeaderBytes(utf8.encode(headerText));
     const payloadBytes = utf8.encode(payloadText);
     // Respect ContentLength if present
     const cl = +(headers["ContentLength"] || -1);

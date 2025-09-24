@@ -32,49 +32,61 @@ export class WebSocketClient {
     return this.socket?.readyState === WebSocket.OPEN;
   }
 
-  connect(): void {
-    if (this.socket) {
-      if (this.socket.readyState === WebSocket.OPEN) {
-        console.warn("WebSocket already connected.");
-        return;
-      }
+  private connectPromise: Promise<void> | null = null;
+
+  async connect(): Promise<void> {
+    if (this.connectPromise) {
+      return this.connectPromise;
     }
-    const url = `${this.baseUrl}/${this.endpoint}?token=${encodeURIComponent(this.token)}`;
-    const ws = new WebSocket(url);
-    // Important: allow binary frames
-    ws.binaryType = "arraybuffer";
-    this.socket = ws;
-
-    ws.onopen = () => {
-      this.onopen?.();
-    };
-
-    ws.onmessage = async (event) => {
-      try {
-        const frame = await decodeWsData(event.data);
-        // Route to any-message listeners
-        for (const cb of this.anyMessageListeners) cb(frame);
-
-        // Route MESSAGE frames by topic
-        if (frame.command.toUpperCase() === "MESSAGE") {
-          const topic = frame.headers["topic"];
-          if (topic && this.topicListeners.has(topic)) {
-            for (const cb of this.topicListeners.get(topic)!) cb(frame);
-          }
+    this.connectPromise = new Promise<void>((resolve, reject) => {
+      if (this.socket) {
+        if (this.socket.readyState === WebSocket.OPEN) {
+          console.warn("WebSocket already connected.");
+          resolve();
+          this.connectPromise = null;
+          return;
         }
-      } catch (err) {
-        console.error("Failed to decode WS frame:", err);
       }
-    };
+      const url = `${this.baseUrl}/${this.endpoint}?token=${encodeURIComponent(this.token)}`;
+      const ws = new WebSocket(url);
+      ws.binaryType = "arraybuffer";
+      this.socket = ws;
 
-    ws.onclose = () => {
-      this.onclose?.();
-      this.socket = null;
-    };
+      ws.onopen = () => {
+        this.onopen?.();
+        resolve();
+        this.connectPromise = null;
+      };
 
-    ws.onerror = (ev) => {
-      this.onerror?.(ev);
-    };
+      ws.onmessage = async (event) => {
+        try {
+          const frame = await decodeWsData(event.data);
+          for (const cb of this.anyMessageListeners) cb(frame);
+          if (frame.command.toUpperCase() === "MESSAGE") {
+            const topic = frame.headers["Topic"];
+            if (topic && this.topicListeners.has(topic)) {
+              for (const cb of this.topicListeners.get(topic)!) cb(frame);
+            }
+          }
+        } catch (err) {
+          console.error("Failed to decode WS frame:", err);
+        }
+
+      };
+
+      ws.onclose = () => {
+        this.onclose?.();
+        this.socket = null;
+        this.connectPromise = null;
+      };
+
+      ws.onerror = (ev) => {
+        this.onerror?.(ev);
+        reject(ev);
+        this.connectPromise = null;
+      };
+    });
+    return this.connectPromise;
   }
 
   disconnect(): void {
@@ -98,7 +110,7 @@ export class WebSocketClient {
 
   /** Subscribe to a topic. Optional scope=user to get per-user namespaces. */
   subscribe(topic: string, scope?: "user" | "global"): void {
-    const headers: Record<string, string> = { topic };
+    const headers: Record<string, string> = { Topic:topic };
     if (scope === "user") headers["scope"] = "user";
     this.sendFrame(FrameFactory.text("SUBSCRIBE", "", headers));
   }
@@ -137,6 +149,7 @@ export class WebSocketClient {
     this.anyMessageListeners.add(cb);
     return () => this.anyMessageListeners.delete(cb);
   }
+
 
   /** Receive only MESSAGE frames for a specific topic. */
   onTopic(topic: string, cb: TopicListener): () => void {
