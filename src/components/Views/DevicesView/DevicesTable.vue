@@ -58,6 +58,7 @@ const columns = ref([
       return ''
     },
   },
+  { title: 'Status', data: 'state.connectivity' }
 ])
 
 const data = ref([])

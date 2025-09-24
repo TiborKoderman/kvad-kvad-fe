@@ -51,7 +51,7 @@
           type="text"
           class="form-control"
           id="description"
-          v-model="device.owner.username"
+          v-model="device.ownerId"
           readonly
           style="user-select: none"
         />
