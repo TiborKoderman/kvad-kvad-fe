@@ -12,16 +12,8 @@
                 </th>
             </tr>
         </thead>
-        <tbody
-        :class="options.ScrollY ? 'overflow-y-auto' : ''">
-          KTableRow
-          v-for="(row, rowIndex) in data"
-          :key="rowIndex"
-          :columns="columns"
-          :striped="striped"
-          :bordered="bordered"
-          :hoverable="hoverable"
-          ></KTableRow>
+        <tbody>
+          <KTableRow v-if="loading" :columns="columns" :loading="loading" :striped="striped" :bordered="bordered" :hoverable="hoverable" />
         </tbody>
     </table>
 </template>

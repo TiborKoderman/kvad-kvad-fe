@@ -2,7 +2,7 @@
  * WebSocketClient with frame-aware send/receive
  * =========================================================== */
 
-import { decodeWsData, encodeFrame, FrameFactory, type Frame } from "./FrameProtool";
+import { decodeWsData, encodeFrame, FrameFactory, type Frame } from "./FrameProtocol";
 
 type MessageListener = (frame: Frame) => void;
 type TopicListener = (frame: Frame) => void;
@@ -63,7 +63,7 @@ export class WebSocketClient {
           const frame = await decodeWsData(event.data);
           for (const cb of this.anyMessageListeners) cb(frame);
           if (frame.command.toUpperCase() === "MESSAGE") {
-            const topic = frame.headers["Topic"];
+            const topic = frame.headers["topic"] || frame.headers["Topic"];
             if (topic && this.topicListeners.has(topic)) {
               for (const cb of this.topicListeners.get(topic)!) cb(frame);
             }
@@ -110,7 +110,7 @@ export class WebSocketClient {
 
   /** Subscribe to a topic. Optional scope=user to get per-user namespaces. */
   subscribe(topic: string, scope?: "user" | "global"): void {
-    const headers: Record<string, string> = { Topic:topic };
+    const headers: Record<string, string> = { topic };
     if (scope === "user") headers["scope"] = "user";
     this.sendFrame(FrameFactory.text("SUBSCRIBE", "", headers));
   }
@@ -154,14 +154,21 @@ export class WebSocketClient {
   /** Receive only MESSAGE frames for a specific topic. */
   onTopic(topic: string, cb: TopicListener): () => void {
     let set = this.topicListeners.get(topic);
+    const isFirst = !set;
     if (!set) {
       set = new Set();
       this.topicListeners.set(topic, set);
     }
     set.add(cb);
+    if (isFirst) {
+      this.subscribe(topic);
+    }
     return () => {
       set!.delete(cb);
-      if (set!.size === 0) this.topicListeners.delete(topic);
+      if (set!.size === 0) {
+        this.topicListeners.delete(topic);
+        this.unsubscribe(topic);
+      }
     };
   }
 }

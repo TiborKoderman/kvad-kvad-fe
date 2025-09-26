@@ -1,4 +1,7 @@
 <template>
+  <div>
+    {{ seq }}
+  </div>
   <div class="container h-100 d-flex flex-column">
     <h1 class="mb-4">Your devices</h1>
     <DevicesTable />
@@ -7,36 +10,21 @@
 
 <script setup lang="ts">
 import DevicesTable from '@/components/Views/DevicesView/DevicesTable.vue'
-import { useRouter } from 'vue-router'
-import { frameJson, frameText } from "../FrameProtool";
-import { WebSocketClient } from "../WsTopics";
+import { frameJson } from '../FrameProtocol'
 
-const ws = new WebSocketClient("ws");
-ws.connect().then(() => {
-  ws.subscribe("news");
-  ws.subscribe("device/state"); // or ws.subscribe("device/123/state", "user");
-  ws.connect();
-});
+import { ws } from '@/ws'
+import { ref } from 'vue'
 
-const offAny = ws.onAnyMessage((frame) => {
-  console.log("Any:", frame.command, frame.headers);
-});
+const seq = ref(0)
 
-const offNews = ws.onTopic("device/state", (frame) => {
-  if (frame.headers.DataType === "json") {
-    const data = frameJson<{ msg: string }>(frame);
-    console.log("NEWS:", data.msg);
-  } else {
-    console.log("NEWS (text):", frameText(frame));
-  }
-});
+ws.onTopic('device/state', frame => {
+  console.log('Received message on device/state:', frame)
+  const data = frameJson(frame)
+  console.log('Parsed JSON data:', data)
+  // Handle the parsed data as needed
+  seq.value = data?.Seq // Example: update a reactive property
+})
 
-ws.connect();
-
-
-
-
-const router = useRouter()
 </script>
 
 <style lang="scss" scoped></style>

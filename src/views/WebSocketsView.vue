@@ -4,23 +4,8 @@
 
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
-import { WebSocketClient } from '@/ws'
+import { ws } from '@/ws'
 
-const time = ref()
-
-const ws = new WebSocketClient('time')
-ws.connect()
-
-ws.onopen = () => console.log('WebSocket Connected')
-ws.onmessage = event => {
-  time.value = event.data
-  console.log('Received:', event.data)
-}
-ws.onclose = () => console.log('WebSocket Closed')
-
-onBeforeUnmount(() => {
-  ws.disconnect()
-})
 
 
 </script>

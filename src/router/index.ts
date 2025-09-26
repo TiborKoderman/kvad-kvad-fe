@@ -73,6 +73,11 @@ const router = createRouter({
       component: () => import('../views/DeviceView.vue'),
     },
     {
+      path: '/explore_devices',
+      name: 'explore_devices',
+      component: () => import('../views/ExploreDevicesView.vue'),
+    },
+    {
       path: '/websockets',
       name: 'websockets',
       component: () => import('../views/WebSocketsView.vue'),

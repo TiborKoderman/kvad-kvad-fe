@@ -9,6 +9,8 @@ import { DataTable, DateTime } from './utils/datatables'
 
 import { IMaskDirective } from 'vue-imask'
 
+import {ws} from './ws'
+
 // import api from '@/api' // Commented out as it's not used here
 
 

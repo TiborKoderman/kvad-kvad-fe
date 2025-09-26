@@ -73,8 +73,9 @@ function findDoubleNewline(buf: Uint8Array): number {
 /** Create frames */
 export const FrameFactory = {
   text(command: Command | string, text: string, headers: Record<string, string> = {}): Frame {
-    const h = { ...headers, DataType: "text" };
-    return { command, headers: h, payload: utf8.encode(text) };
+    const payload = utf8.encode(text);
+    const h = { ...headers, dataType: "text", contentLength: String(payload.byteLength) };
+    return { command, headers: h, payload };
   },
 
   // Helper to derive a readable type name without using `any`.
@@ -94,11 +95,12 @@ export const FrameFactory = {
   },
   json<T>(command: Command | string, obj: T, headers: Record<string, string> = {}): Frame {
     const typeName = this.getTypeName(obj);
-    const h = { ...headers, DataType: "json", ContentType: "application/json", Type: typeName };
-    return { command, headers: h, payload: utf8.encode(JSON.stringify(obj)) };
+    const payload = utf8.encode(JSON.stringify(obj));
+    const h = { ...headers, dataType: "json", contentType: "application/json", type: typeName, contentLength: String(payload.byteLength) };
+    return { command, headers: h, payload };
   },
   binary(command: Command | string, bytes: Uint8Array, headers: Record<string, string> = {}): Frame {
-    const h = { ...headers, DataType: "binary", ContentLength: String(bytes.byteLength) };
+    const h = { ...headers, dataType: "binary", contentLength: String(bytes.byteLength) };
     return { command, headers: h, payload: bytes };
   },
 };
@@ -106,7 +108,7 @@ export const FrameFactory = {
 /** Encode frame into what should be sent via WebSocket.send(). */
 export function encodeFrame(frame: Frame): string | Blob {
   const head = encodeHeader(String(frame.command), frame.headers);
-  const dt = (frame.headers["DataType"] || "").toLowerCase();
+  const dt = (frame.headers["dataType"] || "").toLowerCase();
   if (dt === "binary") {
     // Send a single Blob: [headers][payload]
     return new Blob([new Uint8Array(head), new Uint8Array(frame.payload)], { type: "application/octet-stream" });
@@ -146,9 +148,14 @@ export async function decodeWsData(data: string | ArrayBuffer | Blob): Promise<F
 
   const { command, headers } = parseHeaderBytes(utf8.encode(headerText));
     const payloadBytes = utf8.encode(payloadText);
-    // Respect ContentLength if present
-    const cl = +(headers["ContentLength"] || -1);
-    const payload = (cl >= 0 && cl <= payloadBytes.length) ? payloadBytes.slice(0, cl) : payloadBytes;
+    // Respect contentLength if present
+    const cl = +(headers["contentLength"] || -1);
+    let payload = (cl >= 0 && cl <= payloadBytes.length) ? payloadBytes.slice(0, cl) : payloadBytes;
+    // Some senders terminate frames with a NUL (0x00). Remove trailing NULs for text/json
+    // so JSON.parse / text consumers don't see an extra non-whitespace character.
+    while (payload.length > 0 && payload[payload.length - 1] === 0) {
+      payload = payload.slice(0, payload.length - 1);
+    }
 
     return { command, headers, payload };
   }
@@ -167,9 +174,18 @@ export async function decodeWsData(data: string | ArrayBuffer | Blob): Promise<F
 
   const { command, headers } = parseHeaderBytes(headerBytes);
 
-  // Respect ContentLength for binary
-  const cl = +(headers["ContentLength"] || -1);
-  const slicedPayload = (cl >= 0 && cl <= payload.length) ? payload.slice(0, cl) : payload;
+  // Respect contentLength for binary (and other) frames
+  const cl = +(headers["contentLength"] || -1);
+  let slicedPayload = (cl >= 0 && cl <= payload.length) ? payload.slice(0, cl) : payload;
+
+  // If the frame is not binary (e.g., text/json sent as binary blob), strip trailing NULs
+  // which some senders use as a terminator. For genuine binary payloads we avoid trimming.
+  const dataType = (headers["dataType"] || "").toLowerCase();
+  if (dataType !== "binary") {
+    while (slicedPayload.length > 0 && slicedPayload[slicedPayload.length - 1] === 0) {
+      slicedPayload = slicedPayload.slice(0, slicedPayload.length - 1);
+    }
+  }
 
   return { command, headers, payload: slicedPayload };
 }
