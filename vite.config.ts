@@ -3,11 +3,13 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueJsx(), vueDevTools()],
+  plugins: [
+    vue(),
+    vueJsx(),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -20,7 +22,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `@use "sass:map";`, // optional
-      loadPaths: ['node_modules'],
+        loadPaths: ['node_modules'],
       },
     },
   },
