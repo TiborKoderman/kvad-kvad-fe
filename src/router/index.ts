@@ -104,13 +104,18 @@ const router = createRouter({
       component: () => import('../views/Settings/ProfileSettingsView.vue'),
     },
     {
+      path: '/settings/dashboardSettings',
+      name: 'dashboard_settings',
+      component: () => import('../views/Settings/DashboardSettingsView.vue'),
+    },
+    {
       path: '/scada',
       name: 'scada',
       component: () => import('../views/ScadaView.vue'),
       meta: {
         role: ['admin'],
       },
-    }
+    },
   ],
 })
 

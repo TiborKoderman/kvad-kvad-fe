@@ -2,6 +2,14 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import api from '@/api'
 
+interface SidebarItem {
+  name: string
+  link: string
+  icon?: string
+  children?: SidebarItem[]
+  isExpanded?: boolean
+}
+
 const useMenuStore = defineStore('menuStore', () => {
   const editMode = ref(false)
   const collapsed = ref(
@@ -11,7 +19,7 @@ const useMenuStore = defineStore('menuStore', () => {
     localStorage.getItem('menuStore.sidebarWidth') || '250px',
   )
   const dashboards = ref([])
-  const sidebarItems = ref([
+  const sidebarItems = ref<SidebarItem[]>([
     {
       name: 'Dashboard',
       link: '/dashboard',
@@ -78,6 +86,10 @@ const useMenuStore = defineStore('menuStore', () => {
           link: '/settings/users',
         },
         {
+          name: 'Dashboard Settings',
+          link: '/settings/dashboardSettings',
+        },
+        {
           name: 'System',
           link: '/system',
           icon: 'bi bi-cpu',
@@ -99,6 +111,12 @@ const useMenuStore = defineStore('menuStore', () => {
     localStorage.setItem('menuStore.sidebarWidth', sidebarWidth.value)
   }
 
+  const saveSidebarItems = (items: SidebarItem[]) => {
+    sidebarItems.value = items
+    // Optionally persist to localStorage or backend
+    localStorage.setItem('menuStore.sidebarItems', JSON.stringify(items))
+  }
+
   const fetchSidebarItems = async () => {
     const response = await api.get('/Dashboard/all')
     sidebarItems.value.find(item => item.name === 'Dashboard').children =
@@ -118,6 +136,7 @@ const useMenuStore = defineStore('menuStore', () => {
     toggleCollapsed,
     sidebarWidth,
     saveSidebarWidth,
+    saveSidebarItems,
     dashboards,
     sidebarItems,
   }

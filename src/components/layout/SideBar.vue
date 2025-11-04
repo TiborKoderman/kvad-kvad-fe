@@ -1,7 +1,7 @@
 <template>
   <div
     class="sidebar-wrapper"
-    :class="{ 'collapsed': menu.collapsed }"
+    :class="{ collapsed: menu.collapsed }"
     :style="sidebarStyle"
   >
     <nav class="sidebar p-0 m-0 d-flex flex-column flex-grow-1">
@@ -34,7 +34,9 @@
                 <i
                   v-if="page.children"
                   class="bi ms-auto"
-                  :class="page.isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'"
+                  :class="
+                    page.isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'
+                  "
                   aria-hidden="true"
                 ></i>
               </transition>
@@ -68,6 +70,16 @@
           </li>
         </template>
       </draggable>
+      <!-- Add new entry button (only visible in edit mode) -->
+      <div v-if="menu.editMode" class="nav-item p-1">
+        <a
+          href="#"
+          class="nav-link d-flex align-items-center justify-content-center"
+          @click.prevent="addNewEntry"
+        >
+          <i class="bi bi-plus-lg"></i>
+        </a>
+      </div>
       <div class="nav-item p-1 mt-auto">
         <RouterLink
           to="/adminSettings"
@@ -85,92 +97,99 @@
         </RouterLink>
       </div>
     </nav>
-    <div
-      class="resizer"
-      @mousedown="startResizing"
-    ></div>
+    <div class="resizer" @mousedown="startResizing"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
-import SidebarBrand from './SidebarBrand.vue';
-import useMenuStore from '@/stores/menu';
-import draggable from 'vuedraggable';
+import { computed, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+import SidebarBrand from './SidebarBrand.vue'
+import useMenuStore from '@/stores/menu'
+import draggable from 'vuedraggable'
 
-const menu = useMenuStore();
+const menu = useMenuStore()
 
 defineProps({
   isCollapsed: {
     type: Boolean,
     default: false,
   },
-});
+})
 
 interface Page {
-  name: string;
-  link: string;
-  icon?: string;
-  children?: Page[];
-  isExpanded?: boolean;
+  name: string
+  link: string
+  icon?: string
+  children?: Page[]
+  isExpanded?: boolean
 }
 
-const route = useRoute();
+const route = useRoute()
 
-const pages: Array<Page> = menu.sidebarItems;
+const pages: Array<Page> = menu.sidebarItems
 
 function expandItem(page: Page) {
   if (page.children) {
-    page.isExpanded = !page.isExpanded;
+    page.isExpanded = !page.isExpanded
   }
 }
 
 const isActiveRoute = (link: unknown) => {
-  return route.path === link;
-};
+  return route.path === link
+}
 
 function saveSidebarOrder() {
-  menu.saveSidebarItems(pages); // Save the new order to the store or backend
+  menu.saveSidebarItems(pages) // Save the new order to the store or backend
+}
+
+function addNewEntry() {
+  const newEntry: Page = {
+    name: 'New Entry',
+    link: '/new-entry',
+    icon: 'bi bi-file-earmark',
+  }
+  pages.push(newEntry)
+  saveSidebarOrder()
 }
 
 // Resizing logic
-let isResizing = false;
+let isResizing = false
 
-function startResizing(event: MouseEvent) {
-  isResizing = true;
-  document.body.style.userSelect = 'none';
-  document.addEventListener('mousemove', resize);
-  document.addEventListener('mouseup', stopResizing);
+function startResizing() {
+  isResizing = true
+  document.body.style.userSelect = 'none'
+  document.addEventListener('mousemove', resize)
+  document.addEventListener('mouseup', stopResizing)
 }
 
 function resize(event: MouseEvent) {
   if (isResizing) {
-    const newWidth = event.clientX;
+    const newWidth = event.clientX
     if (newWidth >= 150 && newWidth <= 400) {
-      menu.sidebarWidth = `${newWidth}px`;
+      menu.sidebarWidth = `${newWidth}px`
     }
   }
 }
 
 function stopResizing() {
-  isResizing = false;
-  document.removeEventListener('mousemove', resize);
-  document.removeEventListener('mouseup', stopResizing);
-  document.body.style.userSelect = 'auto';
-  menu.saveSidebarWidth();
+  isResizing = false
+  document.removeEventListener('mousemove', resize)
+  document.removeEventListener('mouseup', stopResizing)
+  document.body.style.userSelect = 'auto'
+  menu.saveSidebarWidth()
 }
 
 onUnmounted(() => {
-  document.removeEventListener('mousemove', resize);
-  document.removeEventListener('mouseup', stopResizing);
-});
+  document.removeEventListener('mousemove', resize)
+  document.removeEventListener('mouseup', stopResizing)
+})
 
 // Computed property for sidebar style
 const sidebarStyle = computed(() => ({
   width: menu.collapsed ? '0' : menu.sidebarWidth,
   transition: isResizing ? 'none' : 'width 0.3s ease-in-out',
-}));
+}))
 </script>
 
 <style scoped>
