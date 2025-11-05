@@ -15,7 +15,7 @@ const useMenuStore = defineStore('menuStore', () => {
   const collapsed = ref(
     JSON.parse(localStorage.getItem('menuStore.collapsed') || 'false'),
   )
-  const sidebarWidth = ref('250px') // Fixed width, no longer resizable
+  const sidebarWidth = ref('400px') // Fixed width, no longer resizable
   const dashboards = ref([])
   const isAdmin = ref(true) // TODO: Replace with actual admin check
   const showManagementDropdown = ref(false)

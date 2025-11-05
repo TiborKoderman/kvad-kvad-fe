@@ -85,13 +85,7 @@
       <div class="bottom-bar-wrapper">
         <!-- Management Dropdown -->
         <transition name="slide-up">
-          <div v-if="menu.showManagementDropdown" class="dropdown-menu-up" :style="{ width: menu.sidebarWidth }">
-            <div class="dropdown-header">
-              <span>Management</span>
-              <button @click="menu.closeAllDropdowns()" class="close-btn">
-                <i class="bi bi-x-lg"></i>
-              </button>
-            </div>
+          <div v-if="menu.showManagementDropdown && !menu.collapsed" class="dropdown-menu-up">
             <nav class="nav flex-column">
               <RouterLink
                 v-for="item in managementItems"
@@ -110,13 +104,7 @@
 
         <!-- Settings Dropdown -->
         <transition name="slide-up">
-          <div v-if="menu.showSettingsDropdown" class="dropdown-menu-up" :style="{ width: menu.sidebarWidth }">
-            <div class="dropdown-header">
-              <span>Settings</span>
-              <button @click="menu.closeAllDropdowns()" class="close-btn">
-                <i class="bi bi-x-lg"></i>
-              </button>
-            </div>
+          <div v-if="menu.showSettingsDropdown && !menu.collapsed" class="dropdown-menu-up">
             <nav class="nav flex-column">
               <RouterLink
                 v-for="item in settingsItems"
@@ -167,13 +155,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import SidebarBrand from './SidebarBrand.vue'
 import useMenuStore from '@/stores/menu'
 import draggable from 'vuedraggable'
 
 const menu = useMenuStore()
+
+// Close dropdowns when sidebar collapses
+watch(() => menu.collapsed, (newValue) => {
+  if (newValue) {
+    menu.closeAllDropdowns()
+  }
+})
 
 defineProps({
   isCollapsed: {
@@ -365,38 +360,12 @@ const sidebarStyle = computed(() => ({
   border-radius: 0.375rem 0.375rem 0 0;
   box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
   z-index: 10;
-  max-height: 400px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
-.dropdown-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--bs-gray-300);
-  background-color: #f8f9fa;
-  font-weight: 600;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--bs-gray-600);
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-}
-
-.close-btn:hover {
-  color: var(--bs-gray-800);
-}
-
 .dropdown-menu-up .nav {
-  padding: 0.5rem;
+  padding: 0.25rem;
 }
 
 .dropdown-menu-up .nav-link {
