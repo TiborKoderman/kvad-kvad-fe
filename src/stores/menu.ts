@@ -15,10 +15,11 @@ const useMenuStore = defineStore('menuStore', () => {
   const collapsed = ref(
     JSON.parse(localStorage.getItem('menuStore.collapsed') || 'false'),
   )
-  const sidebarWidth = ref(
-    localStorage.getItem('menuStore.sidebarWidth') || '250px',
-  )
+  const sidebarWidth = ref('250px') // Fixed width, no longer resizable
   const dashboards = ref([])
+  const isAdmin = ref(true) // TODO: Replace with actual admin check
+  const showManagementDropdown = ref(false)
+  const showSettingsDropdown = ref(false)
   const sidebarItems = ref<SidebarItem[]>([
     {
       name: 'Dashboard',
@@ -107,8 +108,23 @@ const useMenuStore = defineStore('menuStore', () => {
     editMode.value = !editMode.value
   }
 
-  const saveSidebarWidth = () => {
-    localStorage.setItem('menuStore.sidebarWidth', sidebarWidth.value)
+  const toggleManagementDropdown = () => {
+    showManagementDropdown.value = !showManagementDropdown.value
+    if (showManagementDropdown.value) {
+      showSettingsDropdown.value = false
+    }
+  }
+
+  const toggleSettingsDropdown = () => {
+    showSettingsDropdown.value = !showSettingsDropdown.value
+    if (showSettingsDropdown.value) {
+      showManagementDropdown.value = false
+    }
+  }
+
+  const closeAllDropdowns = () => {
+    showManagementDropdown.value = false
+    showSettingsDropdown.value = false
   }
 
   const saveSidebarItems = (items: SidebarItem[]) => {
@@ -135,10 +151,15 @@ const useMenuStore = defineStore('menuStore', () => {
     collapsed,
     toggleCollapsed,
     sidebarWidth,
-    saveSidebarWidth,
     saveSidebarItems,
     dashboards,
     sidebarItems,
+    isAdmin,
+    showManagementDropdown,
+    showSettingsDropdown,
+    toggleManagementDropdown,
+    toggleSettingsDropdown,
+    closeAllDropdowns,
   }
 })
 

@@ -4,11 +4,11 @@
     :class="{ collapsed: menu.collapsed }"
     :style="sidebarStyle"
   >
-    <nav class="sidebar p-0 m-0 d-flex flex-column flex-grow-1">
+    <nav class="sidebar p-0 m-0 d-flex flex-column">
       <SidebarBrand />
-      <!-- Sidebar navigation items -->
+      <!-- Sidebar navigation items (Main pages from backend) -->
       <draggable
-        v-model="pages"
+        v-model="mainPages"
         group="sidebar"
         item-key="name"
         class="nav nav-pills d-flex flex-column flex-grow-1"
@@ -80,29 +80,94 @@
           <i class="bi bi-plus-lg"></i>
         </a>
       </div>
-      <div class="nav-item p-1 mt-auto">
-        <RouterLink
-          to="/adminSettings"
-          class="nav-link align-self-end"
-          :class="[
-            'nav-link',
-            {
-              active: isActiveRoute('/adminSettings'),
-              'bg-primary': isActiveRoute('/adminSettings'),
-            },
-          ]"
-        >
-          <i class="bi bi-wrench"></i>
-          <span class="ms-2"> admin</span>
-        </RouterLink>
+
+      <!-- Bottom Button Bar with Dropdowns -->
+      <div class="bottom-bar-wrapper">
+        <!-- Management Dropdown -->
+        <transition name="slide-up">
+          <div v-if="menu.showManagementDropdown" class="dropdown-menu-up" :style="{ width: menu.sidebarWidth }">
+            <div class="dropdown-header">
+              <span>Management</span>
+              <button @click="menu.closeAllDropdowns()" class="close-btn">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <nav class="nav flex-column">
+              <RouterLink
+                v-for="item in managementItems"
+                :key="item.link"
+                :to="item.link"
+                class="nav-link"
+                :class="{ active: isActiveRoute(item.link), 'bg-primary': isActiveRoute(item.link) }"
+                @click="menu.closeAllDropdowns()"
+              >
+                <i :class="item.icon"></i>
+                <span class="ms-2">{{ item.name }}</span>
+              </RouterLink>
+            </nav>
+          </div>
+        </transition>
+
+        <!-- Settings Dropdown -->
+        <transition name="slide-up">
+          <div v-if="menu.showSettingsDropdown" class="dropdown-menu-up" :style="{ width: menu.sidebarWidth }">
+            <div class="dropdown-header">
+              <span>Settings</span>
+              <button @click="menu.closeAllDropdowns()" class="close-btn">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <nav class="nav flex-column">
+              <RouterLink
+                v-for="item in settingsItems"
+                :key="item.link"
+                :to="item.link"
+                class="nav-link"
+                :class="{ active: isActiveRoute(item.link), 'bg-primary': isActiveRoute(item.link) }"
+                @click="menu.closeAllDropdowns()"
+              >
+                <i :class="item.icon"></i>
+                <span class="ms-2">{{ item.name }}</span>
+              </RouterLink>
+            </nav>
+          </div>
+        </transition>
+
+        <div class="bottom-bar">
+          <button
+            v-if="menu.isAdmin"
+            class="bottom-button"
+            :class="{ active: menu.showManagementDropdown }"
+            @click="menu.toggleManagementDropdown()"
+            title="Management"
+          >
+            <i class="bi bi-people"></i>
+          </button>
+          <button
+            class="bottom-button"
+            :class="{ active: menu.showSettingsDropdown }"
+            @click="menu.toggleSettingsDropdown()"
+            title="Settings"
+          >
+            <i class="bi bi-gear"></i>
+          </button>
+          <RouterLink
+            to="/chat"
+            class="bottom-button"
+            :class="{ active: isActiveRoute('/chat') }"
+            @click="menu.closeAllDropdowns()"
+            title="Chat"
+          >
+            <i class="bi bi-chat-left"></i>
+          </RouterLink>
+        </div>
       </div>
     </nav>
-    <div class="resizer" @mousedown="startResizing"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import SidebarBrand from './SidebarBrand.vue'
 import useMenuStore from '@/stores/menu'
@@ -127,7 +192,70 @@ interface Page {
 
 const route = useRoute()
 
-const pages: Array<Page> = menu.sidebarItems
+// Main pages from store (fetched from backend)
+const mainPages = computed(() =>
+  menu.sidebarItems.filter(item =>
+    !['Management', 'Settings', 'Chat'].includes(item.name)
+  )
+)
+
+// Hardcoded management items
+const managementItems = ref<Page[]>([
+  {
+    name: 'Mqtt',
+    link: '/mqtt',
+    icon: 'bi bi-cloud',
+  },
+  {
+    name: 'WebSockets',
+    link: '/websockets',
+    icon: 'bi bi-cloud',
+  },
+  {
+    name: 'Docker',
+    link: '/docker',
+    icon: 'bi bi-box-seam',
+  },
+  {
+    name: 'Orders',
+    link: '/orders',
+    icon: 'bi bi-cart',
+  },
+  {
+    name: 'Nodes',
+    link: '/nodes',
+    icon: 'bi bi-server',
+  },
+])
+
+// Hardcoded settings items
+const settingsItems = ref<Page[]>([
+  {
+    name: 'General Settings',
+    link: '/settings/general',
+    icon: 'bi bi-sliders',
+  },
+  {
+    name: 'User Settings',
+    link: '/settings/users',
+    icon: 'bi bi-person-gear',
+  },
+  {
+    name: 'Dashboard Settings',
+    link: '/settings/dashboardSettings',
+    icon: 'bi bi-layout-text-window-reverse',
+  },
+  {
+    name: 'System',
+    link: '/system',
+    icon: 'bi bi-cpu',
+  },
+  {
+    name: 'Admin Settings',
+    link: '/adminSettings',
+    icon: 'bi bi-wrench',
+  },
+])
 
 function expandItem(page: Page) {
   if (page.children) {
@@ -140,7 +268,8 @@ const isActiveRoute = (link: unknown) => {
 }
 
 function saveSidebarOrder() {
-  menu.saveSidebarItems(pages) // Save the new order to the store or backend
+  // Save the new order to the store
+  menu.saveSidebarItems(menu.sidebarItems)
 }
 
 function addNewEntry() {
@@ -149,46 +278,14 @@ function addNewEntry() {
     link: '/new-entry',
     icon: 'bi bi-file-earmark',
   }
-  pages.push(newEntry)
+  mainPages.value.push(newEntry)
   saveSidebarOrder()
 }
 
-// Resizing logic
-let isResizing = false
-
-function startResizing() {
-  isResizing = true
-  document.body.style.userSelect = 'none'
-  document.addEventListener('mousemove', resize)
-  document.addEventListener('mouseup', stopResizing)
-}
-
-function resize(event: MouseEvent) {
-  if (isResizing) {
-    const newWidth = event.clientX
-    if (newWidth >= 150 && newWidth <= 400) {
-      menu.sidebarWidth = `${newWidth}px`
-    }
-  }
-}
-
-function stopResizing() {
-  isResizing = false
-  document.removeEventListener('mousemove', resize)
-  document.removeEventListener('mouseup', stopResizing)
-  document.body.style.userSelect = 'auto'
-  menu.saveSidebarWidth()
-}
-
-onUnmounted(() => {
-  document.removeEventListener('mousemove', resize)
-  document.removeEventListener('mouseup', stopResizing)
-})
-
-// Computed property for sidebar style
+// Computed property for sidebar style (fixed width, no resizing)
 const sidebarStyle = computed(() => ({
   width: menu.collapsed ? '0' : menu.sidebarWidth,
-  transition: isResizing ? 'none' : 'width 0.3s ease-in-out',
+  transition: 'width 0.3s ease-in-out',
 }))
 </script>
 
@@ -198,6 +295,8 @@ const sidebarStyle = computed(() => ({
   background-color: #f8f9fa;
   white-space: nowrap;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-wrapper {
@@ -209,13 +308,131 @@ const sidebarStyle = computed(() => ({
   width: 0;
 }
 
-.resizer {
-  width: 2px;
-  background-color: var(--bs-gray-300);
-  cursor: ew-resize;
+/* Bottom Button Bar Wrapper */
+.bottom-bar-wrapper {
+  position: relative;
+}
+
+/* Bottom Button Bar */
+.bottom-bar {
+  display: flex;
+  border-top: 1px solid var(--bs-gray-300);
+  background-color: #fff;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.bottom-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  border: none;
+  background-color: transparent;
+  color: var(--bs-gray-600);
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.bottom-button i {
+  font-size: 1.5rem;
+}
+
+.bottom-button:hover {
+  background-color: var(--bs-gray-200);
+  color: var(--bs-gray-800);
+}
+
+.bottom-button.active {
+  background-color: var(--bs-primary);
+  color: white;
+}
+
+/* Upward Dropdown Menu */
+.dropdown-menu-up {
   position: absolute;
-  top: 0;
+  bottom: 100%;
+  left: 0;
   right: 0;
-  bottom: 0;
+  background-color: #fff;
+  border: 1px solid var(--bs-gray-300);
+  border-bottom: none;
+  border-radius: 0.375rem 0.375rem 0 0;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 10;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--bs-gray-300);
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--bs-gray-600);
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: var(--bs-gray-800);
+}
+
+.dropdown-menu-up .nav {
+  padding: 0.5rem;
+}
+
+.dropdown-menu-up .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  color: var(--bs-gray-700);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dropdown-menu-up .nav-link:hover {
+  background-color: var(--bs-gray-200);
+}
+
+.dropdown-menu-up .nav-link.active {
+  background-color: var(--bs-primary);
+  color: white;
+}
+
+/* Slide up animation */
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.slide-up-enter-to,
+.slide-up-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
