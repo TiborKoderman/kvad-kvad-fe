@@ -25,7 +25,12 @@
     </div>
     <div class="form-group">
       <label for="">Dashboard type</label>
-      <SelectDropdown :options="dashboardTypes" label="name" v-model="dashboard.type"> </SelectDropdown>
+      <SelectDropdown
+        :options="dashboardTypes"
+        label="name"
+        v-model="dashboard.type"
+      >
+      </SelectDropdown>
     </div>
     <div class="form-group">
       <label for="new_username">Icon</label>
@@ -49,7 +54,11 @@
       />
     </div>
     <div class="form-toggle">
-      <ToggleButton v-model="dashboard.scrollable" id="scrollableCheckbox" label="Scrollable"/>
+      <ToggleButton
+        v-model="dashboard.scrollable"
+        id="scrollableCheckbox"
+        label="Scrollable"
+      />
     </div>
   </form>
 </template>

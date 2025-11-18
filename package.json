@@ -88,6 +88,7 @@
     "jsdom": "^27.0.0",
     "npm-run-all2": "^8.0.4",
     "prettier": "^3.6.2",
+    "sass": "^1.94.1",
     "sass-embedded": "^1.92.1",
     "typescript": "~5.6.3",
     "vite": "^6.0.7",

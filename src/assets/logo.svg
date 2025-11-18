@@ -7,8 +7,8 @@
    viewBox="0 0 100 100"
    version="1.1"
    id="svg1"
-   sodipodi:docname="kv_logo.svg"
-   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +24,12 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
      showguides="true"
-     inkscape:zoom="1.0102788"
-     inkscape:cx="-27.220209"
-     inkscape:cy="53.450591"
-     inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="3840"
+     inkscape:zoom="0.94931237"
+     inkscape:cx="175.39011"
+     inkscape:cy="122.72041"
+     inkscape:window-width="1536"
+     inkscape:window-height="794"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1">
@@ -66,6 +66,21 @@
        inkscape:locked="false"
        inkscape:label=""
        inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="50,0"
+       orientation="1,0"
+       id="guide5"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="28.343047,50"
+       orientation="0.70710678,-0.70710678"
+       id="guide7"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="50,100"
+       orientation="-0.70710678,-0.70710678"
+       id="guide8"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <defs
      id="defs1" />
