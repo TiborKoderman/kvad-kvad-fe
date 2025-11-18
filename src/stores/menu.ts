@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import api from '@/api'
 
 interface SidebarItem {
   name: string
@@ -21,82 +20,7 @@ const useMenuStore = defineStore('menuStore', () => {
   const showManagementDropdown = ref(false)
   const showSettingsDropdown = ref(false)
   const sidebarItems = ref<SidebarItem[]>([
-    {
-      name: 'Dashboard',
-      link: '/dashboard',
-      icon: 'bi bi-speedometer2',
-    },
-    {
-      name: 'Chat',
-      link: '/chat',
-      icon: 'bi bi-chat-left',
-    },
-    {
-      name: 'Devices',
-      link: '/devices',
-      icon: 'bi bi-laptop',
-    },
-    {
-      name: 'Scada',
-      link: '/scada',
-      icon: 'bi bi-diagram-3',
-    },
-    {
-      name: 'Management',
-      link: '/management',
-      icon: 'bi bi-people',
-      children: [
-        {
-          name: 'Mqtt',
-          link: '/mqtt',
-          icon: 'bi bi-cloud',
-        },
-        {
-          name: 'WebSockets',
-          link: '/websockets',
-          icon: 'bi bi-cloud',
-        },
-        {
-          name: 'Docker',
-          link: '/docker',
-          icon: 'bi bi-box-seam',
-        },
-        {
-          name: 'Orders',
-          link: '/orders',
-          icon: 'bi bi-cart',
-        },
-        {
-          name: 'Nodes',
-          link: '/nodes',
-          icon: 'bi bi-server',
-        },
-      ],
-    },
-    {
-      name: 'Settings',
-      link: '/settings',
-      icon: 'bi bi-gear',
-      children: [
-        {
-          name: 'General Settings',
-          link: '/settings/general',
-        },
-        {
-          name: 'User Settings',
-          link: '/settings/users',
-        },
-        {
-          name: 'Dashboard Settings',
-          link: '/settings/dashboardSettings',
-        },
-        {
-          name: 'System',
-          link: '/system',
-          icon: 'bi bi-cpu',
-        },
-      ],
-    },
+    // Empty by default - items will be added by the user
   ])
 
   const toggleCollapsed = async () => {
@@ -132,18 +56,6 @@ const useMenuStore = defineStore('menuStore', () => {
     // Optionally persist to localStorage or backend
     localStorage.setItem('menuStore.sidebarItems', JSON.stringify(items))
   }
-
-  const fetchSidebarItems = async () => {
-    const response = await api.get('/Dashboard/all')
-    sidebarItems.value.find(item => item.name === 'Dashboard').children =
-      response.data.map(dashboard => ({
-        name: dashboard.name,
-        link: `/dashboard/${dashboard.id}`,
-        icon: 'bi bi-speedometer2',
-      }))
-  }
-
-  fetchSidebarItems()
 
   return {
     editMode,

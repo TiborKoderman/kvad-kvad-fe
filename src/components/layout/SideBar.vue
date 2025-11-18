@@ -19,7 +19,7 @@
             @dragleave="handleDragLeave"
             @drop="handleDrop($event, page, index)"
             @dragend="handleDragEnd"
-            @mouseenter="handleItemHover(page, $event)"
+            @mouseenter="handleItemHover(page)"
             @mouseleave="handleItemLeave"
             :class="{
               'drag-over-top': dragPosition === 'top' && dragOverItem === page,
@@ -48,69 +48,81 @@
               ></i>
               <i :class="page.icon"></i>
               <span class="ms-2">{{ page.name }}</span>
-              <button
-                v-if="menu.editMode"
-                class="btn btn-sm btn-link add-child-btn ms-auto"
-                @click.prevent="addChildEntry(page)"
-                title="Add child item"
-              >
-                <i class="bi bi-plus-lg"></i>
-              </button>
               <transition name="rotate">
                 <i
                   v-if="page.children && !menu.editMode"
-                  class="bi ms-auto"
+                  class="bi"
                   :class="
                     page.isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'
                   "
                   aria-hidden="true"
                 ></i>
               </transition>
+              <button
+                v-if="menu.editMode"
+                class="btn btn-sm btn-link add-child-btn"
+                @click.prevent="addChildEntry(page)"
+                title="Add child item"
+              >
+                <i class="bi bi-plus-lg"></i>
+              </button>
             </RouterLink>
             <transition name="expand">
-              <ul
-                v-if="page.children && page.isExpanded"
-                class="nav flex-column children-list"
-              >
-                <li
-                  class="nav-item p-1 sidebar-item-child"
-                  v-for="(child, childIndex) in page.children"
-                  :key="childIndex"
-                  :draggable="menu.editMode"
-                  @dragstart="handleDragStart($event, child, childIndex, page)"
-                  @dragover="handleDragOver($event, child, $event)"
-                  @dragleave="handleDragLeave"
-                  @drop="handleDrop($event, child, childIndex, page)"
-                  @dragend="handleDragEnd"
-                  @mouseenter="handleItemHover(child, $event)"
-                  @mouseleave="handleItemLeave"
-                  :class="{
-                    'drag-over-top':
-                      dragPosition === 'top' && dragOverItem === child,
-                    'drag-over-bottom':
-                      dragPosition === 'bottom' && dragOverItem === child,
-                    dragging: draggedItem === child,
-                  }"
-                >
-                  <RouterLink
-                    :class="[
-                      'nav-link',
-                      {
-                        active: isActiveRoute(child.link),
-                        'bg-primary': isActiveRoute(child.link),
-                      },
-                    ]"
-                    :to="child.link"
+              <div v-if="page.children && page.isExpanded">
+                <ul class="nav flex-column children-list">
+                  <li
+                    class="nav-item p-1 sidebar-item-child"
+                    v-for="(child, childIndex) in page.children"
+                    :key="childIndex"
+                    :draggable="menu.editMode"
+                    @dragstart="
+                      handleDragStart($event, child, childIndex, page)
+                    "
+                    @dragover="handleDragOver($event, child, $event)"
+                    @dragleave="handleDragLeave"
+                    @drop="handleDrop($event, child, childIndex, page)"
+                    @dragend="handleDragEnd"
+                    @mouseenter="handleItemHover(child)"
+                    @mouseleave="handleItemLeave"
+                    :class="{
+                      'drag-over-top':
+                        dragPosition === 'top' && dragOverItem === child,
+                      'drag-over-bottom':
+                        dragPosition === 'bottom' && dragOverItem === child,
+                      dragging: draggedItem === child,
+                    }"
                   >
-                    <i
-                      v-if="menu.editMode"
-                      class="bi bi-grip-vertical me-2 drag-handle"
-                    ></i>
+                    <RouterLink
+                      :class="[
+                        'nav-link',
+                        {
+                          active: isActiveRoute(child.link),
+                          'bg-primary': isActiveRoute(child.link),
+                        },
+                      ]"
+                      :to="child.link"
+                    >
+                      <i
+                        v-if="menu.editMode"
+                        class="bi bi-grip-vertical me-2 drag-handle"
+                      ></i>
+                      <i :class="child.icon"></i>
+                      <span class="ms-2">{{ child.name }}</span>
+                    </RouterLink>
+                  </li>
+                </ul>
+                <!-- Inline preview of children -->
+                <div v-if="hoveredItem === page" class="children-preview">
+                  <div
+                    v-for="child in page.children"
+                    :key="child.name"
+                    class="preview-item"
+                  >
                     <i :class="child.icon"></i>
                     <span class="ms-2">{{ child.name }}</span>
-                  </RouterLink>
-                </li>
-              </ul>
+                  </div>
+                </div>
+              </div>
             </transition>
           </li>
         </ul>
@@ -125,42 +137,6 @@
           </a>
         </div>
       </div>
-
-      <!-- Preview Panel -->
-      <transition name="slide-left">
-        <div
-          v-if="
-            hoveredItem &&
-            hoveredItem.children &&
-            hoveredItem.children.length > 0 &&
-            !menu.collapsed
-          "
-          class="sidebar-preview-panel"
-          :style="{ top: previewTop + 'px' }"
-          @mouseenter="keepPreviewOpen = true"
-          @mouseleave="handlePreviewLeave"
-        >
-          <div class="preview-header">
-            <i :class="hoveredItem.icon"></i>
-            <h5 class="mb-0 ms-2">{{ hoveredItem.name }}</h5>
-          </div>
-          <div class="preview-body">
-            <p class="text-muted mb-2">
-              <i class="bi bi-link-45deg"></i> {{ hoveredItem.link }}
-            </p>
-            <div>
-              <small class="text-muted"
-                >Children ({{ hoveredItem.children.length }}):</small
-              >
-              <ul class="list-unstyled ms-3">
-                <li v-for="child in hoveredItem.children" :key="child.name">
-                  <i :class="child.icon"></i> {{ child.name }}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </transition>
 
       <!-- Bottom Button Bar with Dropdowns -->
       <div class="bottom-bar-wrapper">
@@ -294,8 +270,6 @@ const dragPosition = ref<'top' | 'bottom' | 'inside' | null>(null)
 // Hover preview state
 const hoveredItem = ref<Page | null>(null)
 const hoverTimeout = ref<number | null>(null)
-const keepPreviewOpen = ref(false)
-const previewTop = ref(0)
 
 // Main pages from store (fetched from backend) with getter/setter
 const mainPages = computed({
@@ -314,6 +288,11 @@ const mainPages = computed({
 
 // Hardcoded management items
 const managementItems = ref<Page[]>([
+  {
+    name: 'Devices',
+    link: '/devices',
+    icon: 'bi bi-laptop',
+  },
   {
     name: 'Mqtt',
     link: '/mqtt',
@@ -505,7 +484,7 @@ function handleDragEnd() {
 }
 
 // Hover preview handlers
-function handleItemHover(item: Page, event?: MouseEvent) {
+function handleItemHover(item: Page) {
   // Only show preview for items with children
   if (!item.children || item.children.length === 0) {
     return
@@ -517,13 +496,6 @@ function handleItemHover(item: Page, event?: MouseEvent) {
 
   hoverTimeout.value = window.setTimeout(() => {
     hoveredItem.value = item
-
-    // Calculate the preview position based on the hovered element
-    if (event && event.currentTarget) {
-      const target = event.currentTarget as HTMLElement
-      const rect = target.getBoundingClientRect()
-      previewTop.value = rect.top
-    }
   }, 500)
 }
 
@@ -533,16 +505,8 @@ function handleItemLeave() {
     hoverTimeout.value = null
   }
 
-  if (!keepPreviewOpen.value) {
-    hoveredItem.value = null
-  }
-}
-
-function handlePreviewLeave() {
-  keepPreviewOpen.value = false
   hoveredItem.value = null
 }
-
 async function addNewEntry() {
   try {
     const entry = await Modal.open<Page>(CreateDashboardModal, {
@@ -793,6 +757,7 @@ const sidebarStyle = computed(() => ({
   transition: opacity 0.2s;
   padding: 0.25rem 0.5rem;
   color: var(--bs-gray-600);
+  margin-left: auto;
 }
 
 .nav-item:hover .add-child-btn {
@@ -803,61 +768,25 @@ const sidebarStyle = computed(() => ({
   color: var(--bs-primary);
 }
 
-/* Preview Panel */
-.sidebar-preview-panel {
-  position: fixed;
-  left: calc(var(--sidebar-width, 400px) + 10px);
-  transform: translateY(-50%);
-  width: 300px;
-  background: white;
-  border: 1px solid var(--bs-gray-300);
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1050;
-  overflow: hidden;
-  max-height: 400px;
-  overflow-y: auto;
+/* Inline children preview */
+.children-preview {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid var(--bs-primary);
+  margin-left: 1rem;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.25rem;
 }
 
-.preview-header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background-color: var(--bs-gray-100);
-  border-bottom: 1px solid var(--bs-gray-300);
-}
-
-.preview-header h5 {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.preview-body {
-  padding: 1rem;
-}
-
-.preview-body ul {
-  margin-top: 0.5rem;
-}
-
-.preview-body li {
+.preview-item {
   padding: 0.25rem 0;
   font-size: 0.875rem;
+  color: var(--bs-gray-700);
+  display: flex;
+  align-items: center;
 }
 
-/* Preview animation */
-.slide-left-enter-active,
-.slide-left-leave-active {
-  transition: all 0.3s ease;
-}
-
-.slide-left-enter-from {
-  opacity: 0;
-  transform: translateX(-20px) translateY(-50%);
-}
-
-.slide-left-leave-to {
-  opacity: 0;
-  transform: translateX(-20px) translateY(-50%);
+.preview-item i {
+  width: 1.2rem;
+  text-align: center;
 }
 </style>
