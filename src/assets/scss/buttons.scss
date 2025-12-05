@@ -1,0 +1,345 @@
+// Custom Button Styles with size support
+// Uses --t-* prefix for theme variables
+
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.375rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out,
+    filter 0.15s ease-in-out;
+
+  &:disabled,
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
+  }
+}
+
+// Size variants
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
+}
+
+.btn-md {
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.375rem;
+}
+
+.btn-lg {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.btn-xl {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.5rem;
+  border-radius: 0.625rem;
+}
+
+.btn-xxl {
+  padding: 1rem 2rem;
+  font-size: 1.75rem;
+  border-radius: 0.75rem;
+}
+
+// Solid button variants
+.btn-light {
+  background-color: var(--t-light);
+  color: var(--t-dark);
+  border-color: var(--t-light);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.95);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(0.9);
+  }
+}
+
+.btn-dark {
+  background-color: var(--t-dark);
+  color: #fff;
+  border-color: var(--t-dark);
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(1.15);
+  }
+}
+
+.btn-primary {
+  background-color: var(--t-primary);
+  color: #fff;
+  border-color: var(--t-primary);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.9);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(0.85);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--t-secondary);
+  color: #fff;
+  border-color: var(--t-secondary);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.9);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(0.85);
+  }
+}
+
+.btn-info {
+  background-color: var(--t-info);
+  color: #fff;
+  border-color: var(--t-info);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.9);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(0.85);
+  }
+}
+
+.btn-success {
+  background-color: var(--t-success);
+  color: #fff;
+  border-color: var(--t-success);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.9);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(0.85);
+  }
+}
+
+.btn-warning {
+  background-color: var(--t-warning);
+  color: #000;
+  border-color: var(--t-warning);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.9);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(0.85);
+  }
+}
+
+.btn-danger {
+  background-color: var(--t-danger);
+  color: #fff;
+  border-color: var(--t-danger);
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.9);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    filter: brightness(0.85);
+  }
+}
+
+// Outline variants
+.btn-outline-light {
+  color: var(--t-light);
+  border-color: var(--t-light);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-light);
+    color: var(--t-dark);
+    border-color: var(--t-light);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-light);
+    color: var(--t-dark);
+    border-color: var(--t-light);
+    filter: brightness(0.95);
+  }
+}
+
+.btn-outline-dark {
+  color: var(--t-dark);
+  border-color: var(--t-dark);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-dark);
+    color: #fff;
+    border-color: var(--t-dark);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-dark);
+    color: #fff;
+    border-color: var(--t-dark);
+    filter: brightness(1.1);
+  }
+}
+
+.btn-outline-primary {
+  color: var(--t-primary);
+  border-color: var(--t-primary);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-primary);
+    color: #fff;
+    border-color: var(--t-primary);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-primary);
+    color: #fff;
+    border-color: var(--t-primary);
+    filter: brightness(0.9);
+  }
+}
+
+.btn-outline-secondary {
+  color: var(--t-secondary);
+  border-color: var(--t-secondary);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-secondary);
+    color: #fff;
+    border-color: var(--t-secondary);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-secondary);
+    color: #fff;
+    border-color: var(--t-secondary);
+    filter: brightness(0.9);
+  }
+}
+
+.btn-outline-info {
+  color: var(--t-info);
+  border-color: var(--t-info);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-info);
+    color: #fff;
+    border-color: var(--t-info);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-info);
+    color: #fff;
+    border-color: var(--t-info);
+    filter: brightness(0.9);
+  }
+}
+
+.btn-outline-success {
+  color: var(--t-success);
+  border-color: var(--t-success);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-success);
+    color: #fff;
+    border-color: var(--t-success);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-success);
+    color: #fff;
+    border-color: var(--t-success);
+    filter: brightness(0.9);
+  }
+}
+
+.btn-outline-warning {
+  color: var(--t-warning);
+  border-color: var(--t-warning);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-warning);
+    color: #000;
+    border-color: var(--t-warning);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-warning);
+    color: #000;
+    border-color: var(--t-warning);
+    filter: brightness(0.9);
+  }
+}
+
+.btn-outline-danger {
+  color: var(--t-danger);
+  border-color: var(--t-danger);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--t-danger);
+    color: #fff;
+    border-color: var(--t-danger);
+  }
+
+  &:active:not(:disabled),
+  &.active {
+    background-color: var(--t-danger);
+    color: #fff;
+    border-color: var(--t-danger);
+    filter: brightness(0.9);
+  }
+}

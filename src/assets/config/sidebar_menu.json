@@ -54,5 +54,10 @@
         "link": "/settings/users"
       }
     ]
+  },
+  {
+    "name": "Components",
+    "link": "/components",
+    "icon": "bi bi-palette"
   }
 ]

@@ -1,0 +1,108 @@
+// Custom Pill Styles (Bootstrap-like but independent)
+
+.pill {
+  display: inline-block;
+  padding: 0.35em 0.85em;
+  font-size: 0.875em;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 50rem; // Fully rounded
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    filter 0.15s ease-in-out;
+}
+
+// Solid pill variants
+.pill-light {
+  background-color: var(--bs-light);
+  color: var(--bs-dark);
+}
+
+.pill-dark {
+  background-color: var(--bs-dark);
+  color: #fff;
+}
+
+.pill-primary {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+.pill-secondary {
+  background-color: var(--bs-secondary);
+  color: #fff;
+}
+
+.pill-info {
+  background-color: var(--bs-info);
+  color: #fff;
+}
+
+.pill-success {
+  background-color: var(--bs-success);
+  color: #fff;
+}
+
+.pill-warning {
+  background-color: var(--bs-warning);
+  color: #000;
+}
+
+.pill-danger {
+  background-color: var(--bs-danger);
+  color: #fff;
+}
+
+// Outline pill variants
+.pill-outline-light {
+  background-color: transparent;
+  color: var(--bs-light);
+  border: 1px solid var(--bs-light);
+}
+
+.pill-outline-dark {
+  background-color: transparent;
+  color: var(--bs-dark);
+  border: 1px solid var(--bs-dark);
+}
+
+.pill-outline-primary {
+  background-color: transparent;
+  color: var(--bs-primary);
+  border: 1px solid var(--bs-primary);
+}
+
+.pill-outline-secondary {
+  background-color: transparent;
+  color: var(--bs-secondary);
+  border: 1px solid var(--bs-secondary);
+}
+
+.pill-outline-info {
+  background-color: transparent;
+  color: var(--bs-info);
+  border: 1px solid var(--bs-info);
+}
+
+.pill-outline-success {
+  background-color: transparent;
+  color: var(--bs-success);
+  border: 1px solid var(--bs-success);
+}
+
+.pill-outline-warning {
+  background-color: transparent;
+  color: var(--bs-warning);
+  border: 1px solid var(--bs-warning);
+}
+
+.pill-outline-danger {
+  background-color: transparent;
+  color: var(--bs-danger);
+  border: 1px solid var(--bs-danger);
+}

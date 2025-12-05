@@ -21,12 +21,14 @@
       ></i>
     </button>
 
-    <UserIcon class="ms-auto" />
+    <ThemeToggle class="ms-auto" />
+    <UserIcon />
   </div>
 </template>
 
 <script setup lang="ts">
 import UserIcon from '@/components/UserIcon.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 import useMenuStore from '@/stores/menu'
 
 const menu = useMenuStore()

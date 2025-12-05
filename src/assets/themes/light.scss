@@ -1,0 +1,22 @@
+// Light Theme Colors
+[data-theme='light'] {
+  --t-light: #f6eeff;
+  --t-dark: #370748;
+  --t-primary: #b00b69;
+  --t-secondary: #f52b2b;
+  --t-info: #f37e10;
+  --t-success: #07ab77;
+  --t-warning: #d6d206;
+  --t-danger: #e44102;
+
+  --t-body-bg: var(--t-light);
+  --t-body-color: var(--t-dark);
+
+  --t-border-color: #dee2e6;
+  --t-input-bg: var(--t-light);
+  --t-input-border-color: #ced4da;
+  --t-input-color: var(--t-dark);
+
+  --t-link-color: var(--t-dark);
+  --t-link-hover-color: #290536;
+}

@@ -3,25 +3,26 @@
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins';
 
+// Import theme files
+@import '../themes/light.scss';
+@import '../themes/dark.scss';
+
 // 2. Define Custom Colors
 $white: #ffffff;
 
-// $theme-colors: (
-//   'light': #f6eeff,
-//   'dark': #370748,
-//   'primary': #b00b69,
-//   'secondary': #f52b2b,
-//   'info': #f37e10,
-//   'success': #07ab77,
-//   'warning': #d6d206,
-//   'danger': #e44102,
-// );
+// Default theme colors (light theme base)
+$theme-colors: (
+  'light': #f6eeff,
+  'dark': #370748,
+  'primary': #b00b69,
+  'secondary': #f52b2b,
+  'info': #f37e10,
+  'success': #07ab77,
+  'warning': #d6d206,
+  'danger': #e44102,
+);
 
-@use 'sass:map';
-@use './theme.json' as theme;
-$theme-colors: theme.$map;
-
-// 3. Override Bootstrap Variables
+// 3. Override Bootstrap Variables (using static colors, not CSS vars)
 $body-bg: map-get($theme-colors, 'light');
 $body-color: map-get($theme-colors, 'dark');
 
@@ -37,19 +38,19 @@ $link-color: map-get($theme-colors, 'dark');
 $link-hover-color: darken($link-color, 10%);
 
 // Pagination
-$pagination-color: var(--bs-primary);
-$pagination-hover-color: var(--bs-light);
-$pagination-active-bg: var(--bs-primary);
-$pagination-active-border-color: var(--bs-primary);
+$pagination-color: map-get($theme-colors, 'primary');
+$pagination-hover-color: map-get($theme-colors, 'light');
+$pagination-active-bg: map-get($theme-colors, 'primary');
+$pagination-active-border-color: map-get($theme-colors, 'primary');
 
-$component-active-color: var(--bs-light);
-$component-active-bg: var(--bs-primary);
-$dropdown-link-active-bg: var(--bs-primary);
-$input-btn-focus-color: var(--bs-primary);
+$component-active-color: map-get($theme-colors, 'light');
+$component-active-bg: map-get($theme-colors, 'primary');
+$dropdown-link-active-bg: map-get($theme-colors, 'primary');
+$input-btn-focus-color: map-get($theme-colors, 'primary');
 
-$input-bg: var(--bs-light);
+$input-bg: map-get($theme-colors, 'light');
 $input-border-color: #ced4da;
-$input-color: var(--bs-dark);
+$input-color: map-get($theme-colors, 'dark');
 $input-border-radius: 0.25rem;
 $input-padding-y: 0.375rem;
 $input-padding-x: 0.75rem;
@@ -129,14 +130,23 @@ select:focus {
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap/scss/maps';
 
+// Import custom component styles (replaces Bootstrap components)
+@import './buttons.scss';
+@import './badges.scss';
+@import './pills.scss';
+@import './alerts.scss';
+
 // 5. Custom Styles
 body {
-  background-color: $body-bg;
-  color: $body-color;
+  background-color: var(--t-body-bg);
+  color: var(--t-body-color);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .btn-custom {
-  background-color: map-get($theme-colors, 'primary');
+  background-color: var(--t-primary);
   color: $white;
   border-radius: $border-radius;
   &:hover {

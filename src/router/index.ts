@@ -116,6 +116,11 @@ const router = createRouter({
         role: ['admin'],
       },
     },
+    {
+      path: '/components',
+      name: 'components',
+      component: () => import('../views/ComponentsView.vue'),
+    },
   ],
 })
 

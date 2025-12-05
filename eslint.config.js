@@ -36,6 +36,26 @@ export default [
 
       // Downgrade explicit any to warnings
       '@typescript-eslint/no-explicit-any': 'warn',
+
+      // Allow single-word component names for our custom components
+      'vue/multi-word-component-names': [
+        'error',
+        {
+          ignores: [
+            'Button',
+            'Badge',
+            'Pill',
+            'Alert',
+            'Input',
+            'Select',
+            'Textarea',
+            'Checkbox',
+            'Radio',
+            'Card',
+            'Flex',
+          ],
+        },
+      ],
     },
   },
 ]

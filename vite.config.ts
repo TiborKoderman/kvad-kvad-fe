@@ -3,12 +3,17 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import { themeMacroPlugin } from './plugins/themeMacroPlugin'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    themeMacroPlugin({
+      themeFile: 'src/assets/scss/app.scss',
+      virtualId: 'virtual:theme',
+    }),
   ],
   resolve: {
     alias: {

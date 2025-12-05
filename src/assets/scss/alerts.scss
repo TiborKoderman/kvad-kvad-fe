@@ -1,0 +1,125 @@
+// Custom Alert Styles (Bootstrap-like but independent)
+
+.alert {
+  position: relative;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    filter 0.15s ease-in-out;
+}
+
+// Helper function to create light background versions
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+// Solid alert variants (with tinted backgrounds)
+.alert-light {
+  background-color: var(--bs-light);
+  color: var(--bs-dark);
+  border-color: var(--bs-light);
+}
+
+.alert-dark {
+  background-color: rgba(55, 7, 72, 0.1);
+  color: var(--bs-dark);
+  border-color: rgba(55, 7, 72, 0.2);
+}
+
+.alert-primary {
+  background-color: rgba(176, 11, 105, 0.1);
+  color: #6c0642;
+  border-color: rgba(176, 11, 105, 0.2);
+}
+
+.alert-secondary {
+  background-color: rgba(245, 43, 43, 0.1);
+  color: #8b1818;
+  border-color: rgba(245, 43, 43, 0.2);
+}
+
+.alert-info {
+  background-color: rgba(243, 126, 16, 0.1);
+  color: #9a4e08;
+  border-color: rgba(243, 126, 16, 0.2);
+}
+
+.alert-success {
+  background-color: rgba(7, 171, 119, 0.1);
+  color: #045d42;
+  border-color: rgba(7, 171, 119, 0.2);
+}
+
+.alert-warning {
+  background-color: rgba(214, 210, 6, 0.1);
+  color: #6b6a03;
+  border-color: rgba(214, 210, 6, 0.2);
+}
+
+.alert-danger {
+  background-color: rgba(228, 65, 2, 0.1);
+  color: #8b2801;
+  border-color: rgba(228, 65, 2, 0.2);
+}
+
+// Outline alert variants
+.alert-outline-light {
+  background-color: transparent;
+  color: var(--bs-light);
+  border-color: var(--bs-light);
+  border-width: 2px;
+}
+
+.alert-outline-dark {
+  background-color: transparent;
+  color: var(--bs-dark);
+  border-color: var(--bs-dark);
+  border-width: 2px;
+}
+
+.alert-outline-primary {
+  background-color: transparent;
+  color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  border-width: 2px;
+}
+
+.alert-outline-secondary {
+  background-color: transparent;
+  color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
+  border-width: 2px;
+}
+
+.alert-outline-info {
+  background-color: transparent;
+  color: var(--bs-info);
+  border-color: var(--bs-info);
+  border-width: 2px;
+}
+
+.alert-outline-success {
+  background-color: transparent;
+  color: var(--bs-success);
+  border-color: var(--bs-success);
+  border-width: 2px;
+}
+
+.alert-outline-warning {
+  background-color: transparent;
+  color: var(--bs-warning);
+  border-color: var(--bs-warning);
+  border-width: 2px;
+}
+
+.alert-outline-danger {
+  background-color: transparent;
+  color: var(--bs-danger);
+  border-color: var(--bs-danger);
+  border-width: 2px;
+}

@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="buttonClasses"
+    :class="classes"
     :disabled="disabled"
     @click.stop.prevent="handleClick"
     v-bind="$attrs"
@@ -11,10 +11,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { themeVariants } from '@/assets/themes/theme-config'
+import {
+  themeVariants,
+  sizeVariants,
+  type ThemeVariant,
+  type SizeVariant,
+} from '@/assets/themes/theme-config'
 
-// Explicit props from theme variants (single source of truth)
 interface ButtonProps {
+  // Variant props (boolean flags)
   light?: boolean
   dark?: boolean
   primary?: boolean
@@ -23,9 +28,16 @@ interface ButtonProps {
   success?: boolean
   warning?: boolean
   danger?: boolean
+
+  // Alternative: variant string prop
+  v?: ThemeVariant
+
+  // Size prop
+  s?: SizeVariant
+
+  // Other props
   disabled?: boolean
   outline?: boolean
-  size?: 'sm' | 'lg'
 }
 
 const props = defineProps<ButtonProps>()
@@ -34,28 +46,30 @@ const emit = defineEmits<{
   click: [event: MouseEvent]
 }>()
 
-// Determine which variant is active
+// Determine which variant is active (v prop takes precedence)
 const activeVariant = computed(() => {
-  return themeVariants.find(v => props[v]) || 'primary'
+  if (props.v) return props.v
+  return themeVariants.find(variant => props[variant]) || 'primary'
 })
 
+// Determine size (default to 'md')
+const activeSize = computed(() => props.s || 'md')
+
 // Compute button classes
-const buttonClasses = computed(() => {
-  const classes = ['btn']
+const classes = computed(() => {
+  const classList = ['btn']
 
   // Add variant class
   const prefix = props.outline ? 'btn-outline-' : 'btn-'
-  classes.push(`${prefix}${activeVariant.value}`)
+  classList.push(`${prefix}${activeVariant.value}`)
 
   // Add size class
-  if (props.size) {
-    classes.push(`btn-${props.size}`)
-  }
+  classList.push(`btn-${activeSize.value}`)
 
-  return classes
+  return classList
 })
 
-// Handle click with disabled check - prevent event if disabled
+// Handle click with disabled check
 const handleClick = (event: MouseEvent) => {
   if (props.disabled) {
     event.preventDefault()
