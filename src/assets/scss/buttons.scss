@@ -64,9 +64,9 @@
 
 // Solid button variants
 .btn-light {
-  background-color: var(--t-light);
-  color: var(--t-dark);
-  border-color: var(--t-light);
+  background-color: var(--bg-light);
+  color: var(--txt-light);
+  border-color: var(--bg-light);
 
   &:hover:not(:disabled) {
     filter: brightness(0.95);
@@ -79,9 +79,9 @@
 }
 
 .btn-dark {
-  background-color: var(--t-dark);
-  color: #fff;
-  border-color: var(--t-dark);
+  background-color: var(--bg-dark);
+  color: var(--txt-dark);
+  border-color: var(--bg-dark);
 
   &:hover:not(:disabled) {
     filter: brightness(1.1);
@@ -94,9 +94,9 @@
 }
 
 .btn-primary {
-  background-color: var(--t-primary);
-  color: #fff;
-  border-color: var(--t-primary);
+  background-color: var(--bg-primary);
+  color: var(--txt-primary);
+  border-color: var(--bg-primary);
 
   &:hover:not(:disabled) {
     filter: brightness(0.9);
@@ -109,9 +109,9 @@
 }
 
 .btn-secondary {
-  background-color: var(--t-secondary);
-  color: #fff;
-  border-color: var(--t-secondary);
+  background-color: var(--bg-secondary);
+  color: var(--txt-secondary);
+  border-color: var(--bg-secondary);
 
   &:hover:not(:disabled) {
     filter: brightness(0.9);
@@ -124,9 +124,9 @@
 }
 
 .btn-info {
-  background-color: var(--t-info);
-  color: #fff;
-  border-color: var(--t-info);
+  background-color: var(--bg-info);
+  color: var(--txt-info);
+  border-color: var(--bg-info);
 
   &:hover:not(:disabled) {
     filter: brightness(0.9);
@@ -139,9 +139,9 @@
 }
 
 .btn-success {
-  background-color: var(--t-success);
-  color: #fff;
-  border-color: var(--t-success);
+  background-color: var(--bg-success);
+  color: var(--txt-success);
+  border-color: var(--bg-success);
 
   &:hover:not(:disabled) {
     filter: brightness(0.9);
@@ -154,9 +154,9 @@
 }
 
 .btn-warning {
-  background-color: var(--t-warning);
-  color: #000;
-  border-color: var(--t-warning);
+  background-color: var(--bg-warning);
+  color: var(--txt-warning);
+  border-color: var(--bg-warning);
 
   &:hover:not(:disabled) {
     filter: brightness(0.9);
@@ -169,9 +169,9 @@
 }
 
 .btn-danger {
-  background-color: var(--t-danger);
-  color: #fff;
-  border-color: var(--t-danger);
+  background-color: var(--bg-danger);
+  color: var(--txt-danger);
+  border-color: var(--bg-danger);
 
   &:hover:not(:disabled) {
     filter: brightness(0.9);
@@ -190,16 +190,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-light);
-    color: var(--t-dark);
-    border-color: var(--t-light);
+    background-color: var(--bg-light);
+    color: var(--txt-light);
+    border-color: var(--bg-light);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-light);
-    color: var(--t-dark);
-    border-color: var(--t-light);
+    background-color: var(--bg-light);
+    color: var(--txt-light);
+    border-color: var(--bg-light);
     filter: brightness(0.95);
   }
 }
@@ -210,16 +210,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-dark);
-    color: #fff;
-    border-color: var(--t-dark);
+    background-color: var(--bg-dark);
+    color: var(--txt-dark);
+    border-color: var(--bg-dark);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-dark);
-    color: #fff;
-    border-color: var(--t-dark);
+    background-color: var(--bg-dark);
+    color: var(--txt-dark);
+    border-color: var(--bg-dark);
     filter: brightness(1.1);
   }
 }
@@ -230,16 +230,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-primary);
-    color: #fff;
-    border-color: var(--t-primary);
+    background-color: var(--bg-primary);
+    color: var(--txt-primary);
+    border-color: var(--bg-primary);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-primary);
-    color: #fff;
-    border-color: var(--t-primary);
+    background-color: var(--bg-primary);
+    color: var(--txt-primary);
+    border-color: var(--bg-primary);
     filter: brightness(0.9);
   }
 }
@@ -250,16 +250,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-secondary);
-    color: #fff;
-    border-color: var(--t-secondary);
+    background-color: var(--bg-secondary);
+    color: var(--txt-secondary);
+    border-color: var(--bg-secondary);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-secondary);
-    color: #fff;
-    border-color: var(--t-secondary);
+    background-color: var(--bg-secondary);
+    color: var(--txt-secondary);
+    border-color: var(--bg-secondary);
     filter: brightness(0.9);
   }
 }
@@ -270,16 +270,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-info);
-    color: #fff;
-    border-color: var(--t-info);
+    background-color: var(--bg-info);
+    color: var(--txt-info);
+    border-color: var(--bg-info);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-info);
-    color: #fff;
-    border-color: var(--t-info);
+    background-color: var(--bg-info);
+    color: var(--txt-info);
+    border-color: var(--bg-info);
     filter: brightness(0.9);
   }
 }
@@ -290,16 +290,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-success);
-    color: #fff;
-    border-color: var(--t-success);
+    background-color: var(--bg-success);
+    color: var(--txt-success);
+    border-color: var(--bg-success);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-success);
-    color: #fff;
-    border-color: var(--t-success);
+    background-color: var(--bg-success);
+    color: var(--txt-success);
+    border-color: var(--bg-success);
     filter: brightness(0.9);
   }
 }
@@ -310,16 +310,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-warning);
-    color: #000;
-    border-color: var(--t-warning);
+    background-color: var(--bg-warning);
+    color: var(--txt-warning);
+    border-color: var(--bg-warning);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-warning);
-    color: #000;
-    border-color: var(--t-warning);
+    background-color: var(--bg-warning);
+    color: var(--txt-warning);
+    border-color: var(--bg-warning);
     filter: brightness(0.9);
   }
 }
@@ -330,16 +330,16 @@
   background-color: transparent;
 
   &:hover:not(:disabled) {
-    background-color: var(--t-danger);
-    color: #fff;
-    border-color: var(--t-danger);
+    background-color: var(--bg-danger);
+    color: var(--txt-danger);
+    border-color: var(--bg-danger);
   }
 
   &:active:not(:disabled),
   &.active {
-    background-color: var(--t-danger);
-    color: #fff;
-    border-color: var(--t-danger);
+    background-color: var(--bg-danger);
+    color: var(--txt-danger);
+    border-color: var(--bg-danger);
     filter: brightness(0.9);
   }
 }

@@ -1,5 +1,6 @@
 // Dark Theme Colors
 [data-theme='dark'] {
+  // Core theme colors
   --t-light: #2d2d2d;
   --t-dark: #e0e0e0;
   --t-primary: #d63384;
@@ -9,14 +10,41 @@
   --t-warning: #ffc107;
   --t-danger: #dc3545;
 
+  // Background color variations (adjusted for dark theme)
+  --bg-light: #3a3a3a; // Lighter shade for dark theme "light"
+  --bg-light-subtle: #4a4a4a; // Even lighter
+  --bg-dark: #0d0d0d; // Darker shade
+  --bg-dark-subtle: #1a1a1a; // Slightly lighter
+  --bg-primary: var(--t-primary);
+  --bg-secondary: var(--t-secondary);
+  --bg-info: var(--t-info);
+  --bg-success: var(--t-success);
+  --bg-warning: var(--t-warning);
+  --bg-danger: var(--t-danger);
+
+  // Text colors for each background (high contrast)
+  --txt-light: #ffffff; // White text on dark theme "light" backgrounds
+  --txt-dark: var(--t-dark); // Light gray text on dark background
+  --txt-primary: #ffffff; // White text on primary
+  --txt-secondary: #ffffff; // White text on secondary
+  --txt-info: #000000; // Black text on info (cyan needs dark text)
+  --txt-success: #ffffff; // White text on success
+  --txt-warning: #000000; // Black text on warning
+  --txt-danger: #ffffff; // White text on danger
+
+  // Body defaults
   --t-body-bg: #1a1a1a;
   --t-body-color: var(--t-dark);
 
+  // Component defaults
   --t-border-color: #495057;
+  --t-card-bg: #252525;
+  --t-card-border-color: #3a3a3a;
   --t-input-bg: #2d2d2d;
   --t-input-border-color: #495057;
   --t-input-color: var(--t-dark);
 
+  // Links
   --t-link-color: var(--t-dark);
   --t-link-hover-color: #f0f0f0;
 }

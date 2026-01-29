@@ -16,7 +16,11 @@
 
         <div>
           <label class="me-2">Size:</label>
-          <select v-model="globalSize" class="form-select form-select-sm d-inline-block" style="width: auto;">
+          <select
+            v-model="globalSize"
+            class="form-select form-select-sm d-inline-block"
+            style="width: auto"
+          >
             <option value="sm">Small</option>
             <option value="md">Medium</option>
             <option value="lg">Large</option>
@@ -27,8 +31,14 @@
 
         <div>
           <label class="me-2">Variant:</label>
-          <select v-model="globalVariant" class="form-select form-select-sm d-inline-block" style="width: auto;">
-            <option v-for="v in variants" :key="v" :value="v">{{ capitalize(v) }}</option>
+          <select
+            v-model="globalVariant"
+            class="form-select form-select-sm d-inline-block"
+            style="width: auto"
+          >
+            <option v-for="v in variants" :key="v" :value="v">
+              {{ capitalize(v) }}
+            </option>
           </select>
         </div>
       </div>
@@ -58,8 +68,12 @@
           <Button :v="'primary'" :outline="outlineMode" @click="log('v prop')">
             :v="primary"
           </Button>
-          <Button :v="globalVariant" :outline="outlineMode" @click="log('dynamic v')">
-            :v="{{globalVariant}}"
+          <Button
+            :v="globalVariant"
+            :outline="outlineMode"
+            @click="log('dynamic v')"
+          >
+            :v="{{ globalVariant }}"
           </Button>
         </div>
       </div>
@@ -132,7 +146,7 @@
         <h3 class="h5 mb-2">Using :v Prop</h3>
         <div class="d-flex gap-2 flex-wrap mb-3">
           <Badge :v="globalVariant" :outline="outlineMode">
-            :v="{{globalVariant}}"
+            :v="{{ globalVariant }}"
           </Badge>
         </div>
       </div>
@@ -221,7 +235,12 @@
         <Alert success :outline="outlineMode" icon="check-circle" class="mb-2">
           <strong>Success!</strong> Your operation completed successfully.
         </Alert>
-        <Alert warning :outline="outlineMode" icon="exclamation-triangle" class="mb-2">
+        <Alert
+          warning
+          :outline="outlineMode"
+          icon="exclamation-triangle"
+          class="mb-2"
+        >
           <strong>Warning!</strong> Please review before proceeding.
         </Alert>
         <Alert danger :outline="outlineMode" icon="x-circle" class="mb-2">
@@ -242,7 +261,7 @@
       <div class="mb-4">
         <h3 class="h5 mb-2">Using :v Prop</h3>
         <Alert :v="globalVariant" :outline="outlineMode" icon="star">
-          Alert using :v="{{globalVariant}}"
+          Alert using :v="{{ globalVariant }}"
         </Alert>
       </div>
     </section>
@@ -271,13 +290,23 @@
 
       <div class="mb-4">
         <h3 class="h5 mb-2">Justify & Align</h3>
-        <Flex justify="between" align="center" class="border p-3 mb-2" style="min-height: 80px;">
+        <Flex
+          justify="between"
+          align="center"
+          class="border p-3 mb-2"
+          style="min-height: 80px"
+        >
           <div class="bg-primary text-white p-2">Left</div>
           <div class="bg-secondary text-white p-2">Center</div>
           <div class="bg-info text-white p-2">Right</div>
         </Flex>
 
-        <Flex justify="center" align="center" class="border p-3" style="min-height: 80px;">
+        <Flex
+          justify="center"
+          align="center"
+          class="border p-3"
+          style="min-height: 80px"
+        >
           <div class="bg-success text-white p-2">Centered</div>
         </Flex>
       </div>
@@ -317,9 +346,7 @@
             <template #header>
               <h5 class="mb-0 text-white">Primary Card</h5>
             </template>
-            <div class="text-white">
-              Card with primary variant.
-            </div>
+            <div class="text-white">Card with primary variant.</div>
           </Card>
         </div>
 
@@ -342,7 +369,8 @@
           <template #header>
             <h5 class="mb-0">Dynamic Variant</h5>
           </template>
-          This card uses :v="{{globalVariant}}" {{ outlineMode ? 'outline' : '' }}
+          This card uses :v="{{ globalVariant }}"
+          {{ outlineMode ? 'outline' : '' }}
         </Card>
       </div>
     </section>
@@ -360,7 +388,12 @@
           </div>
           <div class="col-md-4 mb-3">
             <label class="form-label">Medium Input (default)</label>
-            <Input v-model="formData.email" placeholder="Email" type="email" s="md" />
+            <Input
+              v-model="formData.email"
+              placeholder="Email"
+              type="email"
+              s="md"
+            />
           </div>
           <div class="col-md-4 mb-3">
             <label class="form-label">Large Input</label>
@@ -368,13 +401,20 @@
           </div>
         </div>
         <div class="alert alert-light">
-          <strong>Values:</strong> name={{ formData.name }}, email={{ formData.email }}, phone={{ formData.phone }}
+          <strong>Values:</strong> name={{ formData.name }}, email={{
+            formData.email
+          }}, phone={{ formData.phone }}
         </div>
       </div>
 
       <div class="mb-4">
         <h3 class="h5 mb-2">Textarea</h3>
-        <Textarea v-model="formData.description" placeholder="Description" rows="3" s="md" />
+        <Textarea
+          v-model="formData.description"
+          placeholder="Description"
+          rows="3"
+          s="md"
+        />
         <div class="alert alert-light mt-2">
           <strong>Value:</strong> {{ formData.description || '(empty)' }}
         </div>
@@ -403,24 +443,51 @@
           </div>
         </div>
         <div class="alert alert-light">
-          <strong>Values:</strong> country={{ formData.country || '(none)' }}, category={{ formData.category || '(none)' }}
+          <strong>Values:</strong> country={{ formData.country || '(none)' }},
+          category={{ formData.category || '(none)' }}
         </div>
       </div>
 
       <div class="mb-4">
         <h3 class="h5 mb-2">Checkbox</h3>
-        <Checkbox v-model="formData.agree" label="I agree to the terms and conditions" />
-        <Checkbox v-model="formData.newsletter" label="Subscribe to newsletter" class="mt-2" />
+        <Checkbox
+          v-model="formData.agree"
+          label="I agree to the terms and conditions"
+        />
+        <Checkbox
+          v-model="formData.newsletter"
+          label="Subscribe to newsletter"
+          class="mt-2"
+        />
         <div class="alert alert-light mt-2">
-          <strong>Values:</strong> agree={{ formData.agree }}, newsletter={{ formData.newsletter }}
+          <strong>Values:</strong> agree={{ formData.agree }}, newsletter={{
+            formData.newsletter
+          }}
         </div>
       </div>
 
       <div class="mb-4">
         <h3 class="h5 mb-2">Radio</h3>
-        <Radio v-model="formData.plan" value="free" label="Free Plan" name="plan" />
-        <Radio v-model="formData.plan" value="pro" label="Pro Plan" name="plan" class="mt-2" />
-        <Radio v-model="formData.plan" value="enterprise" label="Enterprise Plan" name="plan" class="mt-2" />
+        <Radio
+          v-model="formData.plan"
+          value="free"
+          label="Free Plan"
+          name="plan"
+        />
+        <Radio
+          v-model="formData.plan"
+          value="pro"
+          label="Pro Plan"
+          name="plan"
+          class="mt-2"
+        />
+        <Radio
+          v-model="formData.plan"
+          value="enterprise"
+          label="Enterprise Plan"
+          name="plan"
+          class="mt-2"
+        />
         <div class="alert alert-light mt-2">
           <strong>Selected:</strong> {{ formData.plan || '(none)' }}
         </div>
@@ -479,7 +546,7 @@ const formData = ref({
   category: '',
   agree: false,
   newsletter: false,
-  plan: ''
+  plan: '',
 })
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)

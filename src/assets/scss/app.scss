@@ -131,10 +131,12 @@ select:focus {
 @import 'bootstrap/scss/maps';
 
 // Import custom component styles (replaces Bootstrap components)
+@import './utilities.scss';
 @import './buttons.scss';
 @import './badges.scss';
 @import './pills.scss';
 @import './alerts.scss';
+@import './cards.scss';
 
 // 5. Custom Styles
 body {

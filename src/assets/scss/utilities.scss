@@ -1,0 +1,36 @@
+// Background and Text Color Utilities
+// These classes apply background colors with appropriate contrasting text colors
+
+// Theme color backgrounds with contrasting text
+@each $variant in (light, dark, primary, secondary, info, success, warning, danger) {
+  .bg-#{$variant} {
+    background-color: var(--bg-#{$variant}) !important;
+    color: var(--txt-#{$variant}) !important;
+  }
+
+  .text-#{$variant} {
+    color: var(--t-#{$variant}) !important;
+  }
+}
+
+// Subtle background variations (for light and dark only)
+.bg-light-subtle {
+  background-color: var(--bg-light-subtle) !important;
+  color: var(--txt-light) !important;
+}
+
+.bg-dark-subtle {
+  background-color: var(--bg-dark-subtle) !important;
+  color: var(--txt-dark) !important;
+}
+
+// Body background helper
+.bg-body {
+  background-color: var(--t-body-bg) !important;
+  color: var(--t-body-color) !important;
+}
+
+// Card background helper
+.bg-card {
+  background-color: var(--t-card-bg) !important;
+}
