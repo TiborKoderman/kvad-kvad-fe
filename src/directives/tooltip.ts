@@ -126,13 +126,13 @@ export const vTooltip: Directive = {
     // Update content if tooltip exists
     const instance = tooltipInstances.get(el)
     if (instance) {
-      const tooltipComponent = instance.app._instance?.proxy
-      if (tooltipComponent) {
-        tooltipComponent.$props.content = options.content
-        tooltipComponent.$props.position = options.position || 'top'
       instance.content.value = options.content
       instance.position.value = options.position || 'top'
-      instance.allowHtml.value = options.html || falsented(el: HTMLElement) {
+      instance.allowHtml.value = options.html || false
+    }
+  },
+
+  unmounted(el: HTMLElement) {
     destroyTooltip(el)
   }
 }
