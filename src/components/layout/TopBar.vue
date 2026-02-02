@@ -47,7 +47,7 @@ defineProps({
 
 <style scoped>
 .topbar {
-  height: 80px;
+  height: 40px;
   padding: 0 1rem;
   display: flex;
   align-items: center;

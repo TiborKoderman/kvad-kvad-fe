@@ -2,6 +2,44 @@
   <div class="table-view">
     <h1>Table Component Demo</h1>
 
+    <div class="tooltip-demo mb-4">
+      <h3>Tooltip Examples:</h3>
+      <div class="d-flex gap-3 mt-2">
+        <button
+          class="btn btn-primary"
+          v-tooltip="'Simple tooltip on top'"
+        >
+          Simple Tooltip
+        </button>
+        <button
+          class="btn btn-secondary"
+          v-tooltip="{ content: 'Tooltip on the right', position: 'right' }"
+        >
+          Right Tooltip
+        </button>
+        <button
+          class="btn btn-info"
+          v-tooltip="{
+            content: '<strong>Styled</strong> tooltip with <em>HTML</em> and <code>code</code>',
+            html: true,
+            position: 'bottom'
+          }"
+        >
+          HTML Tooltip
+        </button>
+        <button
+          class="btn btn-success"
+          v-tooltip="{
+            content: '<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>',
+            html: true,
+            position: 'left'
+          }"
+        >
+          List Tooltip
+        </button>
+      </div>
+    </div>
+
     <section>
       <h2>User Management Table</h2>
       <KTable
@@ -93,7 +131,7 @@ const userColumns = [
     title: 'Created At',
     data: 'createdAt',
     type: 'time' as const,
-    editable: false
+    editable: true
   },
   {
     title: 'Actions',
@@ -188,7 +226,8 @@ const deviceColumns = [
     title: 'Last Update',
     data: 'lastUpdate',
     type: 'time' as const,
-    editable: false
+    editable: false,
+    showElapsed: true
   },
   {
     title: 'Actions',

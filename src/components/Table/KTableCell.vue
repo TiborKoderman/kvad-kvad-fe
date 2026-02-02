@@ -13,6 +13,10 @@
       :rowData="rowData"
       :precision="column.precision"
       :format="column.format"
+      :showElapsed="column.showElapsed"
+      :dateOnly="column.dateOnly"
+      :timeOnly="column.timeOnly"
+      :customFormat="column.customFormat"
       @update:value="handleUpdate"
     />
   </td>
@@ -34,6 +38,10 @@ interface Column {
   actions?: any[]
   precision?: number
   format?: string
+  showElapsed?: boolean
+  dateOnly?: boolean
+  timeOnly?: boolean
+  customFormat?: string
 }
 
 const props = defineProps({

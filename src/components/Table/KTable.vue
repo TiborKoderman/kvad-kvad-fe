@@ -244,7 +244,8 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 .search-input:focus {
   outline: none;
   border-color: var(--bs-primary, #0d6efd);
-  box-shadow: 0 0 0 0.25rem var(--bs-primary-bg-subtle, rgba(13, 110, 253, 0.25));
+  border-width: 2px;
+  padding: calc(0.5rem - 1px) calc(1rem - 1px);
 }
 
 .table-scroll {
@@ -286,7 +287,7 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 }
 
 .table.bordered {
-  border: 1px solid var(--bs-border-color, #dee2e6);
+  border: 1px solid var(--t-border-color, #dee2e6);
 }
 
 .table.bordered th,

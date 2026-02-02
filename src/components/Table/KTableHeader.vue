@@ -152,6 +152,6 @@ th.resizable {
 }
 
 .resize-handle:hover {
-  background: var(--bs-primary, #0d6efd);
+  background: var(--t-primary, #b00b69);
 }
 </style>

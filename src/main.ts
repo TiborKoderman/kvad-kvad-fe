@@ -8,6 +8,7 @@ import router from './router'
 import { DataTable, DateTime } from './utils/datatables'
 
 import { IMaskDirective } from 'vue-imask'
+import { vTooltip } from './directives/tooltip'
 
 import {ws} from './ws'
 
@@ -29,6 +30,7 @@ app.component('DateTime', DateTime)
 app.component('Swal', Swal);
 
 app.directive('imask', IMaskDirective as ObjectDirective)
+app.directive('tooltip', vTooltip)
 
 // app.component('api', api)
 app.mount('#app')

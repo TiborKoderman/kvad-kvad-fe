@@ -81,7 +81,6 @@ const handleToggle = (event: Event) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .checkbox-icon {
@@ -102,8 +101,7 @@ const handleToggle = (event: Event) => {
 /* Hover state */
 .custom-checkbox:hover .checkbox-box {
   border-color: var(--bs-primary, #0d6efd);
-  box-shadow: 0 0 0 3px var(--bs-primary-bg-subtle, rgba(13, 110, 253, 0.15)),
-              0 4px 8px rgba(0, 0, 0, 0.1);
+  border-width: 2px;
   transform: translateY(-2px);
 }
 
@@ -112,8 +110,6 @@ const handleToggle = (event: Event) => {
   background: var(--bs-primary, #0d6efd);
   border-color: var(--bs-primary, #0d6efd);
   animation: checkboxPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 0 0 3px var(--bs-primary-bg-subtle, rgba(13, 110, 253, 0.2)),
-              0 6px 12px rgba(13, 110, 253, 0.3);
 }
 
 .checkbox-input:checked + .checkbox-box .checkbox-icon {
@@ -139,12 +135,11 @@ const handleToggle = (event: Event) => {
 
 .custom-checkbox:has(.checkbox-input:disabled):hover .checkbox-box {
   border-color: var(--border-color, #adb5bd);
-  box-shadow: none;
 }
 
 /* Focus state for accessibility */
 .checkbox-input:focus-visible + .checkbox-box {
-  outline: 2px solid var(--bs-primary, #0d6efd);
+  outline: 2px solid var(--t-primary, #b00b69);
   outline-offset: 2px;
 }
 

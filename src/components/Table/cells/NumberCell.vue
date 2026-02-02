@@ -1,5 +1,5 @@
 <template>
-  <div class="cell-container" @dblclick.self="startEdit">
+  <div class="cell-container" :class="{ editing: isEditing }" @dblclick.self="startEdit">
     <span
       v-if="isEditing && editable"
       ref="editableRef"
@@ -109,11 +109,26 @@ const stopEdit = () => {
 .cell-container {
   min-height: 1.5rem;
   width: 100%;
+  padding: 0.25rem 0.375rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  transition: all 0.15s ease;
+  margin: -0.25rem -0.375rem;
+}
+
+.cell-container:hover:not(.editing) {
+  border-color: var(--t-border-color, #dee2e6);
+  background: var(--bg-light-subtle, #f8f9fa);
+  cursor: text;
+}
+
+.cell-container.editing {
+  border-color: var(--t-primary, #b00b69);
+  background: var(--t-input-bg, white);
 }
 
 .cell-value {
   display: inline-block;
-  padding: 0.125rem 0.25rem;
   min-height: 1.5rem;
   line-height: 1.5;
   white-space: nowrap;
@@ -122,11 +137,9 @@ const stopEdit = () => {
 .cell-editable {
   display: inline-block;
   width: 100%;
-  padding: 0.125rem 0.25rem;
-  border: 1px solid var(--bs-primary, #0d6efd);
-  border-radius: 0.25rem;
-  background: var(--bs-body-bg, white);
-  color: var(--bs-body-color, black);
+  border: none;
+  background: transparent;
+  color: var(--t-input-color, black);
   box-sizing: border-box;
   font-size: inherit;
   font-family: inherit;
@@ -134,12 +147,6 @@ const stopEdit = () => {
   outline: none;
   white-space: nowrap;
   min-height: 1.5rem;
-  box-shadow: 0 0 0 0.25rem var(--bs-primary-bg-subtle, rgba(13, 110, 253, 0.25));
-  transition: all 0.2s ease;
-}
-
-.cell-editable:focus {
-  border-color: var(--bs-primary, #0d6efd);
 }
 
 .cell-editable[data-disabled="true"] {
