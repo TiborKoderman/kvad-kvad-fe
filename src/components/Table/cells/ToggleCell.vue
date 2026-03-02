@@ -74,9 +74,9 @@ const handleToggle = (event: Event) => {
   position: relative;
   width: 1.25rem;
   height: 1.25rem;
-  border: 2px solid var(--bs-border-color, #adb5bd);
+  border: 2px solid var(--t-border-color);
   border-radius: 0.3rem;
-  background: var(--bs-body-bg, white);
+  background: var(--t-card-bg);
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   display: flex;
   align-items: center;
@@ -100,15 +100,15 @@ const handleToggle = (event: Event) => {
 
 /* Hover state */
 .custom-checkbox:hover .checkbox-box {
-  border-color: var(--bs-primary, #0d6efd);
+  border-color: var(--t-primary);
   border-width: 2px;
   transform: translateY(-2px);
 }
 
 /* Checked state */
 .checkbox-input:checked + .checkbox-box {
-  background: var(--bs-primary, #0d6efd);
-  border-color: var(--bs-primary, #0d6efd);
+  background: var(--t-primary);
+  border-color: var(--t-primary);
   animation: checkboxPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -134,12 +134,12 @@ const handleToggle = (event: Event) => {
 }
 
 .custom-checkbox:has(.checkbox-input:disabled):hover .checkbox-box {
-  border-color: var(--border-color, #adb5bd);
+  border-color: var(--t-border-color);
 }
 
 /* Focus state for accessibility */
 .checkbox-input:focus-visible + .checkbox-box {
-  outline: 2px solid var(--t-primary, #b00b69);
+  outline: 2px solid var(--t-primary);
   outline-offset: 2px;
 }
 

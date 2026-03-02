@@ -69,12 +69,12 @@ th {
   padding: 0.5rem 0.75rem;
   text-align: left;
   font-weight: 600;
-  background: var(--bs-body-bg, #ffffff);
-  color: var(--bs-emphasis-color, #212529);
+  background: var(--t-card-bg);
+  color: var(--t-body-color);
   user-select: none;
   font-size: 0.875rem;
-  border-right: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
-  border-bottom: 2px solid var(--bs-primary, #0d6efd);
+  border-right: 1px solid var(--t-border-color);
+  border-bottom: 2px solid var(--t-primary);
   position: relative;
   transition: all 0.2s ease;
 }
@@ -110,23 +110,23 @@ th:last-child {
 .sort-arrow {
   cursor: pointer;
   font-size: 0.75rem;
-  color: var(--bs-secondary, #6c757d);
+  color: var(--t-body-color);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
-  opacity: 0.6;
+  opacity: 0.4;
   line-height: 0.75;
 }
 
 .sort-arrow:hover {
-  color: var(--bs-primary, #0d6efd);
-  background: var(--bs-primary-bg-subtle, rgba(13, 110, 253, 0.1));
+  color: var(--t-primary);
+  background: var(--bg-light-subtle);
   opacity: 1;
   transform: scale(1.15);
 }
 
 .sort-arrow.active {
-  color: var(--bs-primary, #0d6efd);
-  background: var(--bs-primary-bg-subtle, rgba(13, 110, 253, 0.15));
+  color: var(--t-primary);
+  background: var(--bg-light);
   opacity: 1;
   transform: scale(1.1);
 }

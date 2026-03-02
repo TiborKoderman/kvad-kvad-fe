@@ -59,22 +59,22 @@ defineProps({
 }
 
 .btn-primary {
-  background: var(--primary-color, #007bff);
-  color: white;
+  background: var(--t-primary);
+  color: var(--txt-primary);
 }
 
 .btn-secondary {
-  background: var(--secondary-color, #6c757d);
-  color: white;
+  background: var(--t-secondary);
+  color: var(--txt-secondary);
 }
 
 .btn-danger {
-  background: var(--danger-color, #dc3545);
-  color: white;
+  background: var(--t-danger);
+  color: var(--txt-danger);
 }
 
 .btn-success {
-  background: var(--success-color, #28a745);
-  color: white;
+  background: var(--t-success);
+  color: var(--txt-success);
 }
 </style>

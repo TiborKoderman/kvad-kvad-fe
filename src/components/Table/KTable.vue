@@ -233,17 +233,17 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
   width: 100%;
   max-width: 400px;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--bs-border-color, #dee2e6);
+  border: 1px solid var(--t-border-color);
   border-radius: 0.375rem;
-  background: var(--bs-body-bg, white);
-  color: var(--bs-body-color, black);
+  background: var(--t-input-bg);
+  color: var(--t-input-color);
   font-size: 0.875rem;
   transition: all 0.2s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--bs-primary, #0d6efd);
+  border-color: var(--t-primary);
   border-width: 2px;
   padding: calc(0.5rem - 1px) calc(1rem - 1px);
 }
@@ -260,18 +260,19 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 }
 
 .table-scroll::-webkit-scrollbar-track {
-  background: var(--bs-tertiary-bg, #f8f9fa);
+  background: var(--bg-light-subtle);
   border-radius: 4px;
 }
 
 .table-scroll::-webkit-scrollbar-thumb {
-  background: var(--bs-secondary, #6c757d);
+  background: var(--t-border-color);
   border-radius: 4px;
   transition: background 0.2s ease;
 }
 
 .table-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--bs-emphasis-color, #495057);
+  background: var(--t-body-color);
+  opacity: 0.7;
 }
 
 .table {
@@ -287,29 +288,29 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 }
 
 .table.bordered {
-  border: 1px solid var(--t-border-color, #dee2e6);
+  border: 1px solid var(--t-border-color);
 }
 
 .table.bordered th,
 .table.bordered td {
-  border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--t-border-color);
 }
 
 .table td {
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
-  background: var(--bs-body-bg, #ffffff);
-  color: var(--bs-body-color, #212529);
+  background: var(--t-card-bg);
+  color: var(--t-body-color);
   transition: all 0.15s ease;
-  border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.05));
+  border-bottom: 1px solid var(--t-border-color);
 }
 
 .table.striped tbody tr:nth-child(odd) td {
-  background: var(--bs-tertiary-bg, #f8f9fa);
+  background: var(--bg-light-subtle);
 }
 
 .table.hoverable tbody tr:hover td {
-  background: var(--bs-primary-bg-subtle, rgba(13, 110, 253, 0.08));
+  background: var(--bg-light);
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -317,7 +318,8 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 .no-data {
   text-align: center;
   padding: 2rem;
-  color: var(--bs-secondary, #6c757d);
+  color: var(--t-body-color);
+  opacity: 0.6;
   font-style: italic;
   font-size: 0.875rem;
 }

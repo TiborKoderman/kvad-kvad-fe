@@ -83,7 +83,7 @@ const handleCellUpdate = (data: { column: string; value: any }) => {
 <style scoped>
 .loading-placeholder {
   height: 1.5rem;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, var(--bg-light-subtle) 25%, var(--bg-light) 50%, var(--bg-light-subtle) 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
   border-radius: 0.25rem;

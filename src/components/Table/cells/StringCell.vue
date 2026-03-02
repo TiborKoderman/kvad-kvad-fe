@@ -80,14 +80,14 @@ const stopEdit = () => {
 }
 
 .cell-container:hover:not(.editing) {
-  border-color: var(--t-border-color, #dee2e6);
-  background: var(--bg-light-subtle, #f8f9fa);
+  border-color: var(--t-border-color);
+  background: var(--bg-light-subtle);
   cursor: text;
 }
 
 .cell-container.editing {
-  border-color: var(--t-primary, #b00b69);
-  background: var(--t-input-bg, white);
+  border-color: var(--t-primary);
+  background: var(--t-input-bg);
 }
 
 .cell-value {
@@ -103,7 +103,7 @@ const stopEdit = () => {
   width: 100%;
   border: none;
   background: transparent;
-  color: var(--t-input-color, black);
+  color: var(--t-input-color);
   box-sizing: border-box;
   font-size: inherit;
   font-family: inherit;
