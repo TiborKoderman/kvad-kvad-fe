@@ -25,6 +25,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
     "@popperjs/core": "^2.11.8",
     "@types/jquery": "^3.5.33",
     "@typescript-eslint/utils": "^8.46.3",

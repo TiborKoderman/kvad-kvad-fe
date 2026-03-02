@@ -556,11 +556,12 @@ const sidebarStyle = computed(() => ({
 <style scoped>
 .sidebar {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--bg-light-subtle);
   white-space: nowrap;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease;
 }
 
 .sidebar-scroll-container {
@@ -604,12 +605,13 @@ const sidebarStyle = computed(() => ({
 /* Bottom Button Bar */
 .bottom-bar {
   display: flex;
-  border-top: 1px solid var(--bs-gray-300);
-  background-color: #fff;
+  border-top: 1px solid var(--t-border-color);
+  background-color: var(--t-card-bg);
   padding: 0.5rem;
   gap: 0.5rem;
   position: relative;
   z-index: 1;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .bottom-button {
@@ -620,7 +622,7 @@ const sidebarStyle = computed(() => ({
   padding: 0.75rem;
   border: none;
   background-color: transparent;
-  color: var(--bs-gray-600);
+  color: var(--t-body-color);
   cursor: pointer;
   border-radius: 0.375rem;
   transition: all 0.2s ease;
@@ -632,12 +634,12 @@ const sidebarStyle = computed(() => ({
 }
 
 .bottom-button:hover {
-  background-color: var(--bs-gray-200);
-  color: var(--bs-gray-800);
+  background-color: var(--bg-light-subtle);
+  color: var(--t-body-color);
 }
 
 .bottom-button.active {
-  background-color: var(--bs-primary);
+  background-color: var(--t-primary);
   color: white;
 }
 
@@ -647,8 +649,8 @@ const sidebarStyle = computed(() => ({
   bottom: 100%;
   left: 0;
   right: 0;
-  background-color: #fff;
-  border: 1px solid var(--bs-gray-300);
+  background-color: var(--t-card-bg);
+  border: 1px solid var(--t-border-color);
   border-bottom: none;
   border-radius: 0.375rem 0.375rem 0 0;
   box-shadow:
@@ -657,6 +659,7 @@ const sidebarStyle = computed(() => ({
   z-index: 10;
   max-height: 300px;
   overflow-y: auto;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .dropdown-menu-up .nav {
@@ -668,17 +671,17 @@ const sidebarStyle = computed(() => ({
   align-items: center;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
-  color: var(--bs-gray-700);
+  color: var(--t-body-color);
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .dropdown-menu-up .nav-link:hover {
-  background-color: var(--bs-gray-200);
+  background-color: var(--bg-light-subtle);
 }
 
 .dropdown-menu-up .nav-link.active {
-  background-color: var(--bs-primary);
+  background-color: var(--t-primary);
   color: white;
 }
 
@@ -710,18 +713,18 @@ const sidebarStyle = computed(() => ({
 }
 
 .nav-item.drag-over-top {
-  border-top: 3px solid var(--bs-primary);
+  border-top: 3px solid var(--t-primary);
   border-radius: 0.375rem 0.375rem 0 0;
 }
 
 .nav-item.drag-over-bottom {
-  border-bottom: 3px solid var(--bs-primary);
+  border-bottom: 3px solid var(--t-primary);
   border-radius: 0 0 0.375rem 0.375rem;
 }
 
 .nav-item.drag-over-inside {
-  background-color: var(--bs-primary-bg-subtle);
-  border: 2px dashed var(--bs-primary);
+  background-color: var(--bg-light);
+  border: 2px dashed var(--t-primary);
   border-radius: 0.375rem;
 }
 
@@ -736,10 +739,11 @@ const sidebarStyle = computed(() => ({
 
 /* Child items styling */
 .children-list {
-  background-color: rgba(0, 0, 0, 0.02);
-  border-left: 3px solid var(--bs-gray-300);
+  background-color: var(--bg-light);
+  border-left: 3px solid var(--t-border-color);
   margin-left: 1rem;
   padding-left: 0.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar-item-child .nav-link {
@@ -765,22 +769,23 @@ const sidebarStyle = computed(() => ({
 }
 
 .add-child-btn:hover {
-  color: var(--bs-primary);
+  color: var(--t-primary);
 }
 
 /* Inline children preview */
 .children-preview {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-left: 3px solid var(--bs-primary);
+  background-color: var(--bg-light);
+  border-left: 3px solid var(--t-primary);
   margin-left: 1rem;
   padding: 0.5rem 0.75rem;
   margin-top: 0.25rem;
+  transition: background-color 0.3s ease;
 }
 
 .preview-item {
   padding: 0.25rem 0;
   font-size: 0.875rem;
-  color: var(--bs-gray-700);
+  color: var(--t-body-color);
   display: flex;
   align-items: center;
 }
