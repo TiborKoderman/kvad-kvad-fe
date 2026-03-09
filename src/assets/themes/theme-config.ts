@@ -111,7 +111,7 @@ export const createThemeCssVars = (theme: ThemeMode) => {
   const chromeBg = isDark ? shade(base.neutral, 0.06) : tint(base.neutral, 0.02)
 
   const borderColor = mix(base.neutral, base.text, isDark ? 0.28 : 0.2)
-  const tableBorderColor = mix(base.neutral, base.text, isDark ? 0.14 : 0.2)
+  const tableBorderColor = mix(base.neutral, base.text, isDark ? 0.1 : 0.32)
   const cardBg = isDark ? tint(base.neutral, 0.05) : tint(base.neutral, 0.12)
   const cardBorderColor = mix(cardBg, borderColor, 0.5)
   const inputBg = isDark ? tint(base.neutral, 0.03) : cardBg

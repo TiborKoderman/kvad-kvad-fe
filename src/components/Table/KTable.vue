@@ -8,7 +8,7 @@
         class="search-input"
       />
     </div>
-    <div class="table-scroll" :style="maxHeight ? { maxHeight, overflow: 'auto' } : {}">
+    <div class="table-scroll" :style="maxHeight ? { '--table-body-max-height': maxHeight } : {}">
       <table
         class="table"
         :class="{
@@ -234,7 +234,7 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
   max-width: 400px;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--t-border-color);
-  border-radius: 0.375rem;
+  border-radius: 0;
   background: var(--t-input-bg);
   color: var(--t-input-color);
   font-size: 0.875rem;
@@ -250,8 +250,8 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 
 .table-scroll {
   position: relative;
-  border-radius: 0.375rem;
-  overflow: auto;
+  border-radius: 0;
+  overflow: hidden;
 }
 
 .table-scroll::-webkit-scrollbar {
@@ -278,8 +278,26 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 .table {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 0.375rem;
+  border-radius: 0;
   overflow: hidden;
+}
+
+:deep(.table thead),
+:deep(.table tbody) {
+  display: block;
+}
+
+:deep(.table thead tr),
+:deep(.table tbody tr) {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+:deep(.table tbody) {
+  max-height: var(--table-body-max-height, none);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 :deep(.table thead th) {

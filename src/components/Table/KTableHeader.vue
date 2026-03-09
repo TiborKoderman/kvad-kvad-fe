@@ -74,7 +74,7 @@ th {
   user-select: none;
   font-size: 0.875rem;
   border-right: 1px solid var(--t-table-border-color);
-  border-bottom: 2px solid var(--t-primary);
+  border-bottom: 1px solid var(--t-table-border-color);
   position: relative;
   transition: all 0.2s ease;
 }

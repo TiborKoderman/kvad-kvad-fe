@@ -69,12 +69,15 @@
   border-color: var(--bg-light);
 
   &:hover:not(:disabled) {
-    filter: brightness(0.95);
+    background-color: var(--bg-light-subtle);
+    border-color: var(--bg-light-subtle);
   }
 
   &:active:not(:disabled),
   &.active {
-    filter: brightness(0.9);
+    background-color: var(--bg-light-subtle);
+    border-color: var(--bg-light-subtle);
+    filter: brightness(0.98);
   }
 }
 
