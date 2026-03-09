@@ -7,10 +7,13 @@
     :aria-label="`Switch to ${themeStore.currentTheme === 'light' ? 'dark' : 'light'} theme`"
     :title="`Switch to ${themeStore.currentTheme === 'light' ? 'dark' : 'light'} theme`"
   >
-    <MdiIcon
-      :d="getIconPath()"
-      :style="{ width: '1.5rem', height: '1.5rem' }"
-    />
+    <div
+      class="icon-stack"
+      :class="{ 'is-light': displayedTheme === 'light', 'is-hovered': isHovered }"
+    >
+      <MdiIcon class="icon icon-sun" :d="mdiWeatherSunny" />
+      <MdiIcon class="icon icon-moon" :d="mdiWeatherNight" />
+    </div>
   </div>
 </template>
 
@@ -31,15 +34,6 @@ watch(() => themeStore.currentTheme, (newTheme) => {
   }, 300)
 })
 
-const getIconPath = () => {
-  const isLight = displayedTheme.value === 'light'
-
-  if (isHovered.value) {
-    return isLight ? mdiWeatherNight : mdiWeatherSunny
-  }
-
-  return isLight ? mdiWeatherSunny : mdiWeatherNight
-}
 </script>
 
 <style scoped>
@@ -52,9 +46,26 @@ const getIconPath = () => {
   padding: 0.5rem;
 }
 
-.theme-toggle :deep(svg) {
+.icon-stack {
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  overflow: hidden;
+}
+
+.icon {
+  position: absolute;
+  inset: 0;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    color 0.3s ease;
+}
+
+.icon :deep(svg) {
+  width: 1.5rem;
+  height: 1.5rem;
   color: currentColor;
-  transition: color 0.3s ease;
 }
 
 .theme-toggle:hover {
@@ -63,5 +74,45 @@ const getIconPath = () => {
 
 .theme-toggle:hover :deep(svg) {
   color: var(--t-primary) !important;
+}
+
+.icon-stack.is-light .icon-sun {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.icon-stack.is-light .icon-moon {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.icon-stack:not(.is-light) .icon-sun {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.icon-stack:not(.is-light) .icon-moon {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.icon-stack.is-hovered.is-light .icon-sun {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.icon-stack.is-hovered.is-light .icon-moon {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.icon-stack.is-hovered:not(.is-light) .icon-moon {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.icon-stack.is-hovered:not(.is-light) .icon-sun {
+  transform: translateY(0);
+  opacity: 1;
 }
 </style>

@@ -1,22 +1,20 @@
 <template>
-  <Teleport to="body">
-    <Transition name="tooltip-fade">
-      <div
-        v-if="visible"
-        ref="tooltipRef"
-        class="tooltip-container"
-        :class="[`tooltip-${position}`, { 'tooltip-html': allowHtml }]"
-        :style="tooltipStyle"
-        role="tooltip"
-      >
-        <div class="tooltip-arrow" :class="`arrow-${position}`"></div>
-        <div class="tooltip-content">
-          <div v-if="allowHtml" v-html="content"></div>
-          <template v-else>{{ content }}</template>
-        </div>
+  <Transition name="tooltip-fade">
+    <div
+      v-if="visible"
+      ref="tooltipRef"
+      class="tooltip-container"
+      :class="[`tooltip-${position}`, { 'tooltip-html': allowHtml }]"
+      :style="tooltipStyle"
+      role="tooltip"
+    >
+      <div class="tooltip-arrow" :class="`arrow-${position}`"></div>
+      <div class="tooltip-content">
+        <div v-if="allowHtml" v-html="content"></div>
+        <template v-else>{{ content }}</template>
       </div>
-    </Transition>
-  </Teleport>
+    </div>
+  </Transition>
 </template>
 
 <script setup lang="ts">
@@ -100,8 +98,8 @@ watch(() => props.visible, () => {
   position: fixed;
   max-width: 300px;
   padding: 0.5rem 0.75rem;
-  background: var(--t-dark, #370748);
-  color: var(--txt-dark, #ffffff);
+  background: var(--t-tooltip-bg, #370748);
+  color: var(--t-tooltip-color, #ffffff);
   border-radius: 0.375rem;
   font-size: 0.875rem;
   line-height: 1.4;
@@ -155,7 +153,7 @@ watch(() => props.visible, () => {
   left: 50%;
   transform: translateX(-50%);
   border-width: 6px 6px 0 6px;
-  border-color: var(--t-dark, #370748) transparent transparent transparent;
+  border-color: var(--t-tooltip-bg, #370748) transparent transparent transparent;
 }
 
 .arrow-bottom {
@@ -163,7 +161,7 @@ watch(() => props.visible, () => {
   left: 50%;
   transform: translateX(-50%);
   border-width: 0 6px 6px 6px;
-  border-color: transparent transparent var(--t-dark, #370748) transparent;
+  border-color: transparent transparent var(--t-tooltip-bg, #370748) transparent;
 }
 
 .arrow-left {
@@ -171,7 +169,7 @@ watch(() => props.visible, () => {
   top: 50%;
   transform: translateY(-50%);
   border-width: 6px 0 6px 6px;
-  border-color: transparent transparent transparent var(--t-dark, #370748);
+  border-color: transparent transparent transparent var(--t-tooltip-bg, #370748);
 }
 
 .arrow-right {
@@ -179,7 +177,7 @@ watch(() => props.visible, () => {
   top: 50%;
   transform: translateY(-50%);
   border-width: 6px 6px 6px 0;
-  border-color: transparent var(--t-dark, #370748) transparent transparent;
+  border-color: transparent var(--t-tooltip-bg, #370748) transparent transparent;
 }
 
 .tooltip-fade-enter-active,

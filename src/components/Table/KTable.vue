@@ -291,25 +291,28 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
   border: 1px solid var(--t-border-color);
 }
 
-.table.bordered th,
-.table.bordered td {
+:deep(.table.bordered th),
+:deep(.table.bordered td) {
   border: 1px solid var(--t-border-color);
 }
 
-.table td {
+:deep(.table > tbody > tr > *) {
+  background: var(--t-table-body-bg);
+  color: var(--t-body-color);
+}
+
+:deep(.table td) {
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
-  background: var(--t-card-bg);
-  color: var(--t-body-color);
   transition: all 0.15s ease;
   border-bottom: 1px solid var(--t-border-color);
 }
 
-.table.striped tbody tr:nth-child(odd) td {
-  background: var(--bg-light-subtle);
+:deep(.table.striped tbody tr:nth-child(odd) > *) {
+  background: var(--t-table-body-striped-bg);
 }
 
-.table.hoverable tbody tr:hover td {
+:deep(.table.hoverable tbody tr:hover td) {
   background: var(--bg-light);
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);

@@ -44,6 +44,14 @@
   --t-input-border-color: #ced4da;
   --t-input-color: var(--t-dark);
 
+  // Table defaults
+  --t-table-body-bg: var(--t-card-bg);
+  --t-table-body-striped-bg: var(--bg-light-subtle);
+
+  // Tooltip defaults
+  --t-tooltip-bg: var(--t-dark);
+  --t-tooltip-color: var(--txt-dark);
+
   // Links
   --t-link-color: var(--t-dark);
   --t-link-hover-color: #290536;
