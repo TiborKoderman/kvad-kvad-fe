@@ -1,9 +1,5 @@
 <template>
-  <td :class="[
-        bordered ? 'border' : '',
-        hoverable ? 'table-hover' : '',
-        striped ? 'table-striped' : ''
-    ]">
+  <td>
     <component
       :is="cellComponent"
       :modelValue="cellValue"
@@ -45,30 +41,9 @@ interface Column {
 }
 
 const props = defineProps({
-  column: {
-    type: Object as PropType<Column>,
-    required: true
-  },
-  rowData: {
-    type: Object,
-    required: true
-  },
-  striped: {
-    type: Boolean,
-    default: false
-  },
-  bordered: {
-    type: Boolean,
-    default: false
-  },
-  hoverable: {
-    type: Boolean,
-    default: false
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  }
+  column: { type: Object as PropType<Column>, required: true },
+  rowData: { type: Object, required: true },
+  disabled: { type: Boolean, default: false },
 })
 
 const emit = defineEmits<{

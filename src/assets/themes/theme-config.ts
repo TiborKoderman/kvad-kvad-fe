@@ -111,16 +111,17 @@ export const createThemeCssVars = (theme: ThemeMode) => {
   const chromeBg = isDark ? shade(base.neutral, 0.06) : tint(base.neutral, 0.02)
 
   const borderColor = mix(base.neutral, base.text, isDark ? 0.28 : 0.2)
-  const tableBorderColor = mix(base.neutral, base.text, isDark ? 0.1 : 0.32)
+  const tableBorderColor = mix(base.neutral, base.text, isDark ? 0.1 : 0.16)
   const cardBg = isDark ? tint(base.neutral, 0.05) : tint(base.neutral, 0.12)
   const cardBorderColor = mix(cardBg, borderColor, 0.5)
   const inputBg = isDark ? tint(base.neutral, 0.03) : cardBg
   const inputBorderColor = mix(inputBg, borderColor, 0.6)
 
-  const tableBodyBg = isDark ? tint(surfaceBg, 0.03) : surfaceBg
-  const tableBodyStripedBg = isDark ? tint(surfaceBg, 0.08) : tint(surfaceBg, 0.03)
-  const tableHoverBg = isDark ? tint(surfaceBg, 0.12) : tint(surfaceBg, 0.08)
-  const tableHoverStripedBg = isDark ? tint(surfaceBg, 0.16) : tint(surfaceBg, 0.12)
+  const tableBodyBg = isDark ? tint(surfaceBg, 0.03) : tint(base.neutral, 0.5)
+  const tableHeaderBg = isDark ? shade(base.neutral, 0.08) : shade(base.neutral, 0.06)
+  const tableBodyStripedBg = isDark ? tint(surfaceBg, 0.08) : shade(tableBodyBg, 0.05)
+  const tableHoverBg = isDark ? tint(surfaceBg, 0.12) : shade(tableBodyBg, 0.1)
+  const tableHoverStripedBg = isDark ? tint(surfaceBg, 0.16) : shade(tableBodyStripedBg, 0.1)
 
   const tooltipBg = isDark ? shade(base.neutral, 0.08) : shade(base.text, 0.12)
   const tooltipColor = pickTextColor(tooltipBg, textDark, textLight)
@@ -176,6 +177,7 @@ export const createThemeCssVars = (theme: ThemeMode) => {
     '--t-input-color': base.text,
 
     '--t-table-body-bg': tableBodyBg,
+    '--t-table-header-bg': tableHeaderBg,
     '--t-table-body-striped-bg': tableBodyStripedBg,
     '--t-table-hover-bg': tableHoverBg,
     '--t-table-hover-striped-bg': tableHoverStripedBg,

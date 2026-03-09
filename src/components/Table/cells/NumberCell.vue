@@ -107,13 +107,10 @@ const stopEdit = () => {
 
 <style scoped>
 .cell-container {
-  min-height: 1.5rem;
+  min-height: 1.25rem;
   width: 100%;
-  padding: 0.25rem 0.375rem;
   border: 1px solid transparent;
-  border-radius: 0.25rem;
-  transition: all 0.15s ease;
-  margin: -0.25rem -0.375rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .cell-container:hover:not(.editing) {
@@ -122,10 +119,7 @@ const stopEdit = () => {
   cursor: text;
 }
 
-.cell-container.editing {
-  border-color: var(--t-primary);
-  background: var(--t-input-bg);
-}
+/* editing state is handled by td:focus-within in KTable.vue */
 
 .cell-value {
   display: inline-block;
