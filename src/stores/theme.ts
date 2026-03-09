@@ -1,21 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
+import { applyThemeCssVars, getPreferredTheme } from '@/assets/themes/theme-config'
 import type { ThemeMode } from '@/assets/themes/theme-config'
 
 export const useThemeStore = defineStore('theme', () => {
-  const currentTheme = ref<ThemeMode>('light')
-
-  // Load theme from localStorage on init
-  const savedTheme = localStorage.getItem('theme') as ThemeMode | null
-  if (savedTheme) {
-    currentTheme.value = savedTheme
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    currentTheme.value = 'dark'
-  }
+  const currentTheme = ref<ThemeMode>(getPreferredTheme())
 
   // Apply theme to document
   const applyTheme = (theme: ThemeMode) => {
     document.documentElement.setAttribute('data-theme', theme)
+    applyThemeCssVars(theme)
   }
 
   // Initialize theme

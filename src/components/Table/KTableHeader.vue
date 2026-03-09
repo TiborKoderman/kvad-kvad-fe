@@ -73,7 +73,7 @@ th {
   color: var(--t-body-color);
   user-select: none;
   font-size: 0.875rem;
-  border-right: 1px solid var(--t-border-color);
+  border-right: 1px solid var(--t-table-border-color);
   border-bottom: 2px solid var(--t-primary);
   position: relative;
   transition: all 0.2s ease;

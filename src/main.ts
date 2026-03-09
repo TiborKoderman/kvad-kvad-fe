@@ -18,6 +18,11 @@ import {ws} from './ws'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './assets/scss/app.scss'
 import Swal from 'sweetalert2'
+import { applyThemeCssVars, getPreferredTheme } from './assets/themes/theme-config'
+
+const initialTheme = getPreferredTheme()
+document.documentElement.setAttribute('data-theme', initialTheme)
+applyThemeCssVars(initialTheme)
 
 
 const app = createApp(App)

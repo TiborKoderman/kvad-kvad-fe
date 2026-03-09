@@ -88,7 +88,7 @@ const handleToggle = (event: Event) => {
   height: 1rem;
   fill: white;
   opacity: 0;
-  transform: scale(0) rotate(-180deg);
+  transform: scale(0);
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -101,21 +101,20 @@ const handleToggle = (event: Event) => {
 /* Hover state */
 .custom-checkbox:hover .checkbox-box {
   border-color: var(--t-primary);
-  border-width: 2px;
-  transform: translateY(-2px);
+  background: var(--bg-light-subtle);
 }
 
 /* Checked state */
 .checkbox-input:checked + .checkbox-box {
   background: var(--t-primary);
   border-color: var(--t-primary);
-  animation: checkboxPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  animation: checkboxPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .checkbox-input:checked + .checkbox-box .checkbox-icon {
   opacity: 1;
-  transform: scale(1.1) rotate(0deg);
-  animation: checkmarkDraw 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  transform: scale(1);
+  animation: checkmarkDraw 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .checkbox-input:checked + .checkbox-box .checkbox-check {
@@ -145,34 +144,34 @@ const handleToggle = (event: Event) => {
 
 @keyframes checkboxPop {
   0% {
-    transform: scale(1) rotate(0deg);
+    transform: scale(1);
   }
   30% {
-    transform: scale(1.2) rotate(-5deg);
+    transform: scale(1.15);
   }
   60% {
-    transform: scale(0.9) rotate(5deg);
+    transform: scale(0.96);
   }
   80% {
-    transform: scale(1.05) rotate(-2deg);
+    transform: scale(1.03);
   }
   100% {
-    transform: scale(1) rotate(0deg);
+    transform: scale(1);
   }
 }
 
 @keyframes checkmarkDraw {
   0% {
     opacity: 0;
-    transform: scale(0) rotate(-180deg);
+    transform: scale(0);
   }
   50% {
     opacity: 0.8;
-    transform: scale(1.3) rotate(-90deg);
+    transform: scale(1.15);
   }
   100% {
     opacity: 1;
-    transform: scale(1.1) rotate(0deg);
+    transform: scale(1);
   }
 }
 

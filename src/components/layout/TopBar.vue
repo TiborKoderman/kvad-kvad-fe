@@ -40,8 +40,8 @@ const menu = useMenuStore()
   padding: 0 1rem;
   display: flex;
   align-items: center;
-  background-color: var(--t-card-bg);
-  border-color: var(--t-border-color);
+  background-color: var(--t-chrome-bg);
+  border-color: var(--t-chrome-border-color);
   color: var(--t-body-color);
   transition: background-color 0.3s ease, color 0.3s ease;
 }

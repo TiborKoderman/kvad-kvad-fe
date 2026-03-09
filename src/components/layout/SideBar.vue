@@ -556,7 +556,7 @@ const sidebarStyle = computed(() => ({
 <style scoped>
 .sidebar {
   min-height: 100vh;
-  background-color: var(--bg-light-subtle);
+  background-color: var(--t-chrome-bg);
   white-space: nowrap;
   overflow: hidden;
   display: flex;
@@ -605,8 +605,8 @@ const sidebarStyle = computed(() => ({
 /* Bottom Button Bar */
 .bottom-bar {
   display: flex;
-  border-top: 1px solid var(--t-border-color);
-  background-color: var(--t-card-bg);
+  border-top: 1px solid var(--t-chrome-border-color);
+  background-color: var(--t-chrome-bg);
   padding: 0.5rem;
   gap: 0.5rem;
   position: relative;
@@ -649,8 +649,8 @@ const sidebarStyle = computed(() => ({
   bottom: 100%;
   left: 0;
   right: 0;
-  background-color: var(--t-card-bg);
-  border: 1px solid var(--t-border-color);
+  background-color: var(--t-chrome-bg);
+  border: 1px solid var(--t-chrome-border-color);
   border-bottom: none;
   border-radius: 0.375rem 0.375rem 0 0;
   box-shadow:
@@ -740,7 +740,7 @@ const sidebarStyle = computed(() => ({
 /* Child items styling */
 .children-list {
   background-color: var(--bg-light);
-  border-left: 3px solid var(--t-border-color);
+  border-left: 3px solid var(--t-chrome-border-color);
   margin-left: 1rem;
   padding-left: 0.5rem;
   transition: background-color 0.3s ease, border-color 0.3s ease;

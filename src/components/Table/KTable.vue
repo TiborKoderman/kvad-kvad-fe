@@ -251,7 +251,7 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 .table-scroll {
   position: relative;
   border-radius: 0.375rem;
-  overflow-x: auto;
+  overflow: auto;
 }
 
 .table-scroll::-webkit-scrollbar {
@@ -277,10 +277,15 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 
 .table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   border-radius: 0.375rem;
   overflow: hidden;
+}
+
+:deep(.table thead th) {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .table.resizable {
@@ -288,12 +293,15 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 }
 
 .table.bordered {
-  border: 1px solid var(--t-border-color);
+  border: none;
 }
 
-:deep(.table.bordered th),
+:deep(.table.bordered th) {
+  border: 1px solid var(--t-table-border-color);
+}
+
 :deep(.table.bordered td) {
-  border: 1px solid var(--t-border-color);
+  border: 1px solid var(--t-table-border-color);
 }
 
 :deep(.table > tbody > tr > *) {
@@ -305,7 +313,7 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   transition: all 0.15s ease;
-  border-bottom: 1px solid var(--t-border-color);
+  border-bottom: 1px solid var(--t-table-border-color);
 }
 
 :deep(.table.striped tbody tr:nth-child(odd) > *) {
@@ -313,9 +321,11 @@ const handleRowUpdate = (rowIndex: number, updateData: { column: string; value: 
 }
 
 :deep(.table.hoverable tbody tr:hover td) {
-  background: var(--bg-light);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: var(--t-table-hover-bg);
+}
+
+:deep(.table.hoverable.striped tbody tr:nth-child(odd):hover > *) {
+  background: var(--t-table-hover-striped-bg);
 }
 
 .no-data {
