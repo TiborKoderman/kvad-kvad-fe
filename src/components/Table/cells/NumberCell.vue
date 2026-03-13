@@ -1,25 +1,19 @@
 <template>
-  <div class="cell-container" :class="{ editing: isEditing }" @dblclick.self="startEdit">
-    <span
-      v-if="isEditing && editable"
-      ref="editableRef"
-      contenteditable="true"
-      inputmode="numeric"
-      :data-disabled="disabled"
-      @input="handleInput"
-      @blur="stopEdit"
-      @keydown.enter.prevent="stopEdit"
-      @keydown.esc="stopEdit"
-      @keydown="handleKeydown"
-      @dblclick.stop
-      class="cell-editable"
-    >{{ modelValue }}</span>
-    <span v-else class="cell-value" @dblclick="startEdit">{{ formatNumber(modelValue) }}</span>
-  </div>
+  <div
+    ref="editableRef"
+    class="cell-container"
+    :class="{ 'is-editable': editable && !disabled }"
+    :contenteditable="editable && !disabled"
+    inputmode="decimal"
+    @input="handleInput"
+    @keydown="handleKeydown"
+    @keydown.enter.prevent="handleEnter"
+    @blur="handleBlur"
+  ></div>
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -44,30 +38,32 @@ const emit = defineEmits<{
   (e: 'update:value', value: number): void
 }>()
 
-const isEditing = ref(false)
-const editableRef = ref<HTMLSpanElement | null>(null)
+const editableRef = ref<HTMLDivElement | null>(null)
 
 const formatNumber = (value: number) => {
   if (value === null || value === undefined) return '\u00A0'
-  // precision=null/undefined → render as-is; explicit precision → toFixed
   if (props.precision === null || props.precision === undefined) return String(value)
   return value.toFixed(props.precision)
 }
 
+const syncFromModel = () => {
+  const element = editableRef.value
+  if (!element) return
+  if (document.activeElement === element) return
+  const text = formatNumber(props.modelValue)
+  if (element.textContent !== text) {
+    element.textContent = text
+  }
+}
+
 const handleKeydown = (event: KeyboardEvent) => {
-  // Allow: backspace, delete, tab, escape, enter, decimal point, minus
-  const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', '.', '-', 'ArrowLeft', 'ArrowRight', 'Home', 'End']
+  if (!props.editable || props.disabled) return
 
-  if (allowedKeys.includes(event.key)) {
-    return
-  }
+  const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', '.', ',', '-', 'ArrowLeft', 'ArrowRight', 'Home', 'End']
+  if (allowedKeys.includes(event.key)) return
 
-  // Allow: Ctrl/Cmd+A, Ctrl/Cmd+C, Ctrl/Cmd+V, Ctrl/Cmd+X
-  if ((event.ctrlKey || event.metaKey) && ['a', 'c', 'v', 'x'].includes(event.key.toLowerCase())) {
-    return
-  }
+  if ((event.ctrlKey || event.metaKey) && ['a', 'c', 'v', 'x'].includes(event.key.toLowerCase())) return
 
-  // Ensure that it is a number
   if (!/^[0-9]$/.test(event.key)) {
     event.preventDefault()
   }
@@ -75,78 +71,53 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 const handleInput = (event: Event) => {
   const target = event.target as HTMLElement
-  const text = target.textContent || ''
-  const numValue = parseFloat(text)
+  const text = (target.textContent || '').replace(/\u00A0/g, '').replace(',', '.')
+  if (text === '' || text === '-') return
 
-  if (!isNaN(numValue)) {
+  const numValue = Number(text)
+  if (!Number.isNaN(numValue)) {
     emit('update:value', numValue)
-  } else if (text === '' || text === '-') {
+  }
+}
+
+const handleBlur = (event: FocusEvent) => {
+  const target = event.target as HTMLElement
+  const text = (target.textContent || '').replace(/\u00A0/g, '').replace(',', '.')
+
+  if (text === '' || text === '-') {
     emit('update:value', 0)
+    return
+  }
+
+  const numValue = Number(text)
+  if (Number.isNaN(numValue)) {
+    syncFromModel()
   }
 }
 
-const startEdit = () => {
-  if (props.editable && !props.disabled) {
-    isEditing.value = true
-    nextTick(() => {
-      if (editableRef.value) {
-        editableRef.value.focus()
-        // Select all text
-        const range = document.createRange()
-        range.selectNodeContents(editableRef.value)
-        const selection = window.getSelection()
-        selection?.removeAllRanges()
-        selection?.addRange(range)
-      }
-    })
-  }
+const handleEnter = (event: KeyboardEvent) => {
+  ;(event.target as HTMLElement)?.blur()
 }
 
-const stopEdit = () => {
-  isEditing.value = false
-}
+watch(() => props.modelValue, syncFromModel)
+
+onMounted(() => {
+  syncFromModel()
+})
 </script>
 
 <style scoped>
 .cell-container {
-  min-height: 1.25rem;
   width: 100%;
-  border: 1px solid transparent;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-
-.cell-container:hover:not(.editing) {
-  border-color: var(--t-border-color);
-  background: var(--bg-light-subtle);
-  cursor: text;
-}
-
-/* editing state is handled by td:focus-within in KTable.vue */
-
-.cell-value {
-  display: inline-block;
   min-height: 1.5rem;
   line-height: 1.5;
   white-space: nowrap;
-}
-
-.cell-editable {
-  display: inline-block;
-  width: 100%;
-  border: none;
-  background: transparent;
-  color: var(--t-input-color);
-  box-sizing: border-box;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: 1.5;
   outline: none;
-  white-space: nowrap;
-  min-height: 1.5rem;
+  background: transparent;
+  color: inherit;
 }
 
-.cell-editable[data-disabled="true"] {
-  opacity: 0.5;
-  cursor: not-allowed;
+.cell-container.is-editable {
+  cursor: text;
 }
 </style>

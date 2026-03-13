@@ -44,40 +44,54 @@ defineProps({
 <style scoped>
 .action-cell {
   display: flex;
-  gap: 0.5rem;
-  justify-content: center;
+  gap: 0.25rem;
+  justify-content: flex-end;
+  align-items: center;
+  white-space: nowrap;
 }
 
-.btn {
-  padding: 0.125rem 0.5rem;
-  border: none;
-  border-radius: 0.25rem;
+.action-btn {
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 0.45rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--t-body-color);
   cursor: pointer;
-  font-size: 0.813rem;
+  font-size: 0.8125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.btn:disabled {
-  opacity: 0.5;
+.action-btn i {
+  font-size: 0.875rem;
+}
+
+.action-btn--primary {
+  color: var(--t-primary);
+}
+
+.action-btn--secondary {
+  color: var(--t-body-color);
+}
+
+.action-btn--danger {
+  color: var(--t-danger);
+}
+
+.action-btn--success {
+  color: var(--t-success);
+}
+
+.action-btn:hover:not(:disabled) {
+  background: var(--t-table-hover-bg);
+  border-color: currentColor;
+}
+
+.action-btn:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
-}
-
-.btn-primary {
-  background: var(--t-primary);
-  color: var(--txt-primary);
-}
-
-.btn-secondary {
-  background: var(--t-secondary);
-  color: var(--txt-secondary);
-}
-
-.btn-danger {
-  background: var(--t-danger);
-  color: var(--txt-danger);
-}
-
-.btn-success {
-  background: var(--t-success);
-  color: var(--txt-success);
 }
 </style>

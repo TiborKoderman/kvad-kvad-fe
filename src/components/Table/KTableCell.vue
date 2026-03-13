@@ -1,5 +1,5 @@
 <template>
-  <td>
+  <td :data-col-type="column.type || 'string'" :data-reveal-on-hover="column.revealOnRowHover ? 'true' : 'false'">
     <component
       :is="cellComponent"
       :modelValue="cellValue"
@@ -32,7 +32,8 @@ interface Column {
   data: string
   type?: 'string' | 'number' | 'boolean' | 'action' | 'time' | 'guid'
   editable?: boolean
-  actions?: any[]
+  actions?: unknown[]
+  revealOnRowHover?: boolean
   precision?: number
   format?: string
   showElapsed?: boolean
@@ -48,7 +49,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-  (e: 'update:cell', data: { column: string; value: any }): void
+  (e: 'update:cell', data: { column: string; value: unknown }): void
 }>()
 
 const cellComponent = computed(() => {
@@ -69,7 +70,7 @@ const cellValue = computed(() => {
   return props.rowData[props.column.data]
 })
 
-const handleUpdate = (value: any) => {
+const handleUpdate = (value: unknown) => {
   emit('update:cell', { column: props.column.data, value })
 }
 </script>

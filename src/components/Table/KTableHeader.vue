@@ -1,5 +1,5 @@
 <template>
-  <th :class="{ sortable: column.type !== 'action' && sortable, resizable: resizable }">
+  <th :class="{ sortable: column.type !== 'action' && sortable, resizable: resizable }" :data-col-type="column.type || 'string'">
     <div class="th-content">
       <span class="th-title">{{ column.title }}</span>
       <div v-if="column.type !== 'action' && sortable" class="sort-controls">
@@ -15,7 +15,11 @@
         ></i>
       </div>
     </div>
-    <div v-if="resizable" class="resize-handle"></div>
+    <div
+      v-if="resizable"
+      class="resize-handle"
+      @mousedown.prevent.stop="$emit('resize-start', { index, event: $event })"
+    ></div>
   </th>
 </template>
 
@@ -25,7 +29,7 @@ import { PropType } from 'vue'
 interface Column {
   title: string
   data: string
-  type?: 'string' | 'number' | 'boolean' | 'action' | 'time'
+  type?: 'string' | 'number' | 'boolean' | 'action' | 'time' | 'guid'
   editable?: boolean
   actions?: any[]
   precision?: number
@@ -52,11 +56,16 @@ const props = defineProps({
   resizable: {
     type: Boolean,
     default: false
+  },
+  index: {
+    type: Number,
+    required: true
   }
 })
 
 defineEmits<{
   (e: 'sort', data: { column: Column; direction: 'asc' | 'desc' }): void
+  (e: 'resize-start', data: { index: number; event: MouseEvent }): void
 }>()
 
 const isActiveSort = (direction: 'asc' | 'desc') => {
@@ -136,7 +145,7 @@ th.resizable {
   position: absolute;
   top: 0;
   right: 0;
-  width: 4px;
+  width: 6px;
   height: 100%;
   cursor: col-resize;
   background: transparent;

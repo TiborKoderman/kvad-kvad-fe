@@ -1,27 +1,20 @@
 <template>
-  <div class="cell-container" :class="{ editing: isEditing }" @dblclick.self="startEdit">
-    <span
-      v-if="isEditing && editable"
-      ref="editableRef"
-      contenteditable="true"
-      :data-disabled="disabled"
-      @input="handleInput"
-      @blur="stopEdit"
-      @keydown.enter.prevent="stopEdit"
-      @keydown.esc="stopEdit"
-      @dblclick.stop
-      class="cell-editable"
-    >{{ modelValue }}</span>
-    <span v-else class="cell-value" @dblclick="startEdit">{{ modelValue || '\u00A0' }}</span>
-  </div>
+  <div
+    ref="editableRef"
+    class="cell-container"
+    :class="{ 'is-editable': editable && !disabled }"
+    :contenteditable="editable && !disabled"
+    @input="handleInput"
+    @keydown.enter.prevent="handleEnter"
+  ></div>
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {
-    type: String,
+    type: [String, Number],
     default: ''
   },
   disabled: {
@@ -38,78 +31,53 @@ const emit = defineEmits<{
   (e: 'update:value', value: string): void
 }>()
 
-const isEditing = ref(false)
-const editableRef = ref<HTMLSpanElement | null>(null)
+const editableRef = ref<HTMLDivElement | null>(null)
 
-const handleInput = (event: Event) => {
-  const target = event.target as HTMLElement
-  emit('update:value', target.textContent || '')
+const displayValue = (value: string | number) => {
+  const text = String(value ?? '')
+  return text.length ? text : '\u00A0'
 }
 
-const startEdit = () => {
-  if (props.editable && !props.disabled) {
-    isEditing.value = true
-    nextTick(() => {
-      if (editableRef.value) {
-        editableRef.value.focus()
-        // Select all text
-        const range = document.createRange()
-        range.selectNodeContents(editableRef.value)
-        const selection = window.getSelection()
-        selection?.removeAllRanges()
-        selection?.addRange(range)
-      }
-    })
+const syncFromModel = () => {
+  const element = editableRef.value
+  if (!element) return
+  if (document.activeElement === element) return
+  const text = displayValue(props.modelValue)
+  if (element.textContent !== text) {
+    element.textContent = text
   }
 }
 
-const stopEdit = () => {
-  isEditing.value = false
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLElement
+  const value = (target.textContent || '').replace(/\u00A0/g, '')
+  emit('update:value', value)
 }
+
+const handleEnter = (event: KeyboardEvent) => {
+  ;(event.target as HTMLElement)?.blur()
+}
+
+watch(() => props.modelValue, syncFromModel)
+
+onMounted(() => {
+  syncFromModel()
+})
 </script>
 
 <style scoped>
 .cell-container {
-  min-height: 1.25rem;
   width: 100%;
-  border: 1px solid transparent;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-
-.cell-container:hover:not(.editing) {
-  border-color: var(--t-border-color);
-  background: var(--bg-light-subtle);
-  cursor: text;
-}
-
-/* editing state is handled by td:focus-within in KTable.vue */
-
-.cell-value {
-  display: inline-block;
   min-height: 1.5rem;
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.cell-editable {
-  display: inline-block;
-  width: 100%;
-  border: none;
-  background: transparent;
-  color: var(--t-input-color);
-  box-sizing: border-box;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: 1.5;
   outline: none;
-  white-space: pre-wrap;
-  word-break: break-word;
-  min-height: 1.5rem;
+  background: transparent;
+  color: inherit;
 }
 
-.cell-editable[data-disabled="true"] {
-  opacity: 0.5;
-  cursor: not-allowed;
+.cell-container.is-editable {
+  cursor: text;
 }
 </style>
