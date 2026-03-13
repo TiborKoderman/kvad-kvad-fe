@@ -25,11 +25,12 @@ import NumberCell from './cells/NumberCell.vue'
 import ToggleCell from './cells/ToggleCell.vue'
 import ActionCell from './cells/ActionCell.vue'
 import TimeCell from './cells/TimeCell.vue'
+import GuidCell from './cells/GuidCell.vue'
 
 interface Column {
   title: string
   data: string
-  type?: 'string' | 'number' | 'boolean' | 'action' | 'time'
+  type?: 'string' | 'number' | 'boolean' | 'action' | 'time' | 'guid'
   editable?: boolean
   actions?: any[]
   precision?: number
@@ -52,12 +53,13 @@ const emit = defineEmits<{
 
 const cellComponent = computed(() => {
   const type = props.column.type || 'string'
-  const componentMap = {
+  const componentMap: Record<string, unknown> = {
     string: StringCell,
     number: NumberCell,
     boolean: ToggleCell,
     action: ActionCell,
-    time: TimeCell
+    time: TimeCell,
+    guid: GuidCell,
   }
   return componentMap[type] || StringCell
 })

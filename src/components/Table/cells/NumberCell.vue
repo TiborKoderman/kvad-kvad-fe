@@ -36,7 +36,7 @@ const props = defineProps({
   },
   precision: {
     type: Number,
-    default: 2
+    default: null
   }
 })
 
@@ -49,6 +49,8 @@ const editableRef = ref<HTMLSpanElement | null>(null)
 
 const formatNumber = (value: number) => {
   if (value === null || value === undefined) return '\u00A0'
+  // precision=null/undefined → render as-is; explicit precision → toFixed
+  if (props.precision === null || props.precision === undefined) return String(value)
   return value.toFixed(props.precision)
 }
 

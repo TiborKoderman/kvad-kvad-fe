@@ -4,10 +4,12 @@
       v-for="(action, index) in actions"
       :key="index"
       @click="action.handler(rowData)"
-      :class="['btn', `btn-${action.variant || 'primary'}`]"
+      :class="['action-btn', `action-btn--${action.variant || 'primary'}`]"
       :disabled="disabled || action.disabled"
+      :title="action.label"
     >
-      {{ action.label }}
+      <i v-if="action.icon" :class="['bi', action.icon]"></i>
+      <span v-else>{{ action.label }}</span>
     </button>
   </div>
 </template>
@@ -17,6 +19,7 @@ import { PropType } from 'vue'
 
 interface Action {
   label: string
+  icon?: string
   handler: (rowData: any) => void
   variant?: 'primary' | 'secondary' | 'danger' | 'success'
   disabled?: boolean

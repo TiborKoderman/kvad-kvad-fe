@@ -2,50 +2,38 @@
   <main class="con">
     <div class="container-fluid">
       <h1>My Dashboards</h1>
-
-      <div class="row">
-        <div
-          class="col-md-4"
-          v-for="dashboard in dashboards"
-          :key="dashboard.id"
-        >
-          <div class="card mb-4">
-            <div class="card-header">
-              <h5 class="card-title">{{ dashboard.name }}</h5>
-            </div>
-            <div class="card-body">
-              <p class="card-text">{{ dashboard.description }}</p>
-              <button class="btn btn-primary">Configure</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <KTable
+        :columns="columns"
+        :data="dashboards"
+        :striped="true"
+        :hoverable="true"
+        :searchable="false"
+        :sortable="false"
+        @update:data="dashboards = $event"
+      />
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import KTable from '@/components/Table/KTable.vue'
 
-interface Dashboard {
-  id: number
-  name: string
-  description: string
-  enabled?: boolean
-}
-
-const dashboards = ref<Dashboard[]>([
-  {
-    id: 1,
-    name: 'Sales Dashboard',
-    description: 'Overview of sales metrics and KPIs.',
-  },
-  {
-    id: 2,
-    name: 'Marketing Dashboard',
-    description: 'Track marketing campaigns and performance.',
-  },
+const dashboards = ref<Record<string, unknown>[]>([
+  { id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890', name: 'Sales Dashboard', description: 'Overview of sales metrics and KPIs.' },
+  { id: 'b2c3d4e5-f6a7-8901-bcde-f12345678901', name: 'Marketing Dashboard', description: 'Track marketing campaigns and performance.' },
 ])
+
+const columns = [
+  { title: 'ID', data: 'id', type: 'guid' as const },
+  { title: 'Name', data: 'name', type: 'string' as const, editable: true },
+  { title: 'Description', data: 'description', type: 'string' as const, editable: true },
+  {
+    title: '', data: 'actions', type: 'action' as const, actions: [
+      { label: 'Configure', icon: 'bi-pencil', variant: 'primary', handler: (row: Record<string, unknown>) => console.log('Configure', row) },
+    ],
+  },
+]
 </script>
 
 <style scoped></style>

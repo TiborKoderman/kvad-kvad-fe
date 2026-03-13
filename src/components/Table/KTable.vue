@@ -94,7 +94,7 @@ import KTableHeader from './KTableHeader.vue'
 export interface Column {
   title: string
   data: string
-  type?: 'string' | 'number' | 'boolean' | 'action' | 'time'
+  type?: 'string' | 'number' | 'boolean' | 'action' | 'time' | 'guid'
   editable?: boolean
   actions?: Array<{
     label: string
