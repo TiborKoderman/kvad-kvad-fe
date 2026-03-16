@@ -9,7 +9,7 @@ import { ref } from 'vue'
 
 const props = defineProps({
   type: {
-¸    default: 'info'
+    default: 'info'
   },
   message: {
     type: String,
