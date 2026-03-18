@@ -19,6 +19,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import './assets/scss/app.scss'
 import Swal from 'sweetalert2'
 import { applyThemeCssVars, getPreferredTheme } from './assets/themes/theme-config'
+import { Alert } from './components/alert/alert'
 
 const initialTheme = getPreferredTheme()
 document.documentElement.setAttribute('data-theme', initialTheme)
@@ -36,6 +37,9 @@ app.component('Swal', Swal);
 
 app.directive('imask', IMaskDirective as ObjectDirective)
 app.directive('tooltip', vTooltip)
+
+// Make Alert available globally
+app.config.globalProperties.$alert = Alert
 
 // app.component('api', api)
 app.mount('#app')

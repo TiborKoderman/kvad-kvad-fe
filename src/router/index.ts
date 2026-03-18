@@ -122,6 +122,11 @@ const router = createRouter({
       component: () => import('../views/ComponentsView.vue'),
     },
     {
+      path: '/alerts',
+      name: 'alerts',
+      component: () => import('../views/AlertTestView.vue'),
+    },
+    {
       path: '/dev/table',
       name: 'table',
       component: () => import('../views/Dev/TableView.vue'),
