@@ -1,6 +1,11 @@
 # Modal Helper Usage Examples
 
-The Modal helper provides a flexible way to display any Vue component in a modal dialog with automatic submit detection and custom button support.
+The Modal helper opens Vue components directly, without registering them in a modal store. It supports:
+
+- direct `Modal.open(Component, title, props, model, actions)` calls
+- optional `v-model` passthrough
+- auto-generated save buttons when the modal exposes or registers a submit-like handler
+- internal modal hooks via `useModal()`
 
 ## Basic Usage
 
@@ -10,24 +15,20 @@ The Modal helper provides a flexible way to display any Vue component in a modal
 import { Modal } from '@/components/utils/modal'
 import MyFormComponent from './MyFormComponent.vue'
 
-// Opens modal and auto-detects if component has a submit method
-const result = await Modal.open(MyFormComponent, {
-  title: 'Edit User',
-  props: {
-    userId: 123,
-  },
+// Positional signature
+const result = await Modal.open(MyFormComponent, 'Edit User', {
+  userId: 123,
 })
 
 console.log('Modal returned:', result)
 ```
 
-### 2. Confirmation Modal (Always shows Submit button)
+### 2. Confirmation Modal
 
 ```typescript
 import { Modal } from '@/components/utils/modal'
 import ConfirmDeleteComponent from './ConfirmDeleteComponent.vue'
 
-// Always shows both Cancel and Submit buttons
 const confirmed = await Modal.confirm(ConfirmDeleteComponent, {
   title: 'Confirm Deletion',
   props: {
@@ -36,17 +37,16 @@ const confirmed = await Modal.confirm(ConfirmDeleteComponent, {
 })
 
 if (confirmed) {
-  // User clicked submit
+  // User confirmed
 }
 ```
 
-### 3. Info Modal (Only shows Close button)
+### 3. Info Modal
 
 ```typescript
 import { Modal } from '@/components/utils/modal'
 import InfoComponent from './InfoComponent.vue'
 
-// Only shows Close button
 await Modal.info(InfoComponent, {
   title: 'Information',
   props: {
@@ -64,27 +64,27 @@ import CustomComponent from './CustomComponent.vue'
 const result = await Modal.open(CustomComponent, {
   title: 'Custom Actions',
   props: { data: someData },
-  buttons: [
-    {
+  actions: {
+    saveDraft: {
       label: 'Save Draft',
-      class: 'btn-secondary',
-      onClick: async modalInstance => {
-        // Access the component instance
-        if (modalInstance && typeof modalInstance.saveDraft === 'function') {
-          await modalInstance.saveDraft()
+      closeOnSuccess: false,
+      handler: async ({ modal }) => {
+        if (modal && typeof modal.saveDraft === 'function') {
+          return modal.saveDraft()
         }
       },
     },
-    {
+    publish: {
       label: 'Publish',
-      class: 'btn-success',
-      onClick: async modalInstance => {
-        if (modalInstance && typeof modalInstance.publish === 'function') {
-          await modalInstance.publish()
+      variant: 'success',
+      outline: false,
+      handler: async ({ modal }) => {
+        if (modal && typeof modal.publish === 'function') {
+          return modal.publish()
         }
       },
     },
-  ],
+  },
 })
 ```
 
@@ -96,10 +96,16 @@ import DeleteConfirmComponent from './DeleteConfirmComponent.vue'
 
 const confirmed = await Modal.open(DeleteConfirmComponent, {
   title: 'Delete Item',
-  delete: true, // Shows red delete button instead of primary
-  noOk: false, // Ensures submit button is shown
   props: {
     itemId: 456,
+  },
+  actions: {
+    delete: {
+      label: 'Delete',
+      variant: 'danger',
+      outline: false,
+      handler: () => true,
+    },
   },
 })
 ```
@@ -108,7 +114,31 @@ const confirmed = await Modal.open(DeleteConfirmComponent, {
 
 ### For Auto-Submit Detection
 
-Your component should expose a `submit` method using `defineExpose`:
+You can either expose a submit-like method, or register the handler from inside with `useModal()`.
+
+#### Option A: `useModal()`
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useModal } from '@/components/utils/modal'
+
+const modal = useModal()
+const formData = ref({ name: '', email: '' })
+
+async function submit() {
+  if (!formData.value.name) {
+    throw new Error('Name is required')
+  }
+
+  return formData.value
+}
+
+modal.onSubmit(() => submit())
+</script>
+```
+
+#### Option B: `defineExpose()`
 
 ```vue
 <script setup lang="ts">
@@ -117,23 +147,20 @@ import { ref } from 'vue'
 const formData = ref({ name: '', email: '' })
 
 async function submit() {
-  // Validate and process form
   if (!formData.value.name) {
     throw new Error('Name is required')
   }
 
-  // Return the result that will be passed to the modal's promise
   return formData.value
 }
 
-// Expose the submit method so modal can detect it
 defineExpose({ submit })
 </script>
 ```
 
 ### For Custom Actions
 
-Expose any methods you want to call from custom buttons:
+Expose or register any methods you want to call from action buttons:
 
 ```vue
 <script setup lang="ts">
@@ -155,34 +182,20 @@ defineExpose({ saveDraft, publish })
 
 ```typescript
 interface ModalOptions {
-  // Modal title
   title?: string
-
-  // Props to pass to the component
   props?: Record<string, unknown>
-
-  // Custom buttons to display
-  buttons?: ModalButton[]
-
-  // Whether modal should be fullscreen
+  model?: Ref<unknown>
+  actions?: ModalActions
   fullscreen?: boolean
-
-  // Hide the submit/ok button
-  noOk?: boolean
-
-  // Show delete-styled button instead of primary
-  delete?: boolean
-
-  // Auto-detect submit functionality (default: true)
-  autoDetectSubmit?: boolean
+  closeOnBackdrop?: boolean
 }
 
-interface ModalButton {
-  label: string
-  class?: string // CSS classes (e.g., 'btn-primary', 'btn-danger')
-  onClick: (
-    modalInstance: ComponentPublicInstance | null,
-  ) => void | Promise<void>
+interface ModalActionConfig {
+  handler?: ({ modal, model, props }) => unknown | Promise<unknown>
+  label?: string
+  variant?: ThemeVariant
+  outline?: boolean
+  closeOnSuccess?: boolean
 }
 ```
 

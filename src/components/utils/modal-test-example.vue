@@ -33,9 +33,13 @@
 
 <script setup lang="ts">
 import { ref, defineComponent, h } from 'vue'
-import { Modal } from './modal'
+import { Modal, useModal } from './modal'
 
 const lastResult = ref<unknown>(null)
+type CustomModalInstance = {
+  saveDraft?: () => Promise<unknown>
+  publish?: () => Promise<unknown>
+}
 
 // Simple form component for testing
 const TestFormComponent = defineComponent({
@@ -43,7 +47,8 @@ const TestFormComponent = defineComponent({
   props: {
     userName: String,
   },
-  setup(props, { expose }) {
+  setup(props) {
+    const modal = useModal<{ name: string; email: string }>()
     const formData = ref({
       name: props.userName || '',
       email: '',
@@ -56,35 +61,44 @@ const TestFormComponent = defineComponent({
       return formData.value
     }
 
-    expose({ submit })
+    modal.onSubmit(() => submit())
 
     return () =>
-      h('form', { onSubmit: (e: Event) => e.preventDefault() }, [
-        h('div', { class: 'form-group mb-3' }, [
-          h('label', { for: 'name' }, 'Name'),
-          h('input', {
-            type: 'text',
-            class: 'form-control',
-            id: 'name',
-            value: formData.value.name,
-            onInput: (e: Event) => {
-              formData.value.name = (e.target as HTMLInputElement).value
-            },
-          }),
-        ]),
-        h('div', { class: 'form-group' }, [
-          h('label', { for: 'email' }, 'Email'),
-          h('input', {
-            type: 'email',
-            class: 'form-control',
-            id: 'email',
-            value: formData.value.email,
-            onInput: (e: Event) => {
-              formData.value.email = (e.target as HTMLInputElement).value
-            },
-          }),
-        ]),
-      ])
+      h(
+        'form',
+        {
+          onSubmit: (e: Event) => {
+            e.preventDefault()
+            void modal.requestSubmit()
+          },
+        },
+        [
+          h('div', { class: 'form-group mb-3' }, [
+            h('label', { for: 'name' }, 'Name'),
+            h('input', {
+              type: 'text',
+              class: 'form-control',
+              id: 'name',
+              value: formData.value.name,
+              onInput: (e: Event) => {
+                formData.value.name = (e.target as HTMLInputElement).value
+              },
+            }),
+          ]),
+          h('div', { class: 'form-group' }, [
+            h('label', { for: 'email' }, 'Email'),
+            h('input', {
+              type: 'email',
+              class: 'form-control',
+              id: 'email',
+              value: formData.value.email,
+              onInput: (e: Event) => {
+                formData.value.email = (e.target as HTMLInputElement).value
+              },
+            }),
+          ]),
+        ],
+      )
   },
 })
 
@@ -130,11 +144,8 @@ const TestCustomComponent = defineComponent({
 
 async function openFormModal() {
   try {
-    const result = await Modal.open(TestFormComponent, {
-      title: 'Edit User',
-      props: {
-        userName: 'John Doe',
-      },
+    const result = await Modal.open(TestFormComponent, 'Edit User', {
+      userName: 'John Doe',
     })
     lastResult.value = result
   } catch (error) {
@@ -174,40 +185,39 @@ async function openCustomButtonsModal() {
   try {
     const result = await Modal.open(TestCustomComponent, {
       title: 'Custom Actions',
-      buttons: [
-        {
+      actions: {
+        saveDraft: {
           label: 'Save Draft',
-          class: 'btn-secondary',
-          onClick: async modalInstance => {
-            if (
-              modalInstance &&
-              typeof (modalInstance as { saveDraft?: () => Promise<unknown> })
-                .saveDraft === 'function'
-            ) {
-              const result = await (
-                modalInstance as { saveDraft: () => Promise<unknown> }
-              ).saveDraft()
-              lastResult.value = result
+          closeOnSuccess: false,
+          handler: async ({ modal }) => {
+            const customModal = modal as unknown as CustomModalInstance | null
+
+            if (customModal && typeof customModal.saveDraft === 'function') {
+              const value = await customModal.saveDraft()
+              lastResult.value = value
+              return value
             }
+
+            return undefined
           },
         },
-        {
+        publish: {
           label: 'Publish',
-          class: 'btn-success',
-          onClick: async modalInstance => {
-            if (
-              modalInstance &&
-              typeof (modalInstance as { publish?: () => Promise<unknown> })
-                .publish === 'function'
-            ) {
-              const result = await (
-                modalInstance as { publish: () => Promise<unknown> }
-              ).publish()
-              lastResult.value = result
+          variant: 'success',
+          outline: false,
+          handler: async ({ modal }) => {
+            const customModal = modal as unknown as CustomModalInstance | null
+
+            if (customModal && typeof customModal.publish === 'function') {
+              const value = await customModal.publish()
+              lastResult.value = value
+              return value
             }
+
+            return undefined
           },
         },
-      ],
+      },
     })
     if (result) {
       lastResult.value = result
@@ -221,10 +231,16 @@ async function openDeleteModal() {
   try {
     const result = await Modal.open(TestInfoComponent, {
       title: 'Delete Item',
-      delete: true,
-      noOk: false,
       props: {
         message: 'This action cannot be undone. Are you sure?',
+      },
+      actions: {
+        delete: {
+          label: 'Delete',
+          variant: 'danger',
+          outline: false,
+          handler: () => true,
+        },
       },
     })
     lastResult.value = { deleted: true, result }

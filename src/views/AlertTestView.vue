@@ -2,6 +2,17 @@
   <div class="alert-test-view p-4">
     <h1 class="mb-4">Alert System Test</h1>
 
+    <!-- Info Box -->
+    <div class="alert alert-info mb-4">
+      <strong>💡 Keyboard Shortcuts:</strong>
+      <ul class="mb-0 mt-2">
+        <li><kbd>Enter</kbd> - Triggers OK/Confirm button</li>
+        <li><kbd>Escape</kbd> - Triggers Cancel/Close button</li>
+        <li><strong>Click outside:</strong> Only closes if the ONLY action is Cancel/Close</li>
+        <li>Focus automatically moves to OK/Confirm button when alert opens</li>
+      </ul>
+    </div>
+
     <!-- Basic Variants -->
     <section class="mb-5">
       <h2 class="mb-3">Basic Variants (with default close button)</h2>
@@ -21,7 +32,9 @@ Alert.success("Operation completed successfully")
 Alert.warning("Please review this warning")
 Alert.danger("An error occurred")
 
-// Close/cancel buttons are styled with dark outline variant</code></pre>
+// Close/cancel buttons are styled with dark outline variant
+// Keyboard shortcuts: Enter = OK/Confirm, Escape = Cancel/Close
+// Click outside only closes if ONLY action is cancel/close</code></pre>
       </div>
     </section>
 
@@ -134,6 +147,37 @@ Alert.open({
     cancel: () => {}
   }
 })</code></pre>
+      </div>
+    </section>
+
+    <!-- Keyboard Shortcuts & Focus -->
+    <section class="mb-5">
+      <h2 class="mb-3">Keyboard Shortcuts & Focus</h2>
+      <p class="text-muted mb-3">
+        Alerts automatically focus the OK/Confirm button. Press <kbd>Enter</kbd> to confirm or <kbd>Escape</kbd> to cancel.
+        Click outside only closes alerts with a single cancel/close action.
+      </p>
+      <div class="d-flex gap-2 flex-wrap">
+        <Button primary @click="testKeyboardShortcuts">Test Keyboard (Try Enter)</Button>
+        <Button warning @click="testEscapeKey">Test Escape Key</Button>
+        <Button info @click="testBackdropClick">Test Backdrop (Won't Close)</Button>
+      </div>
+
+      <div class="code-example mt-3">
+        <pre><code>// Keyboard shortcuts work automatically
+Alert.confirm("Press Enter to confirm", "Or Escape to cancel")
+  .then(() => console.log("Confirmed with Enter"))
+  .catch(() => console.log("Cancelled with Escape"))
+
+// Backdrop click only closes if ONLY action is cancel/close
+Alert.info("Try clicking outside", {
+  ok: () => {},
+  cancel: () => {}
+})
+// ^ Won't close on backdrop click (has multiple actions)
+
+Alert.success("This will close on backdrop click")
+// ^ Will close on backdrop click (only has close action)</code></pre>
       </div>
     </section>
 
@@ -406,6 +450,41 @@ const testFullConfig = () => {
   })
 }
 
+const testKeyboardShortcuts = () => {
+  Alert.confirm("Press Enter to confirm!", "Or press Escape to cancel. Focus is on the Confirm button.")
+    .then(() => {
+      log("User pressed Enter (confirmed)")
+      Alert.success("You pressed Enter!")
+    })
+    .catch(() => {
+      log("User pressed Escape (cancelled)")
+    })
+}
+
+const testEscapeKey = () => {
+  Alert.warning("This alert can be closed with Escape", "Try pressing the Escape key", {
+    ok: () => {
+      log("OK button clicked")
+    },
+    cancel: () => {
+      log("Cancelled with Escape key")
+    }
+  })
+}
+
+const testBackdropClick = () => {
+  Alert.info("Try clicking outside this alert", "It won't close because there are multiple actions!", {
+    ok: () => {
+      log("OK clicked - not backdrop")
+    },
+    cancel: () => {
+      log("Cancel clicked - not backdrop")
+    }
+  })
+    .then(() => log("Alert closed via button"))
+    .catch(() => log("Alert cancelled via button"))
+}
+
 const testVariant = (variant: string) => {
   const method = Alert[variant as keyof typeof Alert] as any
   if (typeof method === 'function') {
@@ -458,5 +537,15 @@ section {
 .code-example code {
   color: var(--t-body-color);
   font-family: 'Courier New', monospace;
+}
+
+kbd {
+  background-color: var(--t-input-bg);
+  border: 1px solid var(--t-border-color);
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 </style>

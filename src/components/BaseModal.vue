@@ -1,169 +1,248 @@
 <template>
-  <transition name="fade" @after-leave="handleAfterLeave">
-    <div @click.self="close" v-if="isVisible" class="base-modal-backdrop">
-      <div
-        class="base-modal-dialog"
-        :class="{
-          fullscreen: fullscreen,
-        }"
-        role="dialog"
-        aria-hidden="true"
-      >
-        <div class="base-modal-content">
-          <div class="base-modal-header">
-            <h4 class="base-modal-title">{{ title }}</h4>
-            <button
-              type="button"
-              class="btn btn-close"
-              @click="close"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="base-modal-body">
-            <slot></slot>
-          </div>
+  <div
+    ref="backdropRef"
+    class="base-modal-backdrop"
+    tabindex="-1"
+    @click.self="handleBackdropClick"
+    @keydown="handleKeydown"
+  >
+    <div
+      class="base-modal-dialog"
+      :class="{ fullscreen }"
+      role="dialog"
+      aria-modal="true"
+      :aria-labelledby="titleId"
+    >
+      <div class="base-modal-content">
+        <div class="base-modal-header">
+          <h4 :id="titleId" class="base-modal-title">{{ title }}</h4>
+          <button
+            type="button"
+            class="base-modal-close"
+            aria-label="Close"
+            @click="emit('close')"
+          >
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+        </div>
 
-          <div class="base-modal-footer">
-            <button type="button" class="btn btn-outline-dark" @click="close">
-              {{ noOk ? 'Close' : 'Cancel' }}
-            </button>
-            <template v-if="!$slots.footer && !props.noOk">
-              <button
-                type="button"
-                class="btn"
-                :class="props.delete ? 'btn-danger' : 'btn-primary'"
-                @click="submit"
-              >
-                {{ props.delete ? 'Delete' : 'Submit' }}
-              </button>
-            </template>
-            <slot name="footer"></slot>
-          </div>
+        <div class="base-modal-body">
+          <slot></slot>
+        </div>
+
+        <div v-if="buttons.length > 0" class="base-modal-footer">
+          <Button
+            v-for="button in buttons"
+            :key="button.key"
+            v-bind="getButtonProps(button)"
+            @click="emit('action', button.key)"
+          >
+            {{ button.label }}
+          </Button>
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
+import type { ThemeVariant } from '@/assets/themes/theme-config'
+import Button from '@/components/formItems/Button.vue'
 
-const isMounted = ref(false)
-const isVisible = ref(false)
-
-onMounted(() => {
-  isMounted.value = true
-  isVisible.value = true
-})
-
-onBeforeUnmount(() => {
-  // Only hide visibility - actual unmounting will happen after animation
-  isVisible.value = false
-})
-
-const emit = defineEmits(['close', 'submit'])
-
-const props = defineProps({
-  title: {
-    type: String,
-    default: 'Are you sure?',
-  },
-  noOk: {
-    type: Boolean,
-    default: false,
-    required: false,
-  },
-  delete: {
-    type: Boolean,
-    default: false,
-    required: false,
-  },
-  fullscreen: {
-    type: Boolean,
-    default: true,
-    required: false,
-  },
-})
-
-function handleAfterLeave() {
-  // This fires after the fade animation completes
-  isMounted.value = false
+export interface BaseModalActionButton {
+  key: string
+  label: string
+  variant?: ThemeVariant
+  outline?: boolean
 }
 
-function open() {
-  isVisible.value = true
+const props = withDefaults(
+  defineProps<{
+    title?: string
+    fullscreen?: boolean
+    closeOnBackdrop?: boolean
+    buttons?: BaseModalActionButton[]
+  }>(),
+  {
+    title: 'Modal',
+    fullscreen: true,
+    closeOnBackdrop: true,
+    buttons: () => [],
+  },
+)
+
+const emit = defineEmits<{
+  close: []
+  action: [actionKey: string]
+}>()
+
+const backdropRef = ref<HTMLElement | null>(null)
+const titleId = `base-modal-title-${Math.random().toString(36).slice(2)}`
+
+const getButtonProps = (button: BaseModalActionButton) => {
+  const variantProps: Record<string, boolean> = {}
+
+  if (button.variant) {
+    variantProps[button.variant] = true
+  }
+
+  if (button.outline) {
+    variantProps.outline = true
+  }
+
+  return variantProps
 }
 
-function submit() {
-  emit('submit')
+const getPrimaryActionKey = () => {
+  const preferredAction = props.buttons.find(button =>
+    ['ok', 'save', 'submit', 'confirm'].includes(button.key),
+  )
+
+  return preferredAction?.key ?? props.buttons[0]?.key
 }
 
-function close() {
-  isVisible.value = false
-  emit('close')
+const handleBackdropClick = () => {
+  if (props.closeOnBackdrop) {
+    emit('close')
+  }
 }
 
-defineExpose({
-  open,
-  close,
-  submit,
+const handleKeydown = (event: KeyboardEvent) => {
+  const target = event.target as HTMLElement | null
+
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    emit('close')
+    return
+  }
+
+  if (target?.tagName === 'TEXTAREA' || target?.isContentEditable) {
+    return
+  }
+
+  if (event.key === 'Enter') {
+    const actionKey = getPrimaryActionKey()
+
+    if (actionKey) {
+      event.preventDefault()
+      emit('action', actionKey)
+    }
+  }
+}
+
+onMounted(async () => {
+  await nextTick()
+  backdropRef.value?.focus()
 })
 </script>
 
 <style scoped lang="scss">
+$border-color: rgba(#000000, 0.18);
+
 .base-modal-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  z-index: 1055;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.55);
+  outline: none;
 }
-
-$border-color: rgba(#000000, 0.25);
 
 .base-modal-dialog {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  min-width: 500px;
-  max-width: 100vw;
-  max-height:100vh;
-  border-radius: var(--bs-border-radius);
+  width: min(680px, calc(100vw - 3rem));
+  max-height: calc(100vh - 3rem);
 }
 
-.base-modal-body {
-  padding: 1rem;
+.base-modal-dialog.fullscreen {
+  width: min(1200px, calc(100vw - 3rem));
 }
 
+.base-modal-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: calc(100vh - 3rem);
+  background-color: var(--t-card-bg);
+  border: 1px solid var(--t-card-border-color);
+  border-radius: var(--bs-border-radius-lg);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.22);
+}
 
 .base-modal-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid $border-color;
-  padding: 1rem;
 }
+
 .base-modal-title {
   margin: 0;
+  color: var(--t-body-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.base-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: var(--t-body-color);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+}
+
+.base-modal-close:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.base-modal-close:focus-visible {
+  outline: 2px solid var(--t-primary);
+  outline-offset: 2px;
+}
+
+.base-modal-body {
+  flex: 1;
+  overflow: auto;
+  padding: 1.25rem;
 }
 
 .base-modal-footer {
   display: flex;
   justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem 1.25rem;
   border-top: 1px solid $border-color;
-  gap: 0.5rem;
-  padding: 1rem;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.25s;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+@media (max-width: 768px) {
+  .base-modal-backdrop {
+    padding: 0.75rem;
+  }
+
+  .base-modal-dialog,
+  .base-modal-dialog.fullscreen {
+    width: calc(100vw - 1.5rem);
+  }
+
+  .base-modal-content {
+    max-height: calc(100vh - 1.5rem);
+  }
+
+  .base-modal-header,
+  .base-modal-body,
+  .base-modal-footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="alert-backdrop" @click.self="handleBackdropClick">
+  <div class="alert-backdrop" @click.self="handleBackdropClick" @keydown="handleKeydown" tabindex="-1" ref="backdropRef">
     <div :class="alertClasses" role="alert">
       <!-- Icon -->
       <div class="alert-icon">
@@ -15,8 +15,9 @@
       <!-- Actions -->
       <div v-if="actionButtons.length > 0" class="alert-actions">
         <Button
-          v-for="action in actionButtons"
+          v-for="(action, index) in actionButtons"
           :key="action.key"
+          :ref="el => { if (el) buttonRefs[index] = el }"
           v-bind="getButtonProps(action)"
           @click="handleActionClick(action)"
         >
@@ -28,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref, nextTick } from 'vue'
 import Button from '@/components/formItems/Button.vue'
 import type { AlertConfig, ActionButton, AlertAction } from './alert'
 import type { ThemeVariant } from '@/assets/themes/theme-config'
@@ -38,6 +39,9 @@ const props = defineProps<AlertConfig>()
 const emit = defineEmits<{
   action: [actionKey: string, value?: any]
 }>()
+
+const backdropRef = ref<HTMLElement | null>(null)
+const buttonRefs = ref<any[]>([])
 
 // Compute alert classes based on variant
 const alertClasses = computed(() => {
@@ -134,12 +138,63 @@ const handleActionClick = async (action: ActionButton) => {
   emit('action', action.key, result)
 }
 
-// Handle backdrop click (close on backdrop click for cancel)
+// Handle backdrop click - only close if ONLY action is cancel/close
 const handleBackdropClick = () => {
-  if (props.actions?.cancel || props.actions?.close) {
-    emit('action', props.actions?.close ? 'close' : 'cancel')
+  if (!props.actions) return
+
+  const actionKeys = Object.keys(props.actions)
+
+  // Only close on backdrop click if there's exactly one action and it's cancel/close
+  if (actionKeys.length === 1 && (actionKeys[0] === 'cancel' || actionKeys[0] === 'close')) {
+    emit('action', actionKeys[0])
   }
 }
+
+// Handle keyboard shortcuts
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    // Escape key triggers cancel/close action
+    if (props.actions?.cancel) {
+      event.preventDefault()
+      handleActionClick(actionButtons.value.find(a => a.key === 'cancel')!)
+    } else if (props.actions?.close) {
+      event.preventDefault()
+      handleActionClick(actionButtons.value.find(a => a.key === 'close')!)
+    }
+  } else if (event.key === 'Enter') {
+    // Enter key triggers ok/confirm action
+    if (props.actions?.ok) {
+      event.preventDefault()
+      handleActionClick(actionButtons.value.find(a => a.key === 'ok')!)
+    } else if (props.actions?.confirm) {
+      event.preventDefault()
+      handleActionClick(actionButtons.value.find(a => a.key === 'confirm')!)
+    }
+  }
+}
+
+// Focus management
+onMounted(async () => {
+  await nextTick()
+
+  // Focus the backdrop to enable keyboard events
+  if (backdropRef.value) {
+    backdropRef.value.focus()
+  }
+
+  // Auto-focus OK/Confirm button if present
+  const primaryButtonIndex = actionButtons.value.findIndex(
+    a => a.key === 'ok' || a.key === 'confirm'
+  )
+
+  if (primaryButtonIndex !== -1 && buttonRefs.value[primaryButtonIndex]) {
+    const buttonEl = buttonRefs.value[primaryButtonIndex].$el || buttonRefs.value[primaryButtonIndex]
+    if (buttonEl && typeof buttonEl.focus === 'function') {
+      buttonEl.focus()
+    }
+  }
+})
+
 </script>
 
 <style scoped>
@@ -154,6 +209,7 @@ const handleBackdropClick = () => {
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  outline: none;
 }
 
 .alert-container {
@@ -183,6 +239,8 @@ const handleBackdropClick = () => {
   flex-shrink: 0;
   font-size: 2rem;
   line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 .alert-icon i {
